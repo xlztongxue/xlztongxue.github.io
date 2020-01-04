@@ -46,22 +46,24 @@
   };
 </script>
 
-  <meta name="description" content="定义选择排序（Selection sort）是一种简单直观的排序算法。它的工作原理如下。首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。以此类推，直到所有元素均排序完毕。 选择排序的主要优点与数据移动有关。如果某个元素位于正确的最终位置上，则它不会被移动。选择排序每次交换一对元素，它们当中至少有一个将被移到">
+  <meta name="description" content="定义 堆排序（Heapsort）是指利用堆这种数据结构所设计的一种排序算法。堆积是一个近似完全二叉树的结构，并同时满足堆积的性质：即子结点的键值或索引总是小于（或者大于）它的父节点。堆排序可以说是一种利用堆的概念来排序的选择排序。  堆是一种完全二叉树， 堆有两种类型: 大根堆  小根堆，两种类型的概念如下： 大根堆：每个结点的值都大于或等于左右孩子结点 小根堆：每个结点的值都小于或等于左右孩子结">
 <meta property="og:type" content="article">
-<meta property="og:title" content="选择排序">
-<meta property="og:url" content="https://xlztongxue.github.io/2020/01/02/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:title" content="堆排序">
+<meta property="og:url" content="https://xlztongxue.github.io/2020/01/04/%E5%A0%86%E6%8E%92%E5%BA%8F/index.html">
 <meta property="og:site_name" content="小廖子的博客">
-<meta property="og:description" content="定义选择排序（Selection sort）是一种简单直观的排序算法。它的工作原理如下。首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。以此类推，直到所有元素均排序完毕。 选择排序的主要优点与数据移动有关。如果某个元素位于正确的最终位置上，则它不会被移动。选择排序每次交换一对元素，它们当中至少有一个将被移到">
+<meta property="og:description" content="定义 堆排序（Heapsort）是指利用堆这种数据结构所设计的一种排序算法。堆积是一个近似完全二叉树的结构，并同时满足堆积的性质：即子结点的键值或索引总是小于（或者大于）它的父节点。堆排序可以说是一种利用堆的概念来排序的选择排序。  堆是一种完全二叉树， 堆有两种类型: 大根堆  小根堆，两种类型的概念如下： 大根堆：每个结点的值都大于或等于左右孩子结点 小根堆：每个结点的值都小于或等于左右孩子结">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://xlztongxue.github.io/.io//selection.gif">
-<meta property="article:published_time" content="2020-01-02T07:41:10.000Z">
-<meta property="article:modified_time" content="2020-01-04T11:15:34.160Z">
+<meta property="og:image" content="https://xlztongxue.github.io/.io//3401773-06756e8ab766dcff.webp">
+<meta property="og:image" content="https://xlztongxue.github.io/.io//3401773-cb6fe3ac34af3183.webp">
+<meta property="og:image" content="https://xlztongxue.github.io/.io//849589-20171015231308699-356134237.gif">
+<meta property="article:published_time" content="2020-01-04T07:13:49.000Z">
+<meta property="article:modified_time" content="2020-01-04T11:23:47.214Z">
 <meta property="article:author" content="小廖子">
 <meta property="article:tag" content="排序算法">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://xlztongxue.github.io/.io//selection.gif">
+<meta name="twitter:image" content="https://xlztongxue.github.io/.io//3401773-06756e8ab766dcff.webp">
 
-<link rel="canonical" href="https://xlztongxue.github.io/2020/01/02/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">
+<link rel="canonical" href="https://xlztongxue.github.io/2020/01/04/%E5%A0%86%E6%8E%92%E5%BA%8F/">
 
 
 <script id="page-configurations">
@@ -73,7 +75,7 @@
   };
 </script>
 
-  <title>选择排序 | 小廖子的博客</title>
+  <title>堆排序 | 小廖子的博客</title>
   
 
 
@@ -214,7 +216,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://xlztongxue.github.io/2020/01/02/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">
+    <link itemprop="mainEntityOfPage" href="https://xlztongxue.github.io/2020/01/04/%E5%A0%86%E6%8E%92%E5%BA%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avter.jpg">
@@ -227,7 +229,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          选择排序
+          堆排序
         </h1>
 
         <div class="post-meta">
@@ -236,16 +238,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-01-02 15:41:10" itemprop="dateCreated datePublished" datetime="2020-01-02T15:41:10+08:00">2020-01-02</time>
+              <time title="创建时间：2020-01-04 15:13:49 / 修改时间：19:23:47" itemprop="dateCreated datePublished" datetime="2020-01-04T15:13:49+08:00">2020-01-04</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-04 19:15:34" itemprop="dateModified" datetime="2020-01-04T19:15:34+08:00">2020-01-04</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -274,8 +270,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/01/02/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/02/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/01/04/%E5%A0%86%E6%8E%92%E5%BA%8F/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/04/%E5%A0%86%E6%8E%92%E5%BA%8F/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -285,7 +281,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>823</span>
+              <span>889</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -304,23 +300,26 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p><strong>选择排序（Selection sort）</strong>是一种简单直观的排序算法。它的工作原理如下。首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。以此类推，直到所有元素均排序完毕。</p>
-<p>选择排序的主要优点与数据移动有关。如果某个元素位于正确的最终位置上，则它不会被移动。选择排序每次交换一对元素，它们当中至少有一个将被移到其最终位置上，因此对n个元素的表进行排序总共进行至多n-1次交换。在所有的完全依靠交换去移动元素的排序方法中，选择排序属于非常好的一种。</p>
-<a id="more"></a>
+        <h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p> 堆排序（Heapsort）是指利用堆这种数据结构所设计的一种排序算法。堆积是一个近似完全二叉树的结构，并同时满足堆积的性质：即子结点的键值或索引总是小于（或者大于）它的父节点。堆排序可以说是一种利用堆的概念来排序的选择排序。 </p>
+<p><strong>堆</strong>是一种完全二叉树， <strong>堆</strong>有两种类型: <strong>大根堆</strong>  <strong>小根堆</strong>，两种类型的概念如下：<br> 大根堆：每个结点的值都大于或等于左右孩子结点<br> 小根堆：每个结点的值都小于或等于左右孩子结点</p>
+ <a id="more"></a>
 
+<p>大根堆 <img src="/.io//3401773-06756e8ab766dcff.webp" alt="大根堆"> </p>
+<p> 小根堆<img src="/.io//3401773-cb6fe3ac34af3183.webp" alt="小根堆"></p>
+<p> <strong>完全二叉树</strong>：是 一种除了最后一层之外的其他每一层都被完全填充，并且所有结点都保持向左对齐的树 </p>
 <h4 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h4><ul>
-<li>初始状态：无序区为R[1..n]，有序区为空；</li>
-<li>第i趟排序(i=1,2,3…n-1)开始时，当前有序区和无序区分别为R[1..i-1]和R(i..n）。该趟排序从当前无序区中-选出关键字最小的记录 R[k]，将它与无序区的第1个记录R交换，使R[1..i]和R[i+1..n)分别变为记录个数增加1个的新有序区和记录个数减少1个的新无序区；</li>
-<li>n-1趟结束，数组有序化了。</li>
+<li>首先将待排序的数组构造出一个大根堆</li>
+<li>取出这个大根堆的堆顶节点(最大值)，与堆的最下最右的元素进行交换，然后把剩下的元素再构造出一个大根堆</li>
+<li>重复第二步，直到这个大根堆的长度为1，此时完成排序。</li>
 </ul>
-<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">selection_sort</span><span class="params">(alist)</span>:</span></span><br><span class="line">    n = len(alist)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n<span class="number">-1</span>):</span><br><span class="line">        <span class="comment"># 记录最小位置</span></span><br><span class="line">        min_index = i</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i+<span class="number">1</span>, n):</span><br><span class="line">            <span class="keyword">if</span> alist[j] &lt; alist[min_index]:</span><br><span class="line">                min_index = j</span><br><span class="line">        <span class="comment"># 如果选择出的数据不在正确位置，进行交换</span></span><br><span class="line">        <span class="keyword">if</span> min_index != i:</span><br><span class="line">            alist[i], alist[min_index] = alist[min_index], alist[i]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">alist = [<span class="number">54</span>,<span class="number">226</span>,<span class="number">93</span>,<span class="number">17</span>,<span class="number">77</span>,<span class="number">31</span>,<span class="number">44</span>,<span class="number">55</span>,<span class="number">20</span>]</span><br><span class="line">selection_sort(alist)</span><br><span class="line">print(alist)</span><br></pre></td></tr></table></figure>
+<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heapify</span><span class="params">(arr, n, i)</span>:</span></span><br><span class="line">    largest = i</span><br><span class="line">    l = <span class="number">2</span> * i + <span class="number">1</span>  <span class="comment"># left = 2*i + 1</span></span><br><span class="line">    r = <span class="number">2</span> * i + <span class="number">2</span>  <span class="comment"># right = 2*i + 2</span></span><br><span class="line">    <span class="keyword">if</span> l &lt; n <span class="keyword">and</span> arr[i] &lt; arr[l]:</span><br><span class="line">        largest = l</span><br><span class="line">    <span class="keyword">if</span> r &lt; n <span class="keyword">and</span> arr[largest] &lt; arr[r]:</span><br><span class="line">        largest = r</span><br><span class="line">    <span class="keyword">if</span> largest != i:</span><br><span class="line">        arr[i], arr[largest] = arr[largest], arr[i]  <span class="comment"># 交换</span></span><br><span class="line">        heapify(arr, n, largest)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heapSort</span><span class="params">(arr)</span>:</span></span><br><span class="line">    n = len(arr)</span><br><span class="line">    <span class="comment"># Build a maxheap.</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">        print(i)</span><br><span class="line">        heapify(arr, n, i)</span><br><span class="line">    <span class="comment"># 一个个交换元素</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n - <span class="number">1</span>, <span class="number">0</span>, <span class="number">-1</span>):</span><br><span class="line">        arr[i], arr[<span class="number">0</span>] = arr[<span class="number">0</span>], arr[i]  <span class="comment"># 交换</span></span><br><span class="line">        heapify(arr, i, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">arr = [<span class="number">12</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>]</span><br><span class="line">heapSort(arr)</span><br><span class="line">print(<span class="string">"排序后"</span>, arr)</span><br></pre></td></tr></table></figure>
 
 <h4 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h4><ul>
-<li>最优时间复杂度：O(n2)</li>
-<li>最坏时间复杂度：O(n2)</li>
-<li>稳定性：不稳定（考虑升序每次选择最大的情况）</li>
+<li>最优时间复杂度：O(nlogn) （升序排列，序列已经处于升序状态）</li>
+<li>最坏时间复杂度：O(nlogn)</li>
+<li>稳定性：不稳定</li>
 </ul>
-<h4 id="动画演示"><a href="#动画演示" class="headerlink" title="动画演示"></a>动画演示</h4><p> <img src="/.io//selection.gif" alt="selection"> </p>
+<h4 id="动画演示"><a href="#动画演示" class="headerlink" title="动画演示"></a>动画演示</h4><p> <img src="/.io//849589-20171015231308699-356134237.gif" alt="img"> </p>
 
     </div>
 
@@ -340,13 +339,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/01/02/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/" rel="prev" title="冒泡排序">
-      <i class="fa fa-chevron-left"></i> 冒泡排序
+    <a href="/2020/01/03/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/" rel="prev" title="插入排序">
+      <i class="fa fa-chevron-left"></i> 插入排序
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/01/02/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/" rel="next" title="希尔排序">
-      希尔排序 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
