@@ -46,34 +46,29 @@
   };
 </script>
 
-  <meta name="description" content="定义冒泡排序是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="冒泡排序">
-<meta property="og:url" content="https://xiaoliaozi.com/2020/01/02/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/index.html">
+  <meta name="description" content="学无止境">
+<meta property="og:type" content="website">
+<meta property="og:title" content="小廖子的博客">
+<meta property="og:url" content="https://xiaoliaozi.com/page/4/index.html">
 <meta property="og:site_name" content="小廖子的博客">
-<meta property="og:description" content="定义冒泡排序是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端。">
+<meta property="og:description" content="学无止境">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://xiaoliaozi.com/2020/01/02/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/bubble-1578136149213.gif">
-<meta property="article:published_time" content="2020-01-02T07:17:10.000Z">
-<meta property="article:modified_time" content="2020-01-04T11:44:24.308Z">
 <meta property="article:author" content="小廖子">
-<meta property="article:tag" content="排序算法">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://xiaoliaozi.com/2020/01/02/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/bubble-1578136149213.gif">
 
-<link rel="canonical" href="https://xiaoliaozi.com/2020/01/02/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/">
+<link rel="canonical" href="https://xiaoliaozi.com/page/4/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome: false,
-    isPost: true
+    isHome: true,
+    isPost: false
   };
 </script>
 
-  <title>冒泡排序 | 小廖子的博客</title>
+  <title>小廖子的博客</title>
   
 
 
@@ -210,10 +205,10 @@
             
 
   <div class="posts-expand">
-      
+        
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://xiaoliaozi.com/2020/01/02/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -227,7 +222,8 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          冒泡排序
+          
+            <a href="/2020/01/02/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">冒泡排序</a>
         </h1>
 
         <div class="post-meta">
@@ -259,13 +255,6 @@
             </span>
 
           
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span>
   
   <span class="post-meta-item">
     
@@ -304,47 +293,24 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>冒泡排序是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端。<br> <a id="more"></a></p>
-<h4 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h4><ul>
-<li>比较相邻的元素。如果第一个比第二个大（升序），就交换它们两个；</li>
-<li>对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对，这样在最后的元素应该会是最大的数；</li>
-<li>针对所有的元素重复以上的步骤，除了最后一个；</li>
-<li>重复步骤1~3，直到排序完成。</li>
-</ul>
-<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubble_sort</span><span class="params">(alist)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(len(alist)<span class="number">-1</span>, <span class="number">0</span>, <span class="number">-1</span>):</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(j):</span><br><span class="line">            <span class="keyword">if</span> alist[i] &gt; alist[i+<span class="number">1</span>]:</span><br><span class="line">                alist[i], alist[i+<span class="number">1</span>] = alist[i+<span class="number">1</span>], alist[i]</span><br><span class="line"></span><br><span class="line">li = [<span class="number">54</span>, <span class="number">26</span>, <span class="number">93</span>, <span class="number">17</span>, <span class="number">77</span>, <span class="number">31</span>, <span class="number">44</span>, <span class="number">55</span>, <span class="number">20</span>]</span><br><span class="line">bubble_sort(li)</span><br><span class="line">print(li)</span><br></pre></td></tr></table></figure>
-
-<h4 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h4><ul>
-<li>最优时间复杂度：O(n) （表示遍历一次发现没有任何可以交换的元素，排序结束。）</li>
-<li>最坏时间复杂度：O(n2)</li>
-<li>稳定性：稳定</li>
-</ul>
-<h4 id="动画演示"><a href="#动画演示" class="headerlink" title="动画演示"></a>动画演示</h4><p> <img src="/2020/01/02/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/bubble-1578136149213.gif" alt="冒泡排序"></p>
-
+          <h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>冒泡排序是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端。<br></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/02/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
     </div>
 
     
     
     
-
       <footer class="post-footer">
-          <div class="post-tags">
-              <!--<a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="tag"># 排序算法</a>-->
-              <a href="/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag">本文结束</i></a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item"></div>
-      <div class="post-nav-item">
-    <a href="/2020/01/02/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/" rel="next" title="选择排序">
-      选择排序 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
+        <div class="post-eof"></div>
       </footer>
-    
   </article>
   
   
@@ -352,10 +318,15 @@
 
   </div>
 
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+  </nav>
+
+
 
           </div>
           
-    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -402,7 +373,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法描述"><span class="nav-number">2.</span> <span class="nav-text">算法描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码实现"><span class="nav-number">3.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#时间复杂度"><span class="nav-number">4.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动画演示"><span class="nav-number">5.</span> <span class="nav-text">动画演示</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

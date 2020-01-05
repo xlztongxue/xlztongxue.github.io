@@ -46,22 +46,22 @@
   };
 </script>
 
-  <meta name="description" content="定义冒泡排序是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端。">
+  <meta name="description" content="定义 基数排序是按照低位先排序，然后收集；再按照高位排序，然后再收集；依次类推，直到最高位。有时候有些属性是有优先级顺序的，先按低优先级排序，再按高优先级排序。最后的次序就是高优先级高的在前，高优先级相同的低优先级高的在前。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="冒泡排序">
-<meta property="og:url" content="https://xiaoliaozi.com/2020/01/02/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:title" content="基数排序">
+<meta property="og:url" content="https://xiaoliaozi.com/2020/01/05/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/index.html">
 <meta property="og:site_name" content="小廖子的博客">
-<meta property="og:description" content="定义冒泡排序是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端。">
+<meta property="og:description" content="定义 基数排序是按照低位先排序，然后收集；再按照高位排序，然后再收集；依次类推，直到最高位。有时候有些属性是有优先级顺序的，先按低优先级排序，再按高优先级排序。最后的次序就是高优先级高的在前，高优先级相同的低优先级高的在前。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://xiaoliaozi.com/2020/01/02/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/bubble-1578136149213.gif">
-<meta property="article:published_time" content="2020-01-02T07:17:10.000Z">
-<meta property="article:modified_time" content="2020-01-04T11:44:24.308Z">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/05/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/849589-20171015232453668-1397662527.gif">
+<meta property="article:published_time" content="2020-01-05T11:50:49.000Z">
+<meta property="article:modified_time" content="2020-01-05T12:08:58.780Z">
 <meta property="article:author" content="小廖子">
 <meta property="article:tag" content="排序算法">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://xiaoliaozi.com/2020/01/02/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/bubble-1578136149213.gif">
+<meta name="twitter:image" content="https://xiaoliaozi.com/2020/01/05/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/849589-20171015232453668-1397662527.gif">
 
-<link rel="canonical" href="https://xiaoliaozi.com/2020/01/02/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/">
+<link rel="canonical" href="https://xiaoliaozi.com/2020/01/05/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/">
 
 
 <script id="page-configurations">
@@ -73,7 +73,7 @@
   };
 </script>
 
-  <title>冒泡排序 | 小廖子的博客</title>
+  <title>基数排序 | 小廖子的博客</title>
   
 
 
@@ -214,7 +214,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://xiaoliaozi.com/2020/01/02/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/">
+    <link itemprop="mainEntityOfPage" href="https://xiaoliaozi.com/2020/01/05/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avter.jpg">
@@ -227,7 +227,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          冒泡排序
+          基数排序
         </h1>
 
         <div class="post-meta">
@@ -236,16 +236,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-01-02 15:17:10" itemprop="dateCreated datePublished" datetime="2020-01-02T15:17:10+08:00">2020-01-02</time>
+              <time title="创建时间：2020-01-05 19:50:49 / 修改时间：20:08:58" itemprop="dateCreated datePublished" datetime="2020-01-05T19:50:49+08:00">2020-01-05</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-04 19:44:24" itemprop="dateModified" datetime="2020-01-04T19:44:24+08:00">2020-01-04</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -274,8 +268,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/01/02/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/02/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/01/05/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/05/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -285,7 +279,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>515</span>
+              <span>493</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -304,21 +298,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>冒泡排序是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端。<br> <a id="more"></a></p>
-<h4 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h4><ul>
-<li>比较相邻的元素。如果第一个比第二个大（升序），就交换它们两个；</li>
-<li>对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对，这样在最后的元素应该会是最大的数；</li>
-<li>针对所有的元素重复以上的步骤，除了最后一个；</li>
-<li>重复步骤1~3，直到排序完成。</li>
-</ul>
-<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubble_sort</span><span class="params">(alist)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(len(alist)<span class="number">-1</span>, <span class="number">0</span>, <span class="number">-1</span>):</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(j):</span><br><span class="line">            <span class="keyword">if</span> alist[i] &gt; alist[i+<span class="number">1</span>]:</span><br><span class="line">                alist[i], alist[i+<span class="number">1</span>] = alist[i+<span class="number">1</span>], alist[i]</span><br><span class="line"></span><br><span class="line">li = [<span class="number">54</span>, <span class="number">26</span>, <span class="number">93</span>, <span class="number">17</span>, <span class="number">77</span>, <span class="number">31</span>, <span class="number">44</span>, <span class="number">55</span>, <span class="number">20</span>]</span><br><span class="line">bubble_sort(li)</span><br><span class="line">print(li)</span><br></pre></td></tr></table></figure>
+        <h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p> 基数排序是按照低位先排序，然后收集；再按照高位排序，然后再收集；依次类推，直到最高位。有时候有些属性是有优先级顺序的，先按低优先级排序，再按高优先级排序。最后的次序就是高优先级高的在前，高优先级相同的低优先级高的在前。 </p>
+<a id="more"></a>
 
-<h4 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h4><ul>
-<li>最优时间复杂度：O(n) （表示遍历一次发现没有任何可以交换的元素，排序结束。）</li>
-<li>最坏时间复杂度：O(n2)</li>
+<h4 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h4><ul>
+<li>取得数组中的最大数，并取得位数；</li>
+<li>arr为原始数组，从最低位开始取每个位组成radix数组；</li>
+<li>对radix进行计数排序（利用计数排序适用于小范围数的特点）；</li>
+</ul>
+<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#基于桶排序的基数排序</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">radixSort</span><span class="params">(list)</span>:</span></span><br><span class="line">    d = len(str(max(list)))</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(d):<span class="comment">#d轮排序</span></span><br><span class="line">        s=[[] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>)]<span class="comment">#因为每一位数字都是0~9，故建立10个桶</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> list:</span><br><span class="line">            s[int(i/(<span class="number">10</span>**k)%<span class="number">10</span>)].append(i)</span><br><span class="line">        list=[j <span class="keyword">for</span> i <span class="keyword">in</span> s <span class="keyword">for</span> j <span class="keyword">in</span> i]</span><br><span class="line">    <span class="keyword">return</span> list</span><br><span class="line"></span><br><span class="line">nums = [<span class="number">5</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">65</span>]</span><br><span class="line">print(radixSort(nums))</span><br></pre></td></tr></table></figure>
+
+<h4 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h4><h4 id="时间复杂度-1"><a href="#时间复杂度-1" class="headerlink" title="时间复杂度"></a>时间复杂度</h4><ul>
+<li>最优时间复杂度：O(n*k)</li>
+<li>最坏时间复杂度：O(n*k)</li>
 <li>稳定性：稳定</li>
 </ul>
-<h4 id="动画演示"><a href="#动画演示" class="headerlink" title="动画演示"></a>动画演示</h4><p> <img src="/2020/01/02/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/bubble-1578136149213.gif" alt="冒泡排序"></p>
+<h4 id="动画演示"><a href="#动画演示" class="headerlink" title="动画演示"></a>动画演示</h4><p> <img src="/2020/01/05/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/849589-20171015232453668-1397662527.gif" alt="img"> </p>
 
     </div>
 
@@ -337,11 +332,11 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2020/01/02/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/" rel="next" title="选择排序">
-      选择排序 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/01/05/%E6%A1%B6%E6%8E%92%E5%BA%8F/" rel="prev" title="桶排序">
+      <i class="fa fa-chevron-left"></i> 桶排序
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -402,7 +397,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法描述"><span class="nav-number">2.</span> <span class="nav-text">算法描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码实现"><span class="nav-number">3.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#时间复杂度"><span class="nav-number">4.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动画演示"><span class="nav-number">5.</span> <span class="nav-text">动画演示</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法描述"><span class="nav-number">2.</span> <span class="nav-text">算法描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码实现"><span class="nav-number">3.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#时间复杂度"><span class="nav-number">4.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#时间复杂度-1"><span class="nav-number">5.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动画演示"><span class="nav-number">6.</span> <span class="nav-text">动画演示</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
