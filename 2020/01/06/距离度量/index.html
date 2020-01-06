@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon16x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://xiaoliaozi.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="前言 机器学习中常见的距离计算公式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="距离度量">
+<meta property="og:url" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/index.html">
+<meta property="og:site_name" content="小廖子的博客">
+<meta property="og:description" content="前言 机器学习中常见的距离计算公式">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/1.4%20%E6%AC%A7%E5%BC%8F%E8%B7%9D%E7%A6%BB2-1965410.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/1.5%20%E6%9B%BC%E5%93%88%E9%A1%BF%E8%B7%9D%E7%A6%BB.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/1.6%20%E6%9B%BC%E5%93%88%E9%A1%BF%E8%B7%9D%E7%A6%BB.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/1.7%20%E5%88%87%E6%AF%94%E9%9B%AA%E5%A4%AB%E8%B7%9D%E7%A6%BB.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/1.8%20%E5%88%87%E6%AF%94%E9%9B%AA%E5%A4%AB%E8%B7%9D%E7%A6%BB.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E9%97%B5%E5%8F%AF%E5%A4%AB%E6%96%AF%E5%9F%BA%E8%B7%9D%E7%A6%BB.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E6%A0%87%E5%87%86%E5%8C%96%E6%AC%A7%E5%BC%8F%E8%B7%9D%E7%A6%BB.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/14200251_RZRZ.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/14200252_SE1M.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/14200252_tITR.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E6%B1%89%E6%98%8E%E8%B7%9D%E7%A6%BB.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E6%9D%B0%E5%8D%A1%E5%BE%B7%E8%B7%9D%E7%A6%BB1.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E6%9D%B0%E5%8D%A1%E5%BE%B7%E8%B7%9D%E7%A6%BB2.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E9%A9%AC%E6%B0%8F%E8%B7%9D%E7%A6%BB.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E9%A9%AC%E6%B0%8F%E8%B7%9D%E7%A6%BB1.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E6%AC%A7%E5%BC%8Fvs%E9%A9%AC%E6%B0%8F.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E9%A9%AC%E6%B0%8F%E8%B7%9D%E7%A6%BB%E4%B8%BE%E4%BE%8B1.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E9%A9%AC%E6%B0%8F%E8%B7%9D%E7%A6%BB%E4%B8%BE%E4%BE%8B2.png">
+<meta property="article:published_time" content="2020-01-06T03:04:16.000Z">
+<meta property="article:modified_time" content="2020-01-06T03:58:01.325Z">
+<meta property="article:author" content="小廖子">
+<meta property="article:tag" content="距离计算公式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/1.4%20%E6%AC%A7%E5%BC%8F%E8%B7%9D%E7%A6%BB2-1965410.png">
+
+<link rel="canonical" href="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>距离度量 | 小廖子的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="小廖子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小廖子的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">好记性不如记笔记</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xiaoliaozi.com/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avter.jpg">
+      <meta itemprop="name" content="小廖子">
+      <meta itemprop="description" content="学无止境">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小廖子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          距离度量
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-06 11:04:16 / 修改时间：11:58:01" itemprop="dateCreated datePublished" datetime="2020-01-06T11:04:16+08:00">2020-01-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%B7%9D%E7%A6%BB%E8%AE%A1%E7%AE%97%E5%85%AC%E5%BC%8F/" itemprop="url" rel="index">
+                    <span itemprop="name">距离计算公式</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p> 机器学习中常见的距离计算公式 </p>
+<a id="more"></a>
+
+<h4 id="欧式距离"><a href="#欧式距离" class="headerlink" title="欧式距离"></a>欧式距离</h4><p>欧氏距离(<strong>Euclidean Distance</strong>)是最容易直观理解的距离度量方法，我们小学、初中和高中接触到的两个点在空间中的距离一般都是指欧氏距离。 </p>
+<p><strong>公式</strong>：</p>
+<p> <img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/1.4%20%E6%AC%A7%E5%BC%8F%E8%B7%9D%E7%A6%BB2-1965410.png" alt="img"> </p>
+<h4 id="曼哈顿距离"><a href="#曼哈顿距离" class="headerlink" title="曼哈顿距离"></a>曼哈顿距离</h4><p>在曼哈顿街区要从一个十字路口开车到另一个十字路口，驾驶距离显然不是两点间的直线距离。这个实际驾驶距离就是“曼哈顿距离”。曼哈顿距离(<strong>Manhattan Distance</strong>)也称为“城市街区距离”(City Block distance)。 </p>
+<p> <img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/1.5%20%E6%9B%BC%E5%93%88%E9%A1%BF%E8%B7%9D%E7%A6%BB.png" alt="img"></p>
+<p>  <strong>公式</strong>：<img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/1.6%20%E6%9B%BC%E5%93%88%E9%A1%BF%E8%B7%9D%E7%A6%BB.png" alt="img"> </p>
+<h4 id="切比雪夫距离"><a href="#切比雪夫距离" class="headerlink" title="切比雪夫距离"></a>切比雪夫距离</h4><p>国际象棋中，国王可以直行、横行、斜行，所以国王走一步可以移动到相邻8个方格中的任意一个。国王从格子(x1,y1)走到格子(x2,y2)最少需要多少步？这个距离就叫切比雪夫距离（<strong>Chebyshev Distance</strong>）。 </p>
+<p> <img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/1.7%20%E5%88%87%E6%AF%94%E9%9B%AA%E5%A4%AB%E8%B7%9D%E7%A6%BB.png" alt="img"></p>
+<p><strong>公式</strong>：</p>
+<p>  <img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/1.8%20%E5%88%87%E6%AF%94%E9%9B%AA%E5%A4%AB%E8%B7%9D%E7%A6%BB.png" alt="img"> </p>
+<h4 id="闵可夫斯基距离"><a href="#闵可夫斯基距离" class="headerlink" title="闵可夫斯基距离"></a>闵可夫斯基距离</h4><p>闵氏距离不是一种距离，而是一组距离的定义，是对多个距离度量公式的概括性的表述。</p>
+<p>两个n维变量a(x11,x12,…,x1n)与b(x21,x22,…,x2n)间的闵可夫斯基距离（<strong>Minkowski Distance</strong>）定义为：</p>
+<p><strong>公式</strong>：</p>
+<p> <img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E9%97%B5%E5%8F%AF%E5%A4%AB%E6%96%AF%E5%9F%BA%E8%B7%9D%E7%A6%BB.png" alt="image-20190225182628694"></p>
+<p>其中p是一个变参数：</p>
+<p>当p=1时，就是曼哈顿距离；</p>
+<p>当p=2时，就是欧氏距离；</p>
+<p>当p→∞时，就是切比雪夫距离。</p>
+<p>根据p的不同，闵氏距离可以表示某一类/种的距离。</p>
+<p><strong>闵氏距离的缺点：</strong></p>
+<ol>
+<li><p>将各个分量的量纲(scale)，也就是“单位”相同的看待了;</p>
+</li>
+<li><p>未考虑各个分量的分布（期望，方差等）可能是不同的。</p>
+</li>
+</ol>
+<h4 id="标准化欧氏距离"><a href="#标准化欧氏距离" class="headerlink" title="标准化欧氏距离"></a>标准化欧氏距离</h4><p>标准化欧氏距离(<strong>Standardized EuclideanDistance</strong>)是针对欧氏距离的缺点而作的一种改进。</p>
+<p>思路：既然数据各维分量的分布不一样，那先将各个分量都“标准化”到均值、方差相等。</p>
+<p> $S_k$表示各个维度的标准差</p>
+<p> <img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E6%A0%87%E5%87%86%E5%8C%96%E6%AC%A7%E5%BC%8F%E8%B7%9D%E7%A6%BB.png" alt="image-20190213184012294"> </p>
+<h4 id="余弦距离"><a href="#余弦距离" class="headerlink" title="余弦距离"></a>余弦距离</h4><p>几何中，夹角余弦可用来衡量两个向量方向的差异；机器学习中，借用这一概念来衡量样本向量之间的差异。 </p>
+<ul>
+<li><p>二维空间中向量$A(x_1,y_1)$与向量$B(x_2,y_2)$的夹角余弦公式： </p>
+<p><img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/14200251_RZRZ.png" alt="余弦距离"> </p>
+</li>
+<li><p>两个n维样本点$a(x11,x12,…,x1n)$和$b(x21,x22,…,x2n)$的夹角余弦为： </p>
+<p><img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/14200252_SE1M.png" alt="余弦距离"> </p>
+<p>即：</p>
+<p><img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/14200252_tITR.png" alt="余弦距离"> </p>
+</li>
+</ul>
+<h4 id="汉明距离"><a href="#汉明距离" class="headerlink" title="汉明距离"></a>汉明距离</h4><p>两个等长字符串s1与s2的汉明距离（<strong>Hamming Distance</strong>）为：将其中一个变为另外一个所需要作的最小字符替换次数。 </p>
+<p> <img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E6%B1%89%E6%98%8E%E8%B7%9D%E7%A6%BB.png" alt="image-20190213184508110"> </p>
+<h4 id><a href="#" class="headerlink" title></a></h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">求下列字符串的汉明距离：</span><br><span class="line"><span class="number">1011101</span>与 <span class="number">1001001</span> <span class="number">1111111</span> <span class="number">1101011</span> <span class="number">7</span><span class="number">-5</span>=<span class="number">2</span></span><br><span class="line"><span class="number">2143896</span>与 <span class="number">2233796</span> <span class="number">1111111</span> <span class="number">1001011</span> <span class="number">7</span><span class="number">-4</span>=<span class="number">3</span> </span><br><span class="line">irie与 rise <span class="number">1111</span> <span class="number">0001</span> <span class="number">4</span><span class="number">-1</span>=<span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="杰卡德距离"><a href="#杰卡德距离" class="headerlink" title="杰卡德距离"></a>杰卡德距离</h4><p>杰卡德相似系数(<strong>Jaccard similarity coefficient</strong>)：两个集合A和B的交集元素在A，B的并集中所占的比例，称为两个集合的杰卡德相似系数，用符号J(A,B)表示： </p>
+<p> <img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E6%9D%B0%E5%8D%A1%E5%BE%B7%E8%B7%9D%E7%A6%BB1.png" alt="image-20190213184805616"></p>
+<p> 杰卡德距离(<strong>Jaccard Distance</strong>)：与杰卡德相似系数相反，用两个集合中不同元素占所有元素的比例来衡量两个集合的区分度： </p>
+<p> <img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E6%9D%B0%E5%8D%A1%E5%BE%B7%E8%B7%9D%E7%A6%BB2.png" alt="image-20190213184819510"></p>
+<h4 id="马氏距离"><a href="#马氏距离" class="headerlink" title="马氏距离"></a>马氏距离</h4><p>下图有两个正态分布图，它们的均值分别为a和b，但方差不一样，则图中的A点离哪个总体更近？或者说A有更大的概率属于谁？显然，A离左边的更近，A属于左边总体的概率更大，尽管A与a的欧式距离远一些。这就是马氏距离的直观解释。 </p>
+<p> <img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E9%A9%AC%E6%B0%8F%E8%B7%9D%E7%A6%BB.png" alt="image-20190213183101699"></p>
+<p>马氏距离是基于样本分布的一种距离。</p>
+<p>马氏距离是由印度统计学家马哈拉诺比斯提出的，表示数据的协方差距离。它是一种有效的计算两个位置样本集的相似度的方法。</p>
+<p>与欧式距离不同的是，它考虑到各种特性之间的联系，即独立于测量尺度。</p>
+<p><strong>马氏距离定义：</strong>设总体G为m维总体（考察m个指标），均值向量为$μ=(μ1，μ2，… …，μm,)$，协方差阵为$∑=(σij)$,</p>
+<p>则样本$X=(X1，X2，… …，Xm，)$与总体G的马氏距离定义为：</p>
+<p> <img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E9%A9%AC%E6%B0%8F%E8%B7%9D%E7%A6%BB1.png" alt="image-20190316193646073"> </p>
+<p>马氏距离也可以定义为两个服从同一分布并且其协方差矩阵为∑的随机变量的差异程度：如果协方差矩阵为单位矩阵，马氏距离就简化为欧式距离；如果协方差矩阵为对角矩阵，则其也可称为正规化的欧式距离。 </p>
+<p><strong>马氏距离特性：</strong></p>
+<ol>
+<li><p><strong>量纲无关</strong>，排除变量之间的相关性的干扰；</p>
+</li>
+<li><p><strong>马氏距离的计算是建立在总体样本的基础上的</strong>，如果拿同样的两个样本，放入两个不同的总体中，最后计算得出的两个样本间的马氏距离通常是不相同的，除非这两个总体的协方差矩阵碰巧相同；</p>
+</li>
+<li><p>计算马氏距离过程中，<strong>要求总体样本数大于样本的维数</strong>，否则得到的总体样本协方差矩阵逆矩阵不存在，这种情况下，用欧式距离计算即可。</p>
+</li>
+<li><p>还有一种情况，满足了条件总体样本数大于样本的维数，但是协方差矩阵的逆矩阵仍然不存在，比如三个样本点$（3，4），（5，6），（7，8）$，这种情况是因为这三个样本在其所处的二维空间平面内共线。这种情况下，也采用欧式距离计算。</p>
+<p><strong>欧式距离&amp;马氏距离：</strong> </p>
+<p><img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E6%AC%A7%E5%BC%8Fvs%E9%A9%AC%E6%B0%8F.png" alt="img"> </p>
+</li>
+</ol>
+<p>举例：</p>
+<p>已知有两个类G1和G2，比如G1是设备A生产的产品，G2是设备B生产的同类产品。设备A的产品质量高（如考察指标为耐磨度X），其平均耐磨度μ1=80，反映设备精度的方差σ2(1)=0.25;设备B的产品质量稍差，其平均耐磨损度μ2=75，反映设备精度的方差σ2(2)=4.</p>
+<p>今有一产品G0，测的耐磨损度X0=78，试判断该产品是哪一台设备生产的？</p>
+<p>直观地看，X0与μ1（设备A）的绝对距离近些，按距离最近的原则，是否应把该产品判断设备A生产的？</p>
+<p>考虑一种相对于分散性的距离，记X0与G1，G2的相对距离为d1，d2,则：</p>
+<p> <img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E9%A9%AC%E6%B0%8F%E8%B7%9D%E7%A6%BB%E4%B8%BE%E4%BE%8B1.png" alt="image-20190316192358557"> </p>
+<p>因为d2=1.5 &lt; d1=4，按这种距离准则，应判断X0为设备B生产的。</p>
+<p>设备B生产的产品质量较分散，出现X0为78的可能性较大；而设备A生产的产品质量较集中，出现X0为78的可能性较小。</p>
+<p>这种相对于分散性的距离判断就是马氏距离。</p>
+<p><img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E9%A9%AC%E6%B0%8F%E8%B7%9D%E7%A6%BB%E4%B8%BE%E4%BE%8B2.png" alt="image-20190316192851778"> </p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <!--<a href="/tags/%E8%B7%9D%E7%A6%BB%E8%AE%A1%E7%AE%97%E5%85%AC%E5%BC%8F/" rel="tag"># 距离计算公式</a>-->
+              <a href="/tags/%E8%B7%9D%E7%A6%BB%E8%AE%A1%E7%AE%97%E5%85%AC%E5%BC%8F/" rel="tag"><i class="fa fa-tag">本文结束</i></a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/06/%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/" rel="prev" title="查找算法">
+      <i class="fa fa-chevron-left"></i> 查找算法
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欧式距离"><span class="nav-number">2.</span> <span class="nav-text">欧式距离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#曼哈顿距离"><span class="nav-number">3.</span> <span class="nav-text">曼哈顿距离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#切比雪夫距离"><span class="nav-number">4.</span> <span class="nav-text">切比雪夫距离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#闵可夫斯基距离"><span class="nav-number">5.</span> <span class="nav-text">闵可夫斯基距离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#标准化欧氏距离"><span class="nav-number">6.</span> <span class="nav-text">标准化欧氏距离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#余弦距离"><span class="nav-number">7.</span> <span class="nav-text">余弦距离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#汉明距离"><span class="nav-number">8.</span> <span class="nav-text">汉明距离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#null"><span class="nav-number">9.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#杰卡德距离"><span class="nav-number">10.</span> <span class="nav-text">杰卡德距离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#马氏距离"><span class="nav-number">11.</span> <span class="nav-text">马氏距离</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/"><img class="site-author-image" itemprop="image" alt="小廖子"
+      src="/images/avter.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">小廖子</p>
+  <div class="site-description" itemprop="description">学无止境</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xlztongxue" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xlztongxue" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xlz_tongxue@163.com" title="E-Mail → mailto:xlz_tongxue@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/weixin_45439324" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_45439324" rel="noopener" target="_blank"><i class="fa fa-fw fa-copyright"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+
+
+    <p class="site-author-name" itemprop="name">关注我哟</p>
+    <img class="site-author-image" itemprop="image" alt="微信公众号"
+      src="/images/xlzblog.jpg">
+    <div class="site-description" itemprop="description">关注公众号，更多精彩等着你</div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-小廖子"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小廖子</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">14k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">23 分钟</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'Ed2mvWHWKlphKGAa6hId76UP-gzGzoHsz',
+      appKey: '7MYwWTLCtelB1RHhedbF58S4',
+      placeholder: "Just go go",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
