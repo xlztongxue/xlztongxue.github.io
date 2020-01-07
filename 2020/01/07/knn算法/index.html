@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon16x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://xiaoliaozi.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="K-近邻算法定义 K Nearest Neighbor算法又叫KNN算法，这个算法是机器学习里面一个比较经典的算法， 总体来说KNN算法是相对比较容易理解的算法 ， 如果一个样本在特征空间中的k个最相似(即特征空间中最邻近)的样本中的大多数属于某一个类别，则该样本也属于这个类别。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="knn算法">
+<meta property="og:url" content="https://xiaoliaozi.com/2020/01/07/knn%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="小廖子的博客">
+<meta property="og:description" content="K-近邻算法定义 K Nearest Neighbor算法又叫KNN算法，这个算法是机器学习里面一个比较经典的算法， 总体来说KNN算法是相对比较容易理解的算法 ， 如果一个样本在特征空间中的k个最相似(即特征空间中最邻近)的样本中的大多数属于某一个类别，则该样本也属于这个类别。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/07/knn%E7%AE%97%E6%B3%95/kd%E6%A0%914.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/07/knn%E7%AE%97%E6%B3%95/%E9%B8%A2%E5%B0%BE%E8%8A%B1%E6%95%B0%E6%8D%AE%E9%9B%86.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/07/knn%E7%AE%97%E6%B3%95/%E9%B8%A2%E5%B0%BE%E8%8A%B1%E6%95%B0%E6%8D%AE%E5%88%86%E7%B1%BB%E5%B1%95%E7%A4%BA.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/07/knn%E7%AE%97%E6%B3%95/%E7%89%B9%E5%BE%81%E9%A2%84%E5%A4%84%E7%90%86%E5%9B%BE.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/07/knn%E7%AE%97%E6%B3%95/%E5%BD%92%E4%B8%80%E5%8C%96%E5%85%AC%E5%BC%8F.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/07/knn%E7%AE%97%E6%B3%95/%E6%A0%87%E5%87%86%E5%8C%96%E5%85%AC%E5%BC%8F.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/07/knn%E7%AE%97%E6%B3%95/%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81%E8%BF%87%E7%A8%8B.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/07/knn%E7%AE%97%E6%B3%95/%E9%B8%A2%E5%B0%BE%E8%8A%B1%E6%95%B0%E6%8D%AE%E9%9B%86%E4%BD%BF%E7%94%A8.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/07/knn%E7%AE%97%E6%B3%95/Facebook%E7%AD%BE%E5%88%B0%E4%BD%8D%E7%BD%AE%E9%A2%84%E6%B5%8B.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/07/knn%E7%AE%97%E6%B3%95/facebook%E6%95%B0%E6%8D%AE%E9%9B%86%E4%BB%8B%E7%BB%8D.png">
+<meta property="article:published_time" content="2020-01-07T12:33:06.000Z">
+<meta property="article:modified_time" content="2020-01-07T13:31:29.157Z">
+<meta property="article:author" content="小廖子">
+<meta property="article:tag" content="机器学习算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xiaoliaozi.com/2020/01/07/knn%E7%AE%97%E6%B3%95/kd%E6%A0%914.png">
+
+<link rel="canonical" href="https://xiaoliaozi.com/2020/01/07/knn%E7%AE%97%E6%B3%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>knn算法 | 小廖子的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="小廖子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小廖子的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">好记性不如记笔记</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xiaoliaozi.com/2020/01/07/knn%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avter.jpg">
+      <meta itemprop="name" content="小廖子">
+      <meta itemprop="description" content="学无止境">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小廖子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          knn算法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-07 20:33:06 / 修改时间：21:31:29" itemprop="dateCreated datePublished" datetime="2020-01-07T20:33:06+08:00">2020-01-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习算法</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/01/07/knn%E7%AE%97%E6%B3%95/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/07/knn%E7%AE%97%E6%B3%95/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>16 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="K-近邻算法定义"><a href="#K-近邻算法定义" class="headerlink" title="K-近邻算法定义"></a>K-近邻算法定义</h4><p> K Nearest Neighbor算法又叫KNN算法，这个算法是机器学习里面一个比较经典的算法， 总体来说KNN算法是相对比较容易理解的算法 ， 如果一个样本在特征空间中的<strong>k个最相似(即特征空间中最邻近)的样本中的大多数属于某一个类别</strong>，则该样本也属于这个类别。 </p>
+<a id="more"></a>
+
+
+
+<h4 id="KNN算法流程"><a href="#KNN算法流程" class="headerlink" title="KNN算法流程"></a>KNN算法流程</h4><ol>
+<li><p>计算已知类别数据集中的点与当前点之间的距离</p>
+</li>
+<li><p>按距离递增次序排序</p>
+</li>
+<li><p>选取与当前点距离最小的k个点</p>
+</li>
+<li><p>统计前k个点所在的类别出现的频率</p>
+</li>
+<li><p>返回前k个点出现频率最高的类别作为当前点的预测分类</p>
+</li>
+</ol>
+<h4 id="k近邻算法api初步使用"><a href="#k近邻算法api初步使用" class="headerlink" title="k近邻算法api初步使用"></a>k近邻算法api初步使用</h4><p> <strong>机器学习流程 :</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>获取数据集</span><br><span class="line"><span class="number">2.</span>数据基本处理</span><br><span class="line"><span class="number">3.</span>特征工程</span><br><span class="line"><span class="number">4.</span>机器学习</span><br><span class="line"><span class="number">5.</span>模型评估</span><br></pre></td></tr></table></figure>
+
+<p><strong>Scikit-learn工具介绍：</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Python语言的机器学习工具</span><br><span class="line">	Scikit-learn包括许多知名的机器学习算法的实现</span><br><span class="line">	Scikit-learn文档完善，容易上手，丰富的API</span><br><span class="line">包含内容：</span><br><span class="line">	分类、聚类、回归</span><br><span class="line">	特征工程</span><br><span class="line">	模型选择、调优</span><br><span class="line">优点：</span><br><span class="line">	文档多,且规范,包含的算法多,实现起来容易</span><br><span class="line">目前稳定版本<span class="number">0.19</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="网址：https://scikit-learn.org/">Scikit-learn官网地址</a></p>
+<p>K-近邻算法API**：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sklearn.neighbors.KNeighborsClassifier(n_neighbors=<span class="number">5</span>)</span><br><span class="line">	n_neighbors：<span class="built_in">int</span>,可选（默认= <span class="number">5</span>），k_neighbors查询默认使用的邻居数</span><br></pre></td></tr></table></figure>
+
+<p><strong>小案例</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入模块</span></span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1.获取数据集</span></span><br><span class="line">x = [[<span class="number">0</span>], [<span class="number">1</span>], [<span class="number">2</span>], [<span class="number">3</span>]]</span><br><span class="line">y = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>]</span><br><span class="line"><span class="comment"># 2.数据基本处理（该案例中省略）</span></span><br><span class="line"><span class="comment"># 3.特征工程（该案例中省略）</span></span><br><span class="line"><span class="comment"># 4.机器学习</span></span><br><span class="line"><span class="comment"># 实例化API</span></span><br><span class="line">estimator = KNeighborsClassifier(n_neighbors=<span class="number">2</span>)</span><br><span class="line"><span class="comment"># 使用fit方法进行训练</span></span><br><span class="line">estimator.fit(x, y)</span><br><span class="line"><span class="comment"># 输出预测值</span></span><br><span class="line">print(estimator.predict([[<span class="number">1</span>]]))</span><br><span class="line"><span class="comment"># 5.模型评估（该案例中省略）</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="K值选择"><a href="#K值选择" class="headerlink" title="K值选择"></a>K值选择</h4><p><strong>K值选择:</strong></p>
+<p><strong>李航博士的一书「统计学习方法」上所说：</strong></p>
+<ol>
+<li><p>选择较小的K值，就相当于用较小的领域中的训练实例进行预测，“学习”近似误差会减小，只有与输入实例较近或相似的训练实例才会对预测结果起作用，与此同时带来的问题是“学习”的估计误差会增大，换句话说，<strong>K值的减小就意味着整体模型变得复杂，容易发生过拟合；</strong></p>
+</li>
+<li><p>选择较大的K值，就相当于用较大领域中的训练实例进行预测，其优点是可以减少学习的估计误差，但缺点是学习的近似误差会增大。这时候，<strong>与输入实例较远（不相似的）训练实例也会对预测器作用，使预测发生错误，且K值的增大就意味着整体的模型变得简单。</strong></p>
+</li>
+<li><p>K=N（N为训练样本个数），则完全不足取，因为此时无论输入实例是什么，都只是简单的预测它属于在训练实例中最多的类，模型过于简单，忽略了训练实例中大量有用信息。</p>
+</li>
+</ol>
+<p>在<strong>实际应用中，K值一般取一个比较小的数值</strong>，例如采用交叉验证法（简单来说，就是把训练数据在分成两组:训练集和验证集）来选择最优的K值。</p>
+<h4 id="KNN中K值选择"><a href="#KNN中K值选择" class="headerlink" title="KNN中K值选择"></a>KNN中K值选择</h4><ul>
+<li>K值过小<ul>
+<li>容易受到异常点的影响</li>
+<li>容易过拟合</li>
+</ul>
+</li>
+<li>k值过大：<ul>
+<li>受到样本均衡的问题</li>
+<li>容易欠拟合</li>
+</ul>
+</li>
+</ul>
+<h4 id="kd树"><a href="#kd树" class="headerlink" title="kd树"></a>kd树</h4><p><strong>定义:</strong></p>
+<p>根据<strong>KNN</strong>每次需要预测一个点时，我们都需要计算训练数据集里每个点到这个点的距离，然后选出距离最近的k个点进行投票。<strong>当数据集很大时，这个计算成本非常高</strong>。</p>
+<p><strong>kd树</strong>：为了避免每次都重新计算一遍距离，算法会把距离信息保存在一棵树里，这样在计算之前从树里查询距离信息，尽量避免重新计算。其基本原理是，<strong>如果A和B距离很远，B和C距离很近，那么A和C的距离也很远</strong>。有了这个信息，就可以在合适的时候跳过距离远的点。</p>
+<p> <strong>最近邻域搜索:</strong></p>
+<p>  kd树(K-dimension tree)是<strong>一种对k维空间中的实例点进行存储以便对其进行快速检索的树形数据结构。</strong>kd树是一种二叉树，表示对k维空间的一个划分，<strong>构造kd树相当于不断地用垂直于坐标轴的超平面将K维空间切分，构成一系列的K维超矩形区域</strong>。kd树的每个结点对应于一个k维超矩形区域。<strong>利用kd树可以省去对大部分数据点的搜索，从而减少搜索的计算量。</strong> </p>
+<p> <img src="/2020/01/07/knn%E7%AE%97%E6%B3%95/kd%E6%A0%914.png" alt="image-20190213223817957"> </p>
+<p><strong>构造方法:</strong></p>
+<ol>
+<li><p><strong>构造根结点，使根结点对应于K维空间中包含所有实例点的超矩形区域；</strong></p>
+</li>
+<li><p><strong>通过递归的方法，不断地对k维空间进行切分，生成子结点。</strong>在超矩形区域上选择一个坐标轴和在此坐标轴上的一个切分点，确定一个超平面，这个超平面通过选定的切分点并垂直于选定的坐标轴，将当前超矩形区域切分为左右两个子区域（子结点）；这时，实例被分到两个子区域。</p>
+</li>
+<li><p><strong>上述过程直到子区域内没有实例时终止（终止时的结点为叶结点）</strong>。在此过程中，将实例保存在相应的结点上。</p>
+</li>
+<li><p>通常，循环的选择坐标轴对空间切分，选择训练实例点在坐标轴上的中位数为切分点，这样得到的kd树是平衡的（平衡二叉树：它是一棵空树，或其左子树和右子树的深度之差的绝对值不超过1，且它的左子树和右子树都是平衡二叉树）。</p>
+</li>
+</ol>
+<p>KD树中每个节点是一个向量，和二叉树按照数的大小划分不同的是，KD树每层需要选定向量中的某一维，然后根据这一维按左小右大的方式划分数据。在构建KD树时，关键需要解决2个问题：</p>
+<ol>
+<li><p><strong>选择向量的哪一维进行划分；</strong></p>
+<p>解决方法可以是随机选择某一维或按顺序选择，但是<strong>更好的方法应该是在数据比较分散的那一维进行划分（分散的程度可以根据方差来衡量）</strong></p>
+</li>
+<li><p><strong>如何划分数据；</strong></p>
+<p>好的划分方法可以使构建的树比较平衡，可以每次选择中位数来进行划分。</p>
+<p><strong>kd树的搜索过程:</strong></p>
+</li>
+</ol>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> 二叉树搜索比较待查询节点和分裂节点的分裂维的值，（小于等于就进入左子树分支，大于就进入右子树分支直到叶子结点）</span><br><span class="line"><span class="number">2.</span> 顺着“搜索路径”找到最近邻的近似点</span><br><span class="line"><span class="number">3.</span> 回溯搜索路径，并判断搜索路径上的结点的其他子结点空间中是否可能有距离查询点更近的数据点，如果有可能，则需要跳到其他子结点空间中去搜索</span><br><span class="line"><span class="number">4.</span> 重复这个过程直到搜索路径为空</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="scikit-learn中数据集"><a href="#scikit-learn中数据集" class="headerlink" title="scikit-learn中数据集"></a>scikit-learn中数据集</h4><p>scikit-learn数据集API</p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sklearn.datasets</span><br><span class="line">	加载获取流行数据集</span><br><span class="line">	datasets.load_*()</span><br><span class="line">		获取小规模数据集，数据包含在datasets里</span><br><span class="line">	datasets.fetch_*(dat<span class="built_in">a_home</span>=None)</span><br><span class="line">		获取大规模数据集，需要从网络上下载，</span><br><span class="line">		函数的第一个参数是dat<span class="built_in">a_home</span>，表示数据集下载的目录,</span><br><span class="line">		默认是 ~/scikit_learn_data/</span><br></pre></td></tr></table></figure>
+
+<p><strong>sklearn小数据集</strong></p>
+<ul>
+<li><p>sklearn.datasets.load_iris()：加载并返回鸢尾花数据集</p>
+<p> <img src="/2020/01/07/knn%E7%AE%97%E6%B3%95/%E9%B8%A2%E5%B0%BE%E8%8A%B1%E6%95%B0%E6%8D%AE%E9%9B%86.png" alt="img"> </p>
+</li>
+</ul>
+<p><strong>sklearn大数据集</strong></p>
+<ul>
+<li>sklearn.datasets.fetch_20newsgroups(data_home=None,subset=‘train’)<ul>
+<li>subset：’train’或者’test’，’all’，可选，选择要加载的数据集。</li>
+<li>训练集的“训练”，测试集的“测试”，两者的“全部”</li>
+</ul>
+</li>
+</ul>
+<p><strong>sklearn数据集返回值</strong></p>
+<ul>
+<li>load和fetch返回的数据类型datasets.base.Bunch(字典格式)<ul>
+<li>data：特征数据数组，是 [n_samples * n_features] 的二维 numpy.ndarray 数组</li>
+<li>target：标签数组，是 n_samples 的一维 numpy.ndarray 数组</li>
+<li>DESCR：数据描述</li>
+<li>feature_names：特征名,新闻数据，手写数字、回归数据集没有</li>
+<li>target_names：标签名</li>
+</ul>
+</li>
+</ul>
+<p><strong>查看数据分布</strong></p>
+<p>通过创建一些图，以查看不同类别是如何通过特征来区分的。 在理想情况下，标签类将由一个或多个特征对完美分隔。 在现实世界中，这种理想情况很少会发生。</p>
+<ul>
+<li>seaborn介绍<ul>
+<li>Seaborn 是基于 Matplotlib 核心库进行了更高级的 API 封装，可以让你轻松地画出更漂亮的图形。而 Seaborn 的漂亮主要体现在配色更加舒服、以及图形元素的样式更加细腻。</li>
+<li>安装 pip3 install seaborn</li>
+<li>seaborn.lmplot() 是一个非常有用的方法，它会在绘制二维散点图时，自动完成回归拟合<ul>
+<li>sns.lmplot() 里的 x, y 分别代表横纵坐标的列名,</li>
+<li>data= 是关联到数据集,</li>
+<li>hue=*代表按照 species即花的类别分类显示,</li>
+<li>fit_reg=是否进行线性拟合。</li>
+</ul>
+</li>
+<li><a href="http://seaborn.pydata.org/" target="_blank" rel="noopener">参考链接: api链接</a></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline  </span><br><span class="line"><span class="comment"># 内嵌绘图</span></span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把数据转换成dataframe的格式</span></span><br><span class="line">iris_d = pd.DataFrame(iris[<span class="string">'data'</span>], columns = [<span class="string">'Sepal_Length'</span>, <span class="string">'Sepal_Width'</span>, <span class="string">'Petal_Length'</span>, <span class="string">'Petal_Width'</span>])</span><br><span class="line">iris_d[<span class="string">'Species'</span>] = iris.target</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_iris</span><span class="params">(iris, col1, col2)</span>:</span></span><br><span class="line">    sns.lmplot(x = col1, y = col2, data = iris, hue = <span class="string">"Species"</span>, fit_reg = <span class="literal">False</span>)</span><br><span class="line">    plt.xlabel(col1)</span><br><span class="line">    plt.ylabel(col2)</span><br><span class="line">    plt.title(<span class="string">'鸢尾花种类分布图'</span>)</span><br><span class="line">    plt.show()</span><br><span class="line">plot_iris(iris_d, <span class="string">'Petal_Width'</span>, <span class="string">'Sepal_Length'</span>)</span><br></pre></td></tr></table></figure>
+
+<p> <img src="/2020/01/07/knn%E7%AE%97%E6%B3%95/%E9%B8%A2%E5%B0%BE%E8%8A%B1%E6%95%B0%E6%8D%AE%E5%88%86%E7%B1%BB%E5%B1%95%E7%A4%BA.png" alt="image-20190225193311519"> </p>
+<h4 id="数据集划分"><a href="#数据集划分" class="headerlink" title="数据集划分"></a>数据集划分</h4><p>机器学习一般的数据集会划分为两个部分：</p>
+<ul>
+<li>训练数据：用于训练，<strong>构建模型</strong></li>
+<li>测试数据：在模型检验时使用，用于<strong>评估模型是否有效</strong></li>
+</ul>
+<p>划分比例：</p>
+<ul>
+<li>训练集：70% 80% 75%</li>
+<li>测试集：30% 20% 25%</li>
+</ul>
+<p><strong>数据集划分api</strong></p>
+<ul>
+<li>sklearn.model_selection.train_test_split(arrays, *options)<ul>
+<li>参数：<ul>
+<li>x 数据集的特征值</li>
+<li>y 数据集的标签值</li>
+<li>test_size 测试集的大小，一般为float</li>
+<li>random_state 随机数种子,不同的种子会造成不同的随机采样结果。相同的种子采样结果相同。</li>
+</ul>
+</li>
+<li>return<ul>
+<li>x_train, x_test, y_train, y_test</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="comment"># 1、获取鸢尾花数据集</span></span><br><span class="line">iris = load_iris()</span><br><span class="line"><span class="comment"># 对鸢尾花数据集进行分割</span></span><br><span class="line"><span class="comment"># 训练集的特征值x_train 测试集的特征值x_test 训练集的目标值y_train 测试集的目标值y_test</span></span><br><span class="line">x_train, x_test, y_train, y_test = train_test_split(iris.data, iris.target, random_state=<span class="number">22</span>)</span><br><span class="line">print(<span class="string">"x_train:\n"</span>, x_train.shape)</span><br><span class="line"><span class="comment"># 随机数种子</span></span><br><span class="line">x_train1, x_test1, y_train1, y_test1 = train_test_split(iris.data, iris.target, random_state=<span class="number">6</span>)</span><br><span class="line">x_train2, x_test2, y_train2, y_test2 = train_test_split(iris.data, iris.target, random_state=<span class="number">6</span>)</span><br><span class="line">print(<span class="string">"如果随机数种子不一致：\n"</span>, x_train == x_train1)</span><br><span class="line">print(<span class="string">"如果随机数种子一致：\n"</span>, x_train1 == x_train2)</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="特征工程-特征预处理"><a href="#特征工程-特征预处理" class="headerlink" title="特征工程-特征预处理"></a>特征工程-特征预处理</h4><p><strong>定义：</strong></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scikit-learn的解释</span><br><span class="line">provides several common utility functions <span class="keyword">and</span> transformer classes <span class="keyword">to</span> change<span class="built_in"> raw </span>feature vectors into a representation that is more suitable <span class="keyword">for</span> the downstream estimators.</span><br><span class="line">翻译过来：通过一些转换函数将特征数据转换成更加适合算法模型的特征数据过程</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/01/07/knn%E7%AE%97%E6%B3%95/%E7%89%B9%E5%BE%81%E9%A2%84%E5%A4%84%E7%90%86%E5%9B%BE.png" alt="ç‰¹å¾é¢„å¤„ç†å›¾"></p>
+<p> <strong>特征预处理API</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">sklearn</span><span class="selector-class">.preprocessing</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>包含内容</strong></p>
+<ul>
+<li><p>归一化</p>
+<ul>
+<li>鲁棒性比较差(容易受到异常点的影响)</li>
+<li>只适合传统精确小数据场景(以后基本不会用)</li>
+</ul>
+</li>
+<li><p>标准化</p>
+<ul>
+<li>异常值对我影响小</li>
+<li>适合现代嘈杂大数据场景</li>
+</ul>
+</li>
+</ul>
+<p><strong>归一化/标准化原因</strong></p>
+<p>  特征的<strong>单位或者大小相差较大，或者某特征的方差相比其他的特征要大出几个数量级</strong>，<strong>容易影响（支配）目标结果</strong>，使得一些算法无法学习到其它的特征 。所以 我们需要用到一些方法进行<strong>无量纲化</strong>，<strong>使不同规格的数据转换到同一规格</strong>。</p>
+<p><strong>归一化：</strong> 通过对原始数据进行变换把数据映射到(默认为[0,1])之间。</p>
+<p> <img src="/2020/01/07/knn%E7%AE%97%E6%B3%95/%E5%BD%92%E4%B8%80%E5%8C%96%E5%85%AC%E5%BC%8F.png" alt="å½’ä¸€åŒ–å…¬å¼"></p>
+<p> <strong>API:</strong></p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sklearn.preprocessing.MinMaxScaler (feature_range=(<span class="number">0</span>,<span class="number">1</span>)… )</span><br><span class="line">	<span class="module-access"><span class="module"><span class="identifier">MinMaxScalar</span>.</span></span>fit<span class="constructor">_transform(X)</span></span><br><span class="line">		X:numpy <span class="built_in">array</span>格式的数据<span class="literal">[<span class="identifier">n_samples</span>,<span class="identifier">n_features</span>]</span></span><br><span class="line">	返回值：转换后的形状相同的<span class="built_in">array</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>标准化：</strong> 通过对原始数据进行变换把数据变换到均值为0,标准差为1范围内 </p>
+<p> <img src="/2020/01/07/knn%E7%AE%97%E6%B3%95/%E6%A0%87%E5%87%86%E5%8C%96%E5%85%AC%E5%BC%8F.png" alt="æ ‡å‡†åŒ–å…¬å¼"></p>
+<ul>
+<li><p>对于归一化来说：如果出现异常点，影响了最大值和最小值，那么结果显然会发生改变</p>
+</li>
+<li><p>对于标准化来说：如果出现异常点，由于具有一定数据量，少量的异常点对于平均值的影响并不大，从而方差改变较小</p>
+<p><strong>API:</strong></p>
+</li>
+</ul>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sklearn.preprocessing.<span class="constructor">StandardScaler( )</span></span><br><span class="line">	处理之后每列来说所有数据都聚集在均值<span class="number">0</span>附近标准差差为<span class="number">1</span></span><br><span class="line">	<span class="module-access"><span class="module"><span class="identifier">StandardScaler</span>.</span></span>fit<span class="constructor">_transform(X)</span></span><br><span class="line">		X:numpy <span class="built_in">array</span>格式的数据<span class="literal">[<span class="identifier">n_samples</span>,<span class="identifier">n_features</span>]</span></span><br><span class="line">	返回值：转换后的形状相同的<span class="built_in">array</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="交叉验证，网格搜索"><a href="#交叉验证，网格搜索" class="headerlink" title="交叉验证，网格搜索"></a>交叉验证，网格搜索</h4><p><strong>交叉验证：</strong> 将拿到的训练数据，分为训练和验证集。以下图为例：将数据分成4份，其中一份作为验证集。然后经过4次(组)的测试，每次都更换不同的验证集。即得到4组模型的结果，取平均值作为最终结果。又称4折交叉验证。 </p>
+<p>数据分为训练集和测试集，但是<strong>为了让从训练得到模型结果更加准确。</strong>做以下处理</p>
+<ul>
+<li><p>训练集：训练集+验证集</p>
+</li>
+<li><p>测试集：测试集</p>
+<p><img src="/2020/01/07/knn%E7%AE%97%E6%B3%95/%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81%E8%BF%87%E7%A8%8B.png" alt="img"></p>
+</li>
+</ul>
+<p><strong>网格搜索：</strong> 通常情况下，<strong>有很多参数是需要手动指定的（如k-近邻算法中的K值），这种叫超参数</strong>。但是手动过程繁杂，所以需要对模型预设几种超参数组合。<strong>每组超参数都采用交叉验证来进行评估。最后选出最优参数组合建立模型。</strong> </p>
+<p><strong>API</strong></p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">sklearn.model_selection.<span class="constructor">GridSearchCV(<span class="params">estimator</span>, <span class="params">param_grid</span>=None,<span class="params">cv</span>=None)</span></span><br><span class="line">	对估计器的指定参数值进行详尽搜索</span><br><span class="line">	estimator：估计器对象</span><br><span class="line">	param_grid：估计器参数(dict)&#123;“n_neighbors”:<span class="literal">[<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>]</span>&#125;</span><br><span class="line">	cv：指定几折交叉验证</span><br><span class="line">	fit：输入训练数据</span><br><span class="line">	score：准确率</span><br><span class="line">结果分析：</span><br><span class="line">	bestscore__:在交叉验证中验证的最好结果</span><br><span class="line">	bestestimator：最好的参数模型</span><br><span class="line">	cvresults:每次交叉验证后的验证集准确率结果和训练集准确率结果</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="案例1-鸢尾花种类预测"><a href="#案例1-鸢尾花种类预测" class="headerlink" title="案例1-鸢尾花种类预测"></a>案例1-鸢尾花种类预测</h4><p> Iris数据集是常用的分类实验数据集，由Fisher, 1936收集整理。Iris也称鸢尾花卉数据集，是一类多重变量分析的数据集。关于数据集的具体介绍： </p>
+<p> <img src="/2020/01/07/knn%E7%AE%97%E6%B3%95/%E9%B8%A2%E5%B0%BE%E8%8A%B1%E6%95%B0%E6%8D%AE%E9%9B%86%E4%BD%BF%E7%94%A8.png" alt="img"></p>
+<p> <strong>代码实现：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1、获取数据集</span></span><br><span class="line">iris = load_iris()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2、数据基本处理 -- 划分数据集</span></span><br><span class="line">x_train, x_test, y_train, y_test = train_test_split(iris.data, iris.target, random_state=<span class="number">22</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3、特征工程：标准化</span></span><br><span class="line"><span class="comment"># 实例化一个转换器类</span></span><br><span class="line">transfer = StandardScaler()</span><br><span class="line"><span class="comment"># 调用fit_transform</span></span><br><span class="line">x_train = transfer.fit_transform(x_train)</span><br><span class="line">x_test = transfer.transform(x_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4、KNN预估器流程</span></span><br><span class="line"><span class="comment">#  4.1 实例化预估器类</span></span><br><span class="line">estimator = KNeighborsClassifier()</span><br><span class="line"><span class="comment"># 4.2 模型选择与调优——网格搜索和交叉验证</span></span><br><span class="line"><span class="comment"># 准备要调的超参数</span></span><br><span class="line">param_dict = &#123;<span class="string">"n_neighbors"</span>: [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>]&#125;</span><br><span class="line">estimator = GridSearchCV(estimator, param_grid=param_dict, cv=<span class="number">3</span>)</span><br><span class="line"><span class="comment"># 4.3 fit数据进行训练</span></span><br><span class="line">estimator.fit(x_train, y_train)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5、评估模型效果</span></span><br><span class="line"><span class="comment"># 方法a：比对预测结果和真实值</span></span><br><span class="line">y_predict = estimator.predict(x_test)</span><br><span class="line">print(<span class="string">"比对预测结果和真实值：\n"</span>, y_predict == y_test)</span><br><span class="line"><span class="comment"># 方法b：直接计算准确率</span></span><br><span class="line">score = estimator.score(x_test, y_test)</span><br><span class="line">print(<span class="string">"直接计算准确率：\n"</span>, score)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后进行评估查看最终选择的结果和交叉验证的结果</span></span><br><span class="line">print(<span class="string">"在交叉验证中验证的最好结果：\n"</span>, estimator.best_score_)</span><br><span class="line">print(<span class="string">"最好的参数模型：\n"</span>, estimator.best_estimator_)</span><br><span class="line">print(<span class="string">"每次交叉验证后的准确率结果：\n"</span>, estimator.cv_results_)</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="案例2-预测facebook签到位置"><a href="#案例2-预测facebook签到位置" class="headerlink" title="案例2-预测facebook签到位置"></a>案例2-预测facebook签到位置</h4><p> <img src="/2020/01/07/knn%E7%AE%97%E6%B3%95/Facebook%E7%AD%BE%E5%88%B0%E4%BD%8D%E7%BD%AE%E9%A2%84%E6%B5%8B.png" alt="image-20190515115928245"> </p>
+<p> 本次比赛的目的是<strong>预测一个人将要签到的地方。</strong> 为了本次比赛，Facebook创建了一个虚拟世界，其中包括<strong>10公里*10公里共100平方公里的约10万个地方。</strong> 对于给定的坐标集，您的任务将<strong>根据用户的位置，准确性和时间戳等预测用户下一次的签到位置。</strong> 数据被制作成类似于来自移动设备的位置数据。 请注意：您只能使用提供的数据进行预测。 </p>
+<p><strong>数据集介绍：</strong></p>
+<p> <img src="/2020/01/07/knn%E7%AE%97%E6%B3%95/facebook%E6%95%B0%E6%8D%AE%E9%9B%86%E4%BB%8B%E7%BB%8D.png" alt="image-20190515120143596"> </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">文件说明 train.csv, test.csv</span><br><span class="line">  row id：签入事件的id</span><br><span class="line">  x y：坐标</span><br><span class="line">  accuracy: 准确度，定位精度</span><br><span class="line">  time: 时间戳</span><br><span class="line">  place_id: 签到的位置，这也是你需要预测的内容</span><br></pre></td></tr></table></figure>
+
+<p><strong>数据来源：</strong> 官网：<a href="https://www.kaggle.com/navoshta/grid-knn/data" target="_blank" rel="noopener">https://www.kaggle.com/navoshta/grid-knn/data</a> </p>
+<p><strong>步骤分析：</strong></p>
+<ul>
+<li>对于数据做一些基本处理（这里所做的一些处理不一定达到很好的效果，我们只是简单尝试，有些特征我们可以根据一些特征选择的方式去做处理）<ul>
+<li>1 缩小数据集范围 DataFrame.query()</li>
+<li>2 选取有用的时间特征</li>
+<li>3 将签到位置少于n个用户的删除</li>
+</ul>
+</li>
+<li>分割数据集</li>
+<li>标准化处理</li>
+<li>k-近邻预测</li>
+</ul>
+<p><strong>代码实现：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split, GridSearchCV</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1.获取数据集</span></span><br><span class="line">facebook = pd.read_csv(<span class="string">"./data/FBlocation/train.csv"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.基本数据处理</span></span><br><span class="line"><span class="comment"># 2.1 缩小数据范围</span></span><br><span class="line">facebook_data = facebook.query(<span class="string">"x&gt;2.0 &amp; x&lt;2.2 &amp; y&gt;2.0 &amp; y&lt;2.2"</span>)</span><br><span class="line"><span class="comment"># 2.2 选择时间特征(脱敏)</span></span><br><span class="line">time = pd.to_datetime(facebook_data[<span class="string">"time"</span>], unit=<span class="string">"s"</span>)</span><br><span class="line"><span class="comment"># 转换</span></span><br><span class="line">time = pd.DatetimeIndex(time)</span><br><span class="line">facebook_data[<span class="string">"day"</span>] = time.day</span><br><span class="line">facebook_data[<span class="string">"hour"</span>] = time.hour</span><br><span class="line">facebook_data[<span class="string">"weekday"</span>] = time.weekday</span><br><span class="line"><span class="comment"># 2.3 去掉签到较少的地方</span></span><br><span class="line">place_count = facebook_data.groupby(<span class="string">"place_id"</span>).count()</span><br><span class="line">place_count = place_count[place_count[<span class="string">"row_id"</span>]&gt;<span class="number">3</span>]</span><br><span class="line">facebook_data = facebook_data[facebook_data[<span class="string">"place_id"</span>]].isin(place_count.index)</span><br><span class="line"><span class="comment"># 2.4 确定特征值和目标值</span></span><br><span class="line">x = facebook_data[[<span class="string">"x"</span>, <span class="string">"y"</span>, <span class="string">"accuracy"</span>, <span class="string">"day"</span>, <span class="string">"hour"</span>, <span class="string">"weekday"</span>]]</span><br><span class="line">y = facebook_data[<span class="string">"place_id"</span>]</span><br><span class="line"><span class="comment"># 2.5 分割数据集</span></span><br><span class="line">x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=<span class="number">22</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3.特征工程 -- 特征预处理(标准化)</span></span><br><span class="line"><span class="comment"># 3.1 实例化一个转换器</span></span><br><span class="line">transfer = StandardScaler()</span><br><span class="line"><span class="comment"># 3.2 调用fit_transform</span></span><br><span class="line">x_train = transfer.fit_transform(x_train)</span><br><span class="line">x_test = transfer.fit_transform(x_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4.机器学习 -- knn+cv</span></span><br><span class="line"><span class="comment"># 4.1 实例化一个训练器</span></span><br><span class="line">estimator = KNeighborsClassifier()</span><br><span class="line"><span class="comment"># 4.2 交叉验证，网格搜索实现，调用gridsearchCV</span></span><br><span class="line">param_grid = &#123;<span class="string">"n_neighbors"</span>: [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]&#125;</span><br><span class="line"><span class="comment"># n_jobs：指定几个CPU跑程序</span></span><br><span class="line">estimator = GridSearchCV(estimator, param_grid=param_grid, cv=<span class="number">5</span>, n_jobs=<span class="number">8</span>)</span><br><span class="line"><span class="comment"># 4.3 模型训练</span></span><br><span class="line">estimator.fit(x_train, y_train)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5.模型评估</span></span><br><span class="line"><span class="comment"># 5.1 基本评估方式</span></span><br><span class="line">score = estimator.score(x_test, y_test)</span><br><span class="line">print(<span class="string">"最后预测的准确率为:\n"</span>, score)</span><br><span class="line">y_predict = estimator.predict(x_test)</span><br><span class="line">print(<span class="string">"最后的预测值为:\n"</span>, y_predict)</span><br><span class="line">print(<span class="string">"预测值和真实值的对比情况:\n"</span>, y_predict == y_test)</span><br><span class="line"><span class="comment"># 5.2 使用交叉验证后的评估方式</span></span><br><span class="line">print(<span class="string">"在交叉验证中验证的最好结果:\n"</span>, estimator.best_score_)</span><br><span class="line">print(<span class="string">"最好的参数模型:\n"</span>, estimator.best_estimator_)</span><br><span class="line">print(<span class="string">"每次交叉验证后的验证集准确率结果和训练集准确率结果:\n"</span>,estimator.cv_results_)</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <!--<a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95/" rel="tag"># 机器学习算法</a>-->
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag">本文结束</i></a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/" rel="prev" title="距离度量">
+      <i class="fa fa-chevron-left"></i> 距离度量
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#K-近邻算法定义"><span class="nav-number">1.</span> <span class="nav-text">K-近邻算法定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#KNN算法流程"><span class="nav-number">2.</span> <span class="nav-text">KNN算法流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#k近邻算法api初步使用"><span class="nav-number">3.</span> <span class="nav-text">k近邻算法api初步使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#K值选择"><span class="nav-number">4.</span> <span class="nav-text">K值选择</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#KNN中K值选择"><span class="nav-number">5.</span> <span class="nav-text">KNN中K值选择</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kd树"><span class="nav-number">6.</span> <span class="nav-text">kd树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scikit-learn中数据集"><span class="nav-number">7.</span> <span class="nav-text">scikit-learn中数据集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据集划分"><span class="nav-number">8.</span> <span class="nav-text">数据集划分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#特征工程-特征预处理"><span class="nav-number">9.</span> <span class="nav-text">特征工程-特征预处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#交叉验证，网格搜索"><span class="nav-number">10.</span> <span class="nav-text">交叉验证，网格搜索</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#案例1-鸢尾花种类预测"><span class="nav-number">11.</span> <span class="nav-text">案例1-鸢尾花种类预测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#案例2-预测facebook签到位置"><span class="nav-number">12.</span> <span class="nav-text">案例2-预测facebook签到位置</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/"><img class="site-author-image" itemprop="image" alt="小廖子"
+      src="/images/avter.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">小廖子</p>
+  <div class="site-description" itemprop="description">学无止境</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xlztongxue" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xlztongxue" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xlz_tongxue@163.com" title="E-Mail → mailto:xlz_tongxue@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/weixin_45439324" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_45439324" rel="noopener" target="_blank"><i class="fa fa-fw fa-copyright"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+
+
+    <p class="site-author-name" itemprop="name">关注我哟</p>
+    <img class="site-author-image" itemprop="image" alt="微信公众号"
+      src="/images/xlzblog.jpg">
+    <div class="site-description" itemprop="description">关注公众号，更多精彩等着你</div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-小廖子"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小廖子</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">23k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">39 分钟</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'Ed2mvWHWKlphKGAa6hId76UP-gzGzoHsz',
+      appKey: '7MYwWTLCtelB1RHhedbF58S4',
+      placeholder: "Just go go",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
