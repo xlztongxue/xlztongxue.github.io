@@ -209,13 +209,13 @@
 </li>
 </ul>
 <h4 id="正则化线性模型"><a href="#正则化线性模型" class="headerlink" title="正则化线性模型"></a>正则化线性模型</h4><ul>
-<li><h4 id="岭回归（Ridge-Regression）"><a href="#岭回归（Ridge-Regression）" class="headerlink" title="岭回归（Ridge Regression）"></a>岭回归（Ridge Regression）</h4><p> 岭回归是线性回归的正则化版本，即在原来的线性回归的 cost function 中添加正则项（regularization term）: </p>
+<li><h5 id="岭回归（Ridge-Regression）"><a href="#岭回归（Ridge-Regression）" class="headerlink" title="岭回归（Ridge Regression）"></a>岭回归（Ridge Regression）</h5><p> 岭回归是线性回归的正则化版本，即在原来的线性回归的 cost function 中添加正则项（regularization term）: </p>
 <p> <img src="/2020/01/08/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/%E5%B2%AD%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B1.png" alt="image-20190404180643584"> </p>
 <p> 以达到在拟合数据的同时，使模型权重尽可能小的目的,岭回归代价函数: </p>
 <p> <img src="/2020/01/08/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/%E5%B2%AD%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B2.png" alt="image-20190404180757307"> </p>
 <p> α=0：岭回归退化为线性回归。 </p>
 </li>
-<li><h4 id="Lasso-Regression-Lasso-回归"><a href="#Lasso-Regression-Lasso-回归" class="headerlink" title="Lasso Regression(Lasso 回归)"></a>Lasso Regression(Lasso 回归)</h4><p>Lasso 回归是线性回归的另一种正则化版本，正则项为权值向量的ℓ1范数。</p>
+<li><h5 id="Lasso-Regression-Lasso-回归"><a href="#Lasso-Regression-Lasso-回归" class="headerlink" title="Lasso Regression(Lasso 回归)"></a>Lasso Regression(Lasso 回归)</h5><p>Lasso 回归是线性回归的另一种正则化版本，正则项为权值向量的ℓ1范数。</p>
 <p>Lasso回归的代价函数 ：</p>
 <p> <img src="/2020/01/08/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/lasso%E5%9B%9E%E5%BD%921.png" alt="image-20190404181600245"> </p>
 <p>【注意 】</p>
@@ -234,7 +234,7 @@
 </li>
 </ul>
 <ul>
-<li><h4 id="Elastic-Net-弹性网络"><a href="#Elastic-Net-弹性网络" class="headerlink" title="Elastic Net (弹性网络)"></a>Elastic Net (弹性网络)</h4><p>弹性网络在岭回归和Lasso回归中进行了折中，通过 <strong>混合比(mix ratio) r</strong> 进行控制， 是前两个内容的综合 ：</p>
+<li><h5 id="Elastic-Net-弹性网络"><a href="#Elastic-Net-弹性网络" class="headerlink" title="Elastic Net (弹性网络)"></a>Elastic Net (弹性网络)</h5><p>弹性网络在岭回归和Lasso回归中进行了折中，通过 <strong>混合比(mix ratio) r</strong> 进行控制， 是前两个内容的综合 ：</p>
 <ul>
 <li>r=0：弹性网络变为岭回归</li>
 <li>r=1：弹性网络便为Lasso回归</li>
@@ -244,10 +244,10 @@
 </li>
 </ul>
 <ul>
-<li><h4 id="Early-Stopping"><a href="#Early-Stopping" class="headerlink" title="Early Stopping"></a>Early Stopping</h4><p>Early Stopping 也是正则化迭代学习的方法之一。</p>
+<li><h5 id="Early-Stopping"><a href="#Early-Stopping" class="headerlink" title="Early Stopping"></a>Early Stopping</h5><p>Early Stopping 也是正则化迭代学习的方法之一。</p>
 <p>其做法为：在验证错误率达到最小值的时候停止训练。</p>
 </li>
-<li><h4 id="选择正则化方法"><a href="#选择正则化方法" class="headerlink" title="选择正则化方法"></a>选择正则化方法</h4><p> 一般来说，我们应避免使用<strong>朴素线性回归</strong>，而应对模型进行一定的正则化处理 。</p>
+<li><h5 id="选择正则化方法"><a href="#选择正则化方法" class="headerlink" title="选择正则化方法"></a>选择正则化方法</h5><p> 一般来说，我们应避免使用<strong>朴素线性回归</strong>，而应对模型进行一定的正则化处理 。</p>
 <ul>
 <li>常用：岭回归</li>
 <li>假设只有少部分特征是有用的：<ul>
@@ -258,7 +258,7 @@
 </li>
 </ul>
 </li>
-<li><h4 id="API"><a href="#API" class="headerlink" title="API"></a>API</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Ridge, ElasticNet, Lasso</span><br></pre></td></tr></table></figure>
+<li><h5 id="岭回归API"><a href="#岭回归API" class="headerlink" title="岭回归API"></a>岭回归API</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Ridge, ElasticNet, Lasso</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><h5 id="Ridge"><a href="#Ridge" class="headerlink" title="Ridge"></a>Ridge</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">sklearn.linear_model.Ridge(alpha=<span class="number">1.0</span>, fit_intercept=<span class="literal">True</span>,solver=<span class="string">"auto"</span>, normalize=<span class="literal">False</span>)</span><br><span class="line">	具有l2正则化的线性回归</span><br><span class="line">	alpha:正则化力度，也叫 λ</span><br><span class="line">		λ取值：<span class="number">0</span>~<span class="number">1</span> <span class="number">1</span>~<span class="number">10</span></span><br><span class="line">	solver:会根据数据自动选择优化方法</span><br><span class="line">		sag:如果数据集、特征都比较大，选择该随机梯度下降优化</span><br><span class="line">	normalize:数据是否进行标准化</span><br><span class="line">		normalize=<span class="literal">False</span>:可以在fit之前调用preprocessing.StandardScaler标准化数据</span><br><span class="line">	Ridge.coef_:回归权重</span><br><span class="line">	Ridge.intercept_:回归偏置</span><br><span class="line">Ridge方法相当于SGDRegressor(penalty=<span class="string">'l2'</span>, loss=<span class="string">"squared_loss"</span>),</span><br><span class="line">只不过SGDRegressor实现了一个普通的随机梯度下降学习，推荐使用Ridge(实现了SAG)</span><br><span class="line">sklearn.linear_model.RidgeCV(_BaseRidgeCV, RegressorMixin)</span><br><span class="line">	具有l2正则化的线性回归，可以进行交叉验证</span><br><span class="line">	coef_:回归系数</span><br></pre></td></tr></table></figure>
