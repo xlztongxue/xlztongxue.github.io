@@ -304,16 +304,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>归并排序是采用分治法的一个非常典型的应用。归并排序的思想就是先递归分解数组，再合并数组。将数组分解最小之后，然后合并两个有序数组，基本思路是比较两个数组的最前面的数，谁小就先取谁，取了后相应的指针就往后移一位。然后再比较，直至一个数组为空，最后把另一个数组的剩余部分复制过来即可</p>
-<a id="more"></a>
-
+        <h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>归并排序是采用分治法的一个非常典型的应用。归并排序的思想就是先递归分解数组，再合并数组。将数组分解最小之后，然后合并两个有序数组，基本思路是比较两个数组的最前面的数，谁小就先取谁，取了后相应的指针就往后移一位。然后再比较，直至一个数组为空，最后把另一个数组的剩余部分复制过来即可<br><a id="more"></a></p>
 <h4 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h4><ul>
 <li>把长度为n的输入序列分成两个长度为n/2的子序列；</li>
 <li>对这两个子序列分别采用归并排序；</li>
 <li>将两个排序好的子序列合并成一个最终的排序序列。</li>
 </ul>
 <h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_sort</span><span class="params">(alist)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(alist) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> alist</span><br><span class="line">    <span class="comment"># 二分分解</span></span><br><span class="line">    num = len(alist)/<span class="number">2</span></span><br><span class="line">    left = merge_sort(alist[:num])</span><br><span class="line">    right = merge_sort(alist[num:])</span><br><span class="line">    <span class="comment"># 合并</span></span><br><span class="line">    <span class="keyword">return</span> merge(left,right)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge</span><span class="params">(left, right)</span>:</span></span><br><span class="line">    <span class="string">'''合并操作，将两个有序数组left[]和right[]合并成一个大的有序数组'''</span></span><br><span class="line">    <span class="comment">#left与right的下标指针</span></span><br><span class="line">    l, r = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">while</span> l&lt;len(left) <span class="keyword">and</span> r&lt;len(right):</span><br><span class="line">        <span class="keyword">if</span> left[l] &lt;= right[r]:</span><br><span class="line">            result.append(left[l])</span><br><span class="line">            l += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result.append(right[r])</span><br><span class="line">            r += <span class="number">1</span></span><br><span class="line">    result += left[l:]</span><br><span class="line">    result += right[r:]</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">alist = [<span class="number">54</span>,<span class="number">26</span>,<span class="number">93</span>,<span class="number">17</span>,<span class="number">77</span>,<span class="number">31</span>,<span class="number">44</span>,<span class="number">55</span>,<span class="number">20</span>]</span><br><span class="line">sorted_alist = mergeSort(alist)</span><br><span class="line">print(sorted_alist)</span><br></pre></td></tr></table></figure>
-
 <h4 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h4><ul>
 <li>最优时间复杂度：O(nlogn)</li>
 <li>最坏时间复杂度：O(nlogn)</li>
@@ -568,6 +565,8 @@
 
 
 
+
+  
 
   
 

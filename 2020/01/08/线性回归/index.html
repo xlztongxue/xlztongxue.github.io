@@ -77,7 +77,7 @@
 <meta property="og:image" content="https://xiaoliaozi.com/2020/01/08/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/%E5%B1%9E%E6%80%A7.png">
 <meta property="og:image" content="https://xiaoliaozi.com/2020/01/08/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/1578471165671.png">
 <meta property="article:published_time" content="2020-01-08T06:23:50.000Z">
-<meta property="article:modified_time" content="2020-01-09T02:33:36.574Z">
+<meta property="article:modified_time" content="2020-01-09T02:55:33.722Z">
 <meta property="article:author" content="小廖子">
 <meta property="article:tag" content="机器学习算法">
 <meta name="twitter:card" content="summary">
@@ -266,7 +266,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-09 10:33:36" itemprop="dateModified" datetime="2020-01-09T10:33:36+08:00">2020-01-09</time>
+                <time title="修改时间：2020-01-09 10:55:33" itemprop="dateModified" datetime="2020-01-09T10:55:33+08:00">2020-01-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -329,7 +329,6 @@
         <h4 id="什么是线性回归"><a href="#什么是线性回归" class="headerlink" title="什么是线性回归"></a>什么是线性回归</h4><p><strong>定义：</strong> 线性回归(Linear regression)是利用<strong>回归方程(函数)</strong>对<strong>一个或多个自变量(特征值)和因变量(目标值)之间</strong>关系进行建模的一种分析方式。 </p>
 <p>特点： 只有一个自变量的情况称为单变量回归，多于一个自变量情况的叫做多元回归 </p>
 <a id="more"></a>
-
 <p><img src="/2020/01/08/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/1578465007318.png" alt="1578465007318"></p>
 <p>在机器学习中<strong>特征值与目标值之间建立了一个关系，这个关系可以理解为线性模型</strong>。 </p>
 <h4 id="线性回归的特征与目标的关系"><a href="#线性回归的特征与目标的关系" class="headerlink" title="线性回归的特征与目标的关系"></a>线性回归的特征与目标的关系</h4><p> 线性回归当中主要有两种模型，<strong>一种是线性关系，另一种是非线性关系。</strong>在这里我们只能画一个平面更好去理解，所以都用单个特征或两个特征举例子。 </p>
@@ -349,10 +348,8 @@
 </li>
 </ul>
 <h4 id="线性回归API"><a href="#线性回归API" class="headerlink" title="线性回归API"></a>线性回归API</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">sklearn</span><span class="selector-class">.linear_model</span><span class="selector-class">.LinearRegression</span>()</span><br><span class="line">	# 基于正规方程</span><br><span class="line">	<span class="selector-tag">LinearRegression</span><span class="selector-class">.coef_</span>：回归系数</span><br></pre></td></tr></table></figure>
-
 <p><strong>小案例：</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入模块</span></span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"><span class="comment"># 构造数据集</span></span><br><span class="line"><span class="comment"># 已知学生平时成绩和期末成绩，预测最终成绩</span></span><br><span class="line">x = [[<span class="number">80</span>, <span class="number">86</span>],[<span class="number">82</span>, <span class="number">80</span>],[<span class="number">85</span>, <span class="number">78</span>],[<span class="number">90</span>, <span class="number">90</span>],</span><br><span class="line">     [<span class="number">86</span>, <span class="number">82</span>],[<span class="number">82</span>, <span class="number">90</span>],[<span class="number">78</span>, <span class="number">80</span>],[<span class="number">92</span>, <span class="number">94</span>]]</span><br><span class="line">y = [<span class="number">84.2</span>, <span class="number">80.6</span>, <span class="number">80.1</span>, <span class="number">90</span>, <span class="number">83.2</span>, <span class="number">87.6</span>, <span class="number">79.4</span>, <span class="number">93.4</span>]</span><br><span class="line"><span class="comment"># 模型训练</span></span><br><span class="line"><span class="comment"># 实例化API</span></span><br><span class="line">estimator = LinearRegression()</span><br><span class="line"><span class="comment"># 使用fit方法进行训练</span></span><br><span class="line">estimator.fit(x,y)</span><br><span class="line">print(estimator.coef_)</span><br><span class="line">print(estimator.predict([[<span class="number">100</span>, <span class="number">80</span>]]))</span><br></pre></td></tr></table></figure>
-
 <h4 id="线性回归的损失和优化"><a href="#线性回归的损失和优化" class="headerlink" title="线性回归的损失和优化"></a>线性回归的损失和优化</h4><ol>
 <li><p><strong>损失函数</strong></p>
 <p>总损失定义为：</p>
@@ -392,14 +389,16 @@
 <p> α在梯度下降算法中被称作为<strong>学习率</strong>或者<strong>步长</strong>，意味着我们可以通过α来控制每一步走的距离，以保证不要走太快，错过了最低点。同时也要保证不要走的太慢，导致太阳下山了，还没有走到山下。所以α的选择在梯度下降法中往往是很重要的！α不能太大也不能太小，太小的话，可能导致迟迟走不到最低点，太大的话，会导致错过最低点。</p>
 <p> <strong>所以有了梯度下降这样一个优化算法，回归就有了”自动学习”的能力</strong> </p>
 <p> <img src="/2020/01/08/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E4%BC%98%E5%8C%96%E5%8A%A8%E6%80%81%E5%9B%BE-0716617.gif" alt="çº¿æ€§å›žå½’ä¼˜åŒ–åŠ¨æ€å›¾"> </p>
-<h4 id="梯度下降和正规方程的对比"><a href="#梯度下降和正规方程的对比" class="headerlink" title="梯度下降和正规方程的对比"></a>梯度下降和正规方程的对比</h4><table>
+<h4 id="梯度下降和正规方程的对比"><a href="#梯度下降和正规方程的对比" class="headerlink" title="梯度下降和正规方程的对比"></a>梯度下降和正规方程的对比</h4><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>梯度下降</th>
 <th>正规方程</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>需要选择学习率</td>
 <td>不需要</td>
 </tr>
@@ -411,7 +410,9 @@
 <td>特征数量较大可以使用</td>
 <td>需要计算方程，时间复杂度高O(n3)</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h4 id="算法选择依据"><a href="#算法选择依据" class="headerlink" title="算法选择依据"></a>算法选择依据</h4><ul>
 <li>小规模数据：<ul>
 <li>正规方程：<strong>LinearRegression(不能解决拟合问题)</strong></li>
@@ -424,29 +425,25 @@
 </li>
 </ul>
 <h4 id="常见的梯度下降算法"><a href="#常见的梯度下降算法" class="headerlink" title="常见的梯度下降算法"></a>常见的梯度下降算法</h4><figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">全梯度下降算法(<span class="literal">Full</span> gradient descent）,</span><br><span class="line">随机梯度下降算法（Stochastic gradient descent）,</span><br><span class="line">小批量梯度下降算法（Mini<span class="params">-batch</span> gradient descent）,</span><br><span class="line">随机平均梯度下降算法（Stochastic <span class="keyword">average</span> gradient descent）</span><br></pre></td></tr></table></figure>
-
 <ol>
 <li><h5 id="全梯度下降算法（FG）"><a href="#全梯度下降算法（FG）" class="headerlink" title="全梯度下降算法（FG）"></a>全梯度下降算法（FG）</h5><ol>
-<li><p>计算训练集所有样本误差，对其求和再取平均值作为目标函数。</p>
-</li>
-<li><p>权重向量沿其梯度相反的方向移动，从而使当前目标函数减少得最多。</p>
-</li>
-<li><p>因为在执行每次更新时，我们需要在整个数据集上计算所有的梯度，所以批梯度下降法的速度会很慢，同时，批梯度下降法无法处理超出内存容量限制的数据集。</p>
-</li>
+<li>计算训练集所有样本误差，对其求和再取平均值作为目标函数。</li>
+<li>权重向量沿其梯度相反的方向移动，从而使当前目标函数减少得最多。</li>
+<li>因为在执行每次更新时，我们需要在整个数据集上计算所有的梯度，所以批梯度下降法的速度会很慢，同时，批梯度下降法无法处理超出内存容量限制的数据集。</li>
 <li><p>批梯度下降法同样也不能在线更新模型，即在运行的过程中，不能增加新的样本。</p>
 <p><img src="/2020/01/08/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/GD%E4%B8%8B%E9%99%8D%E5%85%AC%E5%BC%8F.png" alt="image-20190403165606134"> </p>
 </li>
 </ol>
 </li>
 </ol>
-<ol start="2">
+<ol>
 <li><h5 id="随机梯度下降算法（SG）"><a href="#随机梯度下降算法（SG）" class="headerlink" title="随机梯度下降算法（SG）"></a>随机梯度下降算法（SG）</h5><p>由于FG每迭代更新一次权重都需要计算所有样本误差，而实际问题中经常有上亿的训练样本，故效率偏低，且容易陷入局部最优解，因此提出了随机梯度下降算法。</p>
 <p>其每轮计算的目标函数不再是全体样本误差，而仅是单个样本误差，即<strong>每次只代入计算一个样本目标函数的梯度来更新权重，再取下一个样本重复此过程，直到损失函数值停止下降或损失函数值小于某个可以容忍的阈值。</strong></p>
 <p>此过程简单，高效，通常可以较好地避免更新迭代收敛到局部最优解。 但是由于，SG每次只使用一个样本迭代，若遇上噪声则容易陷入局部最优解。 </p>
 <p> <img src="/2020/01/08/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/SG%E4%B8%8B%E9%99%8D%E5%85%AC%E5%BC%8F.png" alt="image-20190403165840513"> </p>
 </li>
 </ol>
-<ol start="3">
+<ol>
 <li><h5 id="小批量梯度下降算法（mini-batch）"><a href="#小批量梯度下降算法（mini-batch）" class="headerlink" title="小批量梯度下降算法（mini-batch）"></a>小批量梯度下降算法（mini-batch）</h5><p>小批量梯度下降算法是FG和SG的折中方案,在一定程度上兼顾了以上两种方法的优点。</p>
 <p><strong>每次从训练样本集上随机抽取一个小样本集，在抽出来的小样本集上采用FG迭代更新权重。</strong></p>
 <p>被抽出的小样本集所含样本点的个数称为batch_size，通常设置为2的幂次方，更有利于GPU加速处理。</p>
@@ -454,7 +451,7 @@
 <p> <img src="/2020/01/08/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/mini-batch%E4%B8%8B%E9%99%8D%E5%85%AC%E5%BC%8F.png" alt="image-20190403170347851"></p>
 </li>
 </ol>
-<ol start="4">
+<ol>
 <li><h5 id="随机平均梯度下降算法（SAG）"><a href="#随机平均梯度下降算法（SAG）" class="headerlink" title="随机平均梯度下降算法（SAG）"></a>随机平均梯度下降算法（SAG）</h5><p>在SG方法中，虽然避开了运算成本大的问题，但对于大数据训练而言，SG效果常不尽如人意，因为每一轮梯度更新都完全与上一轮的数据和梯度无关。</p>
 <p><strong>随机平均梯度算法克服了这个问题，在内存中为每一个样本都维护一个旧的梯度，随机选择第i个样本来更新此样本的梯度，其他样本的梯度保持不变，然后求得所有梯度的平均值，进而更新了参数。</strong></p>
 <p>如此，每一轮更新仅需计算一个样本的梯度，计算成本等同于SG，但收敛速度快得多。</p>
@@ -471,17 +468,13 @@
 </li>
 <li><p>SAG在训练初期表现不佳，优化速度较慢。这是因为我们常将初始梯度设为0，而SAG每轮梯度更新都结合了上一轮梯度值。</p>
 </li>
-<li><p>综合考虑迭代次数和运行时间，SG表现性能都很好，能在训练初期快速摆脱初始梯度值，快速将平均损失函数降到很低。但要注意，在使用SG方法时要慎重选择步长，否则容易错过最优解。 </p>
-</li>
-<li><p>mini-batch结合了SG的“胆大”和FG的“心细”，从6幅图像来看，它的表现也正好居于SG和FG二者之间。在目前的机器学习领域，mini-batch是使用最多的梯度下降算法，正是因为它避开了FG运算效率低成本大和SG收敛效果不稳定的缺点。 </p>
-</li>
+<li>综合考虑迭代次数和运行时间，SG表现性能都很好，能在训练初期快速摆脱初始梯度值，快速将平均损失函数降到很低。但要注意，在使用SG方法时要慎重选择步长，否则容易错过最优解。 </li>
+<li>mini-batch结合了SG的“胆大”和FG的“心细”，从6幅图像来看，它的表现也正好居于SG和FG二者之间。在目前的机器学习领域，mini-batch是使用最多的梯度下降算法，正是因为它避开了FG运算效率低成本大和SG收敛效果不稳定的缺点。 </li>
 </ol>
 <h4 id="基于梯度下降法API"><a href="#基于梯度下降法API" class="headerlink" title="基于梯度下降法API"></a>基于梯度下降法API</h4><p>正规方程</p>
 <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sklearn.linear_model.<span class="constructor">LinearRegression(<span class="params">fit_intercept</span>=True)</span></span><br><span class="line">	通过正规方程优化</span><br><span class="line">	参数</span><br><span class="line">		fit_intercept：是否计算偏置</span><br><span class="line">	属性</span><br><span class="line">		<span class="module-access"><span class="module"><span class="identifier">LinearRegression</span>.</span></span>coef_：回归系数</span><br><span class="line">		<span class="module-access"><span class="module"><span class="identifier">LinearRegression</span>.</span></span>intercept_：偏置</span><br></pre></td></tr></table></figure>
-
 <p><strong>随机梯度下降法</strong></p>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">sklearn.linear_model.SGDRegressor(<span class="attribute">loss</span>=<span class="string">"squared_loss"</span>, <span class="attribute">fit_intercept</span>=<span class="literal">True</span>, learning_rate =<span class="string">'invscaling'</span>, <span class="attribute">eta0</span>=0.01)</span><br><span class="line">	SGDRegressor类实现了随机梯度下降学习，它支持不同的loss函数和正则化惩罚项来拟合线性回归模型。</span><br><span class="line">	参数：</span><br><span class="line">	loss:损失类型</span><br><span class="line">		<span class="attribute">loss</span>=”squared_loss”: 普通最小二乘法</span><br><span class="line">	fit_intercept：是否计算偏置</span><br><span class="line">	learning_rate : string, optional</span><br><span class="line">		学习率填充</span><br><span class="line">		<span class="string">'constant'</span>: eta = eta0</span><br><span class="line">		<span class="string">'optimal'</span>: eta = 1.0 / (alpha * (t + t0) [default]</span><br><span class="line">		<span class="string">'invscaling'</span>: eta = eta0 / pow(t, power_t)</span><br><span class="line">			<span class="attribute">power_t</span>=0.25:存在父类当中</span><br><span class="line">	对于一个常数值的学习率来说，可以使用<span class="attribute">learning_rate</span>=’constant’ ，并使用eta0来指定学习率。</span><br><span class="line">	属性：</span><br><span class="line">		SGDRegressor.coef_：回归系数</span><br><span class="line">		SGDRegressor.intercept_：偏置</span><br></pre></td></tr></table></figure>
-
 <h4 id="欠拟合和过拟合"><a href="#欠拟合和过拟合" class="headerlink" title="欠拟合和过拟合"></a>欠拟合和过拟合</h4><ol>
 <li><h5 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h5><ul>
 <li>过拟合：一个假设<strong>在训练数据上能够获得比其他假设更好的拟合， 但是在测试数据集上却不能很好地拟合数据</strong>，此时认为这个假设出现了过拟合的现象。(模型过于复杂)</li>
@@ -543,10 +536,8 @@
 <p> <img src="/2020/01/08/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/lasso%E5%9B%9E%E5%BD%921.png" alt="image-20190404181600245"> </p>
 <p>【注意 】</p>
 <ul>
-<li><p>Lasso Regression 的代价函数在 θi=0处是不可导的.</p>
-</li>
-<li><p>解决方法：在θi=0处用一个次梯度向量(subgradient vector)代替梯度，如下式</p>
-</li>
+<li>Lasso Regression 的代价函数在 θi=0处是不可导的.</li>
+<li>解决方法：在θi=0处用一个次梯度向量(subgradient vector)代替梯度，如下式</li>
 <li><p>Lasso Regression 的次梯度向量</p>
 <p><img src="/2020/01/08/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/lasso%E5%9B%9E%E5%BD%922.png" alt="image-20190404181709725"></p>
 </li>
@@ -582,11 +573,9 @@
 </ul>
 </li>
 <li><h5 id="岭回归API"><a href="#岭回归API" class="headerlink" title="岭回归API"></a>岭回归API</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Ridge, ElasticNet, Lasso</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><p><strong>Ridge</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">sklearn.linear_model.Ridge(alpha=<span class="number">1.0</span>, fit_intercept=<span class="literal">True</span>,solver=<span class="string">"auto"</span>, normalize=<span class="literal">False</span>)</span><br><span class="line">	具有l2正则化的线性回归</span><br><span class="line">	alpha:正则化力度，也叫 λ</span><br><span class="line">		λ取值：<span class="number">0</span>~<span class="number">1</span> <span class="number">1</span>~<span class="number">10</span></span><br><span class="line">	solver:会根据数据自动选择优化方法</span><br><span class="line">		sag:如果数据集、特征都比较大，选择该随机梯度下降优化</span><br><span class="line">	normalize:数据是否进行标准化</span><br><span class="line">		normalize=<span class="literal">False</span>:可以在fit之前调用preprocessing.StandardScaler标准化数据</span><br><span class="line">	Ridge.coef_:回归权重</span><br><span class="line">	Ridge.intercept_:回归偏置</span><br><span class="line">Ridge方法相当于SGDRegressor(penalty=<span class="string">'l2'</span>, loss=<span class="string">"squared_loss"</span>),</span><br><span class="line">只不过SGDRegressor实现了一个普通的随机梯度下降学习，推荐使用Ridge(实现了SAG)</span><br><span class="line">sklearn.linear_model.RidgeCV(_BaseRidgeCV, RegressorMixin)</span><br><span class="line">	具有l2正则化的线性回归，可以进行交叉验证</span><br><span class="line">	coef_:回归系数</span><br></pre></td></tr></table></figure>
-
 </li>
 </ul>
 </li>
@@ -606,10 +595,8 @@
 <p><img src="/2020/01/08/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/1578471165671.png" alt="MSE"></p>
 <p>$ y_i$为预测值，$\overline{y}$ 为真实值 </p>
 <figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sklearn.metrics.mean_squared_error(y_true, y_pred)</span><br><span class="line">	均方误差回归损失</span><br><span class="line"><span class="symbol">	y_true:</span>真实值</span><br><span class="line"><span class="symbol">	y_pred:</span>预测值</span><br><span class="line"><span class="symbol">	return:</span>浮点数结果</span><br></pre></td></tr></table></figure>
-
 <p> <strong>代码实现：</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_boston</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_squared_error</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression, SGDRegressor, Ridge, RidgeCV</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">linear_model1</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""线性回归：正规方程"""</span></span><br><span class="line">    <span class="comment"># 1.获取数据</span></span><br><span class="line">    boston = load_boston()</span><br><span class="line">    <span class="comment"># print(boston)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2.数据基本处理</span></span><br><span class="line">    <span class="comment"># 2.1分割数据</span></span><br><span class="line">    x_train, x_test, y_train, y_test = train_test_split(boston.data, boston.target,test_size=<span class="number">0.2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3.特征工程</span></span><br><span class="line">    transfer = StandardScaler()</span><br><span class="line">    x_train = transfer.fit_transform(x_train)</span><br><span class="line">    x_test = transfer.fit_transform(x_test)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 4.机器学习-线性回归</span></span><br><span class="line">    estimator = LinearRegression()</span><br><span class="line">    estimator.fit(x_train, y_train)</span><br><span class="line">    print(<span class="string">"模型的偏置是：&#123;&#125;"</span>.format(estimator.intercept_))</span><br><span class="line">    print(<span class="string">"模型的系数是：&#123;&#125;"</span>.format(estimator.coef_))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 5.模型评估</span></span><br><span class="line">    <span class="comment"># 5.1预测值</span></span><br><span class="line">    y_pre = estimator.predict(x_test)</span><br><span class="line">    <span class="comment"># print("预测值是：\n", y_pre)</span></span><br><span class="line">    <span class="comment"># 5.2均方误差</span></span><br><span class="line">    ret = mean_squared_error(y_test, y_pre)</span><br><span class="line">    print(<span class="string">"均方误差是："</span>, ret)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">linear_model2</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""线性回归：梯度下降法"""</span></span><br><span class="line">    <span class="comment"># 1.获取数据</span></span><br><span class="line">    boston = load_boston()</span><br><span class="line">    <span class="comment"># print(boston)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2.数据基本处理</span></span><br><span class="line">    <span class="comment"># 2.1分割数据</span></span><br><span class="line">    x_train, x_test, y_train, y_test = train_test_split(boston.data, boston.target, test_size=<span class="number">0.2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3.特征工程</span></span><br><span class="line">    transfer = StandardScaler()</span><br><span class="line">    x_train = transfer.fit_transform(x_train)</span><br><span class="line">    x_test = transfer.fit_transform(x_test)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 4.机器学习-线性回归</span></span><br><span class="line">    estimator = SGDRegressor(max_iter=<span class="number">1000</span>)</span><br><span class="line">    <span class="comment"># estimator = SGDRegressor(max_iter=1000, learning_rate="constant", eta0=1)</span></span><br><span class="line">    estimator.fit(x_train, y_train)</span><br><span class="line">    print(<span class="string">"模型的偏置是：&#123;&#125;"</span>.format(estimator.intercept_))</span><br><span class="line">    print(<span class="string">"模型的系数是：&#123;&#125;"</span>.format(estimator.coef_))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 5.模型评估</span></span><br><span class="line">    <span class="comment"># 5.1预测值</span></span><br><span class="line">    y_pre = estimator.predict(x_test)</span><br><span class="line">    <span class="comment"># print("预测值是：\n", y_pre)</span></span><br><span class="line">    <span class="comment"># 5.2均方误差</span></span><br><span class="line">    ret = mean_squared_error(y_test, y_pre)</span><br><span class="line">    print(<span class="string">"均方误差是："</span>, ret)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">linear_model3</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""线性回归：岭回归"""</span></span><br><span class="line">    <span class="comment"># 1.获取数据</span></span><br><span class="line">    boston = load_boston()</span><br><span class="line">    <span class="comment"># print(boston)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2.数据基本处理</span></span><br><span class="line">    <span class="comment"># 2.1分割数据</span></span><br><span class="line">    x_train, x_test, y_train, y_test = train_test_split(boston.data, boston.target, test_size=<span class="number">0.2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3.特征工程</span></span><br><span class="line">    transfer = StandardScaler()</span><br><span class="line">    x_train = transfer.fit_transform(x_train)</span><br><span class="line">    x_test = transfer.fit_transform(x_test)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 4.机器学习-线性回归</span></span><br><span class="line">    <span class="comment"># estimator = Ridge(alpha=1.0)</span></span><br><span class="line">    estimator = RidgeCV()</span><br><span class="line">    estimator.fit(x_train, y_train)</span><br><span class="line">    print(<span class="string">"模型的偏置是：&#123;&#125;"</span>.format(estimator.intercept_))</span><br><span class="line">    print(<span class="string">"模型的系数是：&#123;&#125;"</span>.format(estimator.coef_))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 5.模型评估</span></span><br><span class="line">    <span class="comment"># 5.1预测值</span></span><br><span class="line">    y_pre = estimator.predict(x_test)</span><br><span class="line">    <span class="comment"># print("预测值是：\n", y_pre)</span></span><br><span class="line">    <span class="comment"># 5.2均方误差</span></span><br><span class="line">    ret = mean_squared_error(y_test, y_pre)</span><br><span class="line">    print(<span class="string">"均方误差是："</span>, ret)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    linear_model1()</span><br><span class="line">    linear_model2()</span><br><span class="line">    linear_model3()</span><br></pre></td></tr></table></figure>
-
 <h4 id="模型的保存和加载"><a href="#模型的保存和加载" class="headerlink" title="模型的保存和加载"></a>模型的保存和加载</h4><ul>
 <li><h5 id="sklearn模型的保存和加载API"><a href="#sklearn模型的保存和加载API" class="headerlink" title="sklearn模型的保存和加载API"></a>sklearn模型的保存和加载API</h5></li>
 <li><h5 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_boston</span><br><span class="line"><span class="keyword">from</span> sklearn.externals <span class="keyword">import</span> joblib</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_squared_error</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Ridge, RidgeCV</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dump_load</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""模型保存和加载"""</span></span><br><span class="line">    <span class="comment"># 1.获取数据</span></span><br><span class="line">    boston = load_boston()</span><br><span class="line">    <span class="comment"># print(boston)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2.数据基本处理</span></span><br><span class="line">    <span class="comment"># 2.1分割数据</span></span><br><span class="line">    x_train, x_test, y_train, y_test = train_test_split(boston.data, boston.target, random_state=<span class="number">22</span>,test_size=<span class="number">0.2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3.特征工程</span></span><br><span class="line">    transfer = StandardScaler()</span><br><span class="line">    x_train = transfer.fit_transform(x_train)</span><br><span class="line">    x_test = transfer.fit_transform(x_test)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 4.机器学习-线性回归</span></span><br><span class="line">    <span class="comment"># 4.1 模型训练</span></span><br><span class="line">    <span class="comment"># estimator = Ridge(alpha=1.0)</span></span><br><span class="line">    <span class="comment"># estimator = RidgeCV()</span></span><br><span class="line">    <span class="comment"># estimator.fit(x_train, y_train)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># # 4.2 模型保存</span></span><br><span class="line">    <span class="comment"># joblib.dump(estimator, "./data/test.pkl")</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 4.3 模型加载</span></span><br><span class="line">    estimator = joblib.load(<span class="string">"./data/test.pkl"</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"模型的偏置是：&#123;&#125;"</span>.format(estimator.intercept_))</span><br><span class="line">    print(<span class="string">"模型的系数是：&#123;&#125;"</span>.format(estimator.coef_))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 5.模型评估</span></span><br><span class="line">    <span class="comment"># 5.1预测值</span></span><br><span class="line">    y_pre = estimator.predict(x_test)</span><br><span class="line">    <span class="comment"># print("预测值是：\n", y_pre)</span></span><br><span class="line">    <span class="comment"># 5.2均方误差</span></span><br><span class="line">    ret = mean_squared_error(y_test, y_pre)</span><br><span class="line">    print(<span class="string">"均方误差是："</span>, ret)</span><br><span class="line"></span><br><span class="line">dump_load()</span><br></pre></td></tr></table></figure>
@@ -867,6 +854,56 @@
 
 
   
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
 
   
 
