@@ -13,7 +13,8 @@
 <li><p>线性关系</p>
 <ul>
 <li><p>单变量关系：</p>
-<div align="left"><img src="/2020/01/08/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/1578465045629.png" alt="1578465045629" style="zoom:80%;"></div></li>
+<p><img src="/2020/01/08/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/1578465045629.png" alt="单变量"></p>
+</li>
 </ul>
 </li>
 <li><p>多变量线性关系 </p>
@@ -286,10 +287,12 @@
 </ul>
 ]]></content>
       <categories>
-        <category>机器学习算法， 人工智能， 机器学习</category>
+        <category>机器学习算法</category>
       </categories>
       <tags>
         <tag>机器学习算法</tag>
+        <tag>人工智能</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -517,7 +520,9 @@
         <category>机器学习算法</category>
       </categories>
       <tags>
-        <tag>机器学习算法， 人工智能， 机器学习</tag>
+        <tag>机器学习算法</tag>
+        <tag>人工智能</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
