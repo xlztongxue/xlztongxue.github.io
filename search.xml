@@ -15,7 +15,8 @@
 </li>
 </ul>
 <h4 id="逻辑回归的原理"><a href="#逻辑回归的原理" class="headerlink" title="逻辑回归的原理"></a>逻辑回归的原理</h4><ol>
-<li><h5 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h5><h5 id><a href="#" class="headerlink" title></a><img src="/2020/01/09/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E8%BE%93%E5%85%A5.png" alt="é€&quot;è¾‘å›žå½’è¾“å…¥"></h5><p>  <strong>逻辑回归的输入就是一个线性回归的结果</strong>。 </p>
+<li><h5 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h5><p><img src="/2020/01/09/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E8%BE%93%E5%85%A5.png" alt="é€&quot;è¾‘å›žå½’è¾“å…¥"></p>
+<p>  <strong>逻辑回归的输入就是一个线性回归的结果</strong>。 </p>
 </li>
 <li><h5 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h5><ul>
 <li><p><strong>sigmoid函数</strong> </p>
@@ -90,9 +91,8 @@
 <p>比如以这个癌症举例子，我们并不关注预测的准确率，而是关注在所有的样本当中，癌症患者有没有被全部预测（检测）出来。**</p>
 <h5 id="精确率与召回率"><a href="#精确率与召回率" class="headerlink" title="精确率与召回率"></a>精确率与召回率</h5><ul>
 <li><p><strong>准确率 （对不对） </strong></p>
-<ul>
-<li>（TP+TN）/(TP+TN+FN+FP) </li>
-</ul>
+</li>
+<li><p>（TP+TN）/(TP+TN+FN+FP) </p>
 </li>
 <li><p><strong>混淆矩阵</strong></p>
 <p> 在分类任务下，预测结果(Predicted Condition)与正确标记(True Condition)之间存在四种不同的组合，构成混淆矩阵(适用于多分类) </p>
