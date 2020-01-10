@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon16x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://xiaoliaozi.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="网络应用程序之间的通信流程 通过 IP 地址能够找到对应的设备，然后再通过端口号找到对应的端口，再通过端口把数据传输给应用程序，这里要注意，数据不能随便发送，在发送之前还需要选择一个对应的传输协议，保证程序之间按照指定的传输规则进行数据的通信， 而这个传输协议就是TCP协议。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP协议">
+<meta property="og:url" content="https://xiaoliaozi.com/2020/01/09/TCP%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="小廖子的博客">
+<meta property="og:description" content="网络应用程序之间的通信流程 通过 IP 地址能够找到对应的设备，然后再通过端口号找到对应的端口，再通过端口把数据传输给应用程序，这里要注意，数据不能随便发送，在发送之前还需要选择一个对应的传输协议，保证程序之间按照指定的传输规则进行数据的通信， 而这个传输协议就是TCP协议。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/09/TCP%E5%8D%8F%E8%AE%AE/%E9%9D%A2%E5%90%91%E8%BF%9E%E6%8E%A5.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/09/TCP%E5%8D%8F%E8%AE%AE/tcp%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/09/TCP%E5%8D%8F%E8%AE%AE/tcp%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B-1578661899128.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/09/TCP%E5%8D%8F%E8%AE%AE/send%E5%92%8Crecv%E5%8E%9F%E7%90%86.png">
+<meta property="article:published_time" content="2020-01-09T15:32:41.000Z">
+<meta property="article:modified_time" content="2020-01-10T13:29:40.901Z">
+<meta property="article:author" content="小廖子">
+<meta property="article:tag" content="传输层通信协议">
+<meta property="article:tag" content="TCP协议">
+<meta property="article:tag" content="TCP应用程序开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xiaoliaozi.com/2020/01/09/TCP%E5%8D%8F%E8%AE%AE/%E9%9D%A2%E5%90%91%E8%BF%9E%E6%8E%A5.png">
+
+<link rel="canonical" href="https://xiaoliaozi.com/2020/01/09/TCP%E5%8D%8F%E8%AE%AE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>TCP协议 | 小廖子的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="小廖子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小廖子的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">好记性不如记笔记</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xiaoliaozi.com/2020/01/09/TCP%E5%8D%8F%E8%AE%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avter.jpg">
+      <meta itemprop="name" content="小廖子">
+      <meta itemprop="description" content="学无止境">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小廖子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          TCP协议
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-09 23:32:41" itemprop="dateCreated datePublished" datetime="2020-01-09T23:32:41+08:00">2020-01-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-01-10 21:29:40" itemprop="dateModified" datetime="2020-01-10T21:29:40+08:00">2020-01-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index">
+                    <span itemprop="name">网络编程</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/01/09/TCP%E5%8D%8F%E8%AE%AE/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/09/TCP%E5%8D%8F%E8%AE%AE/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>9 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="网络应用程序之间的通信流程"><a href="#网络应用程序之间的通信流程" class="headerlink" title="网络应用程序之间的通信流程"></a>网络应用程序之间的通信流程</h4><p> 通过 IP 地址能够找到对应的设备，然后再通过端口号找到对应的端口，再通过端口把数据传输给应用程序，<strong>这里要注意，数据不能随便发送，在发送之前还需要选择一个对应的传输协议，保证程序之间按照指定的传输规则进行数据的通信，</strong> 而这个传输协议就是TCP协议。</p>
+ <a id="more"></a>
+<h4 id="TCP-的概念"><a href="#TCP-的概念" class="headerlink" title="TCP 的概念"></a>TCP 的概念</h4><p>TCP 的英文全拼(Transmission Control Protocol)简称<strong>传输控制协议</strong>，它是一种<strong>面向连接的、可靠的、基于字节流的传输层通信协议</strong>。</p>
+<p><strong>面向连接的效果图:</strong></p>
+<p> <img src="/2020/01/09/TCP%E5%8D%8F%E8%AE%AE/%E9%9D%A2%E5%90%91%E8%BF%9E%E6%8E%A5.png" alt="面向连接"> </p>
+<p><strong>TCP 通信步骤:</strong></p>
+<ol>
+<li>创建连接</li>
+<li>传输数据</li>
+<li>关闭连接</li>
+</ol>
+<h4 id="TCP-的特点"><a href="#TCP-的特点" class="headerlink" title="TCP 的特点"></a>TCP 的特点</h4><ol>
+<li>面向连接<ul>
+<li>通信双方必须先建立好连接才能进行数据的传输，数据传输完成后，双方必须断开此连接，以释放系统资源。双方间的数据传输都可以通过这一个连接进行，完成数据交换后，双方必须断开此连接，以释放系统资源。<strong>这种连接是一对一的，因此TCP不适用于广播的应用程序，基于广播的应用程序请使用UDP协议</strong></li>
+</ul>
+</li>
+<li>可靠传输<ul>
+<li>TCP 采用发送应答机制：通过TCP这种方式发送的每一个报文段都必须得到接收方的应答才认为这个TCP报文传送成功。</li>
+<li>超时重传：指定时间内没有应答会重新发送。</li>
+<li>错误校验：传输数据必须与接收数据一致，否则传输失败。</li>
+<li>流量控制和阻塞管理：流量控制用来避免发送端发送过快而使得接收方来不及接收。</li>
+</ul>
+</li>
+<li>TCP 是一个<strong>稳定、可靠的传输协议，常用于对数据进行准确无误的传输，比如: 文件下载，浏览器上网</strong>。 </li>
+</ol>
+<h4 id="TCP在建立连接时的三次握手"><a href="#TCP在建立连接时的三次握手" class="headerlink" title="TCP在建立连接时的三次握手"></a>TCP在建立连接时的三次握手</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TCP在建立连接时需要通过三次握手过程来完成。</span><br><span class="line">  	原因：TCP 协议为了实现可靠传输， 通信双方需要判断自己已经发送的数据包是否都被接收方收到， 如果没收到， 就需要重发。 为了实现这个需求， 很自然地就会引出序号（sequence number） 和确认号（acknowledgement number） 的使用。发送方在发送数据包（假设大小为 <span class="number">10</span> byte）时， 同时送上一个序号( 假设为 <span class="number">500</span>)，那么接收方收到这个数据包以后， 就可以回复一个确认号（<span class="number">510</span> = <span class="number">500</span> + <span class="number">10</span>） 告诉发送方 “我已经收到了你的数据包， 你可以发送下一个数据包， 序号从 <span class="number">510</span> 开始” 。这样发送方就可以知道哪些数据被接收到，哪些数据没被接收到， 需要重发。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第一次握手：Client将标志位SYN置为1，随机产生一个值seq=J，并将该数据包发送给Server，Client进入SYN_SENT状态，等待Server确认。</li>
+<li>第二次握手：Server收到数据包后由标志位SYN=1知道Client请求建立连接，Server将标志位SYN和ACK都置为1，ack (number )=J+1，随机产生一个值seq=K，并将该数据包发送给Client以确认连接请求，Server进入SYN_RCVD状态。</li>
+<li>第三次握手：Client收到确认后，检查ack是否为J+1，ACK是否为1，如果正确则将标志位ACK置为1，ack=K+1，并将该数据包发送给Server，Server检查ack是否为K+1，ACK是否为1，如果正确则连接建立成功，Client和Server进入ESTABLISHED状态，完成三次握手，随后Client与Server之间可以开始传输数据了。</li>
+</ul>
+<h4 id="TCP在断开连接时的四次挥手"><a href="#TCP在断开连接时的四次挥手" class="headerlink" title="TCP在断开连接时的四次挥手"></a>TCP在断开连接时的四次挥手</h4><p>TCP在断开连接时，需要通过四次挥手的过程来完成。</p>
+<ul>
+<li>第一次挥手：Client发送一个FIN，用来关闭Client到Server的数据传送。</li>
+<li>第二次挥手：Server收到FIN后，发送一个ACK给Client，确认序号为收到序号+1。</li>
+<li>第三次挥手：Server发送一个FIN，用来关闭Server到Client的数据传送。</li>
+<li>第四次挥手：Client收到FIN后，接着发送一个ACK给Server，确认序号为收到序号+1。</li>
+</ul>
+<h4 id="TCP-网络应用程序开发流程"><a href="#TCP-网络应用程序开发流程" class="headerlink" title="TCP 网络应用程序开发流程"></a>TCP 网络应用程序开发流程</h4><p>TCP 网络应用程序开发分为:</p>
+<ul>
+<li>TCP 客户端程序开发</li>
+<li>TCP 服务端程序开发</li>
+</ul>
+<p><strong>说明:</strong></p>
+<p>客户端程序是指运行在<strong>用户设备上的程序</strong> 服务端程序是指运行在<strong>服务器设备上的程序</strong>，专门为客户端提供数据服务。</p>
+<h5 id="TCP-客户端程序开发流程的介绍"><a href="#TCP-客户端程序开发流程的介绍" class="headerlink" title="TCP 客户端程序开发流程的介绍"></a>TCP 客户端程序开发流程的介绍</h5><p> <img src="/2020/01/09/TCP%E5%8D%8F%E8%AE%AE/tcp%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B.png" alt="TCP客户端程序开发流程"> </p>
+<p><strong>步骤说明:</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> 创建客户端套接字对象</span><br><span class="line"><span class="number">2.</span> 和服务端套接字建立连接</span><br><span class="line"><span class="number">3.</span> 发送数据</span><br><span class="line"><span class="number">4.</span> 接收数据</span><br><span class="line"><span class="number">5.</span> 关闭客户端套接字</span><br></pre></td></tr></table></figure>
+<h5 id="TCP-服务端程序开发流程的介绍"><a href="#TCP-服务端程序开发流程的介绍" class="headerlink" title="TCP 服务端程序开发流程的介绍"></a>TCP 服务端程序开发流程的介绍</h5><p> <img src="/2020/01/09/TCP%E5%8D%8F%E8%AE%AE/tcp%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B-1578661899128.png" alt="TCP客户端程序开发流程"> </p>
+<p><strong>步骤说明:</strong></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> 创建服务端端套接字对象</span><br><span class="line"><span class="number">2.</span> 绑定端口号</span><br><span class="line"><span class="number">3.</span> 设置监听</span><br><span class="line"><span class="number">4.</span> 等待接受客户端的连接请求</span><br><span class="line"><span class="number">5.</span> 接收数据</span><br><span class="line"><span class="number">6.</span> 发送数据</span><br><span class="line"><span class="number">7.</span> 关闭套接字</span><br></pre></td></tr></table></figure>
+<p><strong>主动发起建立连接请求的</strong>是客户端程序</p>
+<p><strong>等待接受连接请求的</strong>是服务端程序</p>
+<h4 id="socket-介绍"><a href="#socket-介绍" class="headerlink" title="socket 介绍"></a>socket 介绍</h4><p> socket (简称 套接字) 是<strong>进程之间通信一个工具</strong>，好比现实生活中的<strong>插座</strong>，所有的家用电器要想工作都是基于插座进行，<strong>进程之间想要进行网络通信需要基于这个 socket</strong>。 </p>
+<p>socket 的作用：负责<strong>进程之间的网络数据传输</strong>，好比数据的搬运工。 </p>
+<h4 id="TCP-客户端程序开发API"><a href="#TCP-客户端程序开发API" class="headerlink" title="TCP 客户端程序开发API"></a>TCP 客户端程序开发API</h4><p><strong>socket 类的介绍</strong>：</p>
+<p>1.导入 socket 模块</p>
+<figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br></pre></td></tr></table></figure>
+<p>2.创建客户端 socket 对象</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">socket.socket(AddressFamily, Type)</span><br><span class="line">参数说明:</span><br><span class="line">- AddressFamily 表示IP地址类型, 分为IPv4和IPv6</span><br><span class="line">-<span class="built_in"> Type </span>表示传输协议类型</span><br><span class="line">方法说明:</span><br><span class="line">- connect((host, port)) 表示和服务端套接字建立连接, host是服务器ip地址，port是应用程序的端口号</span><br><span class="line">- send(data) 表示发送数据，data是二进制数据</span><br><span class="line">- recv(buffersize) 表示接收数据, buffersize是每次接收数据的长度</span><br></pre></td></tr></table></figure>
+<p>3.创建服务端 socket 对象</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">socket.socket(AddressFamily, Type)</span><br><span class="line">参数说明:</span><br><span class="line">- AddressFamily 表示IP地址类型, 分为IPv4和IPv6</span><br><span class="line">-<span class="built_in"> Type </span>表示传输协议类型</span><br><span class="line">方法说明:</span><br><span class="line">- bind((host, port)) 表示绑定端口号, host 是<span class="built_in"> ip </span>地址，port 是端口号，ip 地址一般不指定，表示本机的任何一个ip地址都可以。</span><br><span class="line">- listen (backlog) 表示设置监听，backlog参数表示最大等待建立连接的个数。</span><br><span class="line">- accept() 表示等待接受客户端的连接请求</span><br><span class="line">- send(data) 表示发送数据，data 是二进制数据</span><br><span class="line">- recv(buffersize) 表示接收数据, buffersize 是每次接收数据的长度</span><br></pre></td></tr></table></figure>
+<h4 id="TCP-客户端程序开发示例代码"><a href="#TCP-客户端程序开发示例代码" class="headerlink" title="TCP 客户端程序开发示例代码"></a>TCP 客户端程序开发示例代码</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 创建tcp客户端套接字</span></span><br><span class="line">    <span class="comment"># 1. AF_INET：表示ipv4</span></span><br><span class="line">    <span class="comment"># 2. SOCK_STREAM: tcp传输协议</span></span><br><span class="line">    tcp_client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">    <span class="comment"># 和服务端应用程序建立连接</span></span><br><span class="line">    tcp_client_socket.connect((<span class="string">"192.168.131.62"</span>, <span class="number">8080</span>))</span><br><span class="line">    <span class="comment"># 代码执行到此，说明连接建立成功</span></span><br><span class="line">    <span class="comment"># 准备发送的数据</span></span><br><span class="line">    send_data = <span class="string">"你好服务端，我是客户端小黑!"</span>.encode(<span class="string">"gbk"</span>)</span><br><span class="line">    <span class="comment"># 发送数据</span></span><br><span class="line">    tcp_client_socket.send(send_data)</span><br><span class="line">    <span class="comment"># 接收数据, 这次接收的数据最大字节数是1024</span></span><br><span class="line">    recv_data = tcp_client_socket.recv(<span class="number">1024</span>)</span><br><span class="line">    <span class="comment"># 返回的直接是服务端程序发送的二进制数据</span></span><br><span class="line">    print(recv_data)</span><br><span class="line">    <span class="comment"># 对数据进行解码</span></span><br><span class="line">    recv_content = recv_data.decode(<span class="string">"gbk"</span>)</span><br><span class="line">    print(<span class="string">"接收服务端的数据为:"</span>, recv_content)</span><br><span class="line">    <span class="comment"># 关闭套接字</span></span><br><span class="line">    tcp_client_socket.close()</span><br></pre></td></tr></table></figure>
+<h4 id="案例-多任务版TCP服务端程序开发"><a href="#案例-多任务版TCP服务端程序开发" class="headerlink" title="案例-多任务版TCP服务端程序开发"></a>案例-多任务版TCP服务端程序开发</h4><h5 id="1-需求"><a href="#1-需求" class="headerlink" title="1. 需求"></a>1. 需求</h5><p>目前我们开发的TCP服务端程序只能服务于一个客户端，如何开发一个多任务版的TCP服务端程序能够服务于多个客户端呢?</p>
+<p>完成多任务，可以使用<strong>线程</strong>，比进程更加节省内存资源。</p>
+<h5 id="2-具体实现步骤"><a href="#2-具体实现步骤" class="headerlink" title="2. 具体实现步骤"></a>2. 具体实现步骤</h5><ol>
+<li>编写一个TCP服务端程序，循环等待接受客户端的连接请求</li>
+<li>当客户端和服务端建立连接成功，创建子线程，使用子线程专门处理客户端的请求，防止主线程阻塞</li>
+<li>把创建的子线程设置成为守护主线程，防止主线程无法退出。</li>
+</ol>
+<h5 id="3-多任务版TCP服务端程序的示例代码"><a href="#3-多任务版TCP服务端程序的示例代码" class="headerlink" title="3. 多任务版TCP服务端程序的示例代码"></a>3. 多任务版TCP服务端程序的示例代码</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理客户端的请求操作</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">handle_client_request</span><span class="params">(service_client_socket, ip_port)</span>:</span></span><br><span class="line">    <span class="comment"># 循环接收客户端发送的数据</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment"># 接收客户端发送的数据</span></span><br><span class="line">        recv_data = service_client_socket.recv(<span class="number">1024</span>)</span><br><span class="line">        <span class="comment"># 容器类型判断是否有数据可以直接使用if语句进行判断，如果容器类型里面有数据表示条件成立，否则条件失败</span></span><br><span class="line">        <span class="comment"># 容器类型: 列表、字典、元组、字符串、set、range、二进制数据</span></span><br><span class="line">        <span class="keyword">if</span> recv_data:</span><br><span class="line">            print(recv_data.decode(<span class="string">"gbk"</span>), ip_port)</span><br><span class="line">            <span class="comment"># 回复</span></span><br><span class="line">            service_client_socket.send(<span class="string">"ok，问题正在处理中..."</span>.encode(<span class="string">"gbk"</span>))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            print(<span class="string">"客户端下线了:"</span>, ip_port)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="comment"># 终止和客户端进行通信</span></span><br><span class="line">    service_client_socket.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 创建tcp服务端套接字</span></span><br><span class="line">    tcp_server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">    <span class="comment"># 设置端口号复用，让程序退出端口号立即释放</span></span><br><span class="line">    tcp_server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="literal">True</span>)</span><br><span class="line">    <span class="comment"># 绑定端口号</span></span><br><span class="line">    tcp_server_socket.bind((<span class="string">""</span>, <span class="number">9090</span>))</span><br><span class="line">    <span class="comment"># 设置监听, listen后的套接字是被动套接字，只负责接收客户端的连接请求</span></span><br><span class="line">    tcp_server_socket.listen(<span class="number">128</span>)</span><br><span class="line">    <span class="comment"># 循环等待接收客户端的连接请求</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment"># 等待接收客户端的连接请求</span></span><br><span class="line">        service_client_socket, ip_port = tcp_server_socket.accept()</span><br><span class="line">        print(<span class="string">"客户端连接成功:"</span>, ip_port)</span><br><span class="line">        <span class="comment"># 当客户端和服务端建立连接成功以后，需要创建一个子线程，不同子线程负责接收不同客户端的消息</span></span><br><span class="line">        sub_thread = threading.Thread(target=handle_client_request, args=(service_client_socket, ip_port))</span><br><span class="line">        <span class="comment"># 设置守护主线程</span></span><br><span class="line">        sub_thread.setDaemon(<span class="literal">True</span>)</span><br><span class="line">        <span class="comment"># 启动子线程</span></span><br><span class="line">        sub_thread.start()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># tcp服务端套接字可以不需要关闭，因为服务端程序需要一直运行</span></span><br><span class="line">    <span class="comment"># tcp_server_socket.close()</span></span><br></pre></td></tr></table></figure>
+<p><strong>说明:</strong></p>
+<p>当客户端和服务端建立连接后，<strong>服务端程序退出后端口号不会立即释放，需要等待大概1-2分钟。</strong></p>
+<p>解决办法有两种:</p>
+<ol>
+<li>更换服务端端口号</li>
+<li>设置端口号复用(推荐大家使用)，也就是说让服务端程序退出后端口号立即释放。</li>
+</ol>
+<p>设置端口号复用的代码如下:</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 参数1: 表示当前套接字</span></span><br><span class="line"><span class="comment"># 参数2: 设置端口号复用选项</span></span><br><span class="line"><span class="comment"># 参数3: 设置端口号复用选项对应的值</span></span><br><span class="line">tcp_server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="socket之send和recv原理剖析"><a href="#socket之send和recv原理剖析" class="headerlink" title="socket之send和recv原理剖析"></a>socket之send和recv原理剖析</h4><h5 id="1-认识TCP-socket的发送和接收缓冲区"><a href="#1-认识TCP-socket的发送和接收缓冲区" class="headerlink" title="1.认识TCP socket的发送和接收缓冲区"></a>1.认识TCP socket的发送和接收缓冲区</h5><p>当创建一个TCP socket对象的时候会有一个<strong>发送缓冲区</strong>和一个<strong>接收缓冲区</strong>，<strong>这个发送和接收缓冲区指的就是内存中的一片空间。</strong></p>
+<h5 id="2-send原理剖析"><a href="#2-send原理剖析" class="headerlink" title="2.send原理剖析"></a>2.send原理剖析</h5><p>send是不是直接把数据发给服务端?</p>
+<p>不是，要想发数据，必须得<strong>通过网卡发送数据</strong>，应用程序是无法直接通过网卡发送数据的，它需要调用操作系统接口，也就是说，应用程序把发送的数据先写入到<strong>发送缓冲区</strong>(内存中的一片空间)，再<strong>由操作系统控制网卡把发送缓冲区的数据发送给服务端网卡</strong> 。</p>
+<h5 id="3-recv原理剖析"><a href="#3-recv原理剖析" class="headerlink" title="3.recv原理剖析"></a>3.recv原理剖析</h5><p>recv是不是直接从客户端接收数据?</p>
+<p>不是，<strong>应用软件是无法直接通过网卡接收数据的</strong>，它需要调用操作系统接口，<strong>由操作系统通过网卡接收数据</strong>，把接收的数据<strong>写入到接收缓冲区</strong>(内存中的一片空间），应用程序<strong>再从接收缓存区获取客户端发送的数据</strong>。</p>
+<h5 id="4-send和recv原理剖析图"><a href="#4-send和recv原理剖析图" class="headerlink" title="4.send和recv原理剖析图"></a>4.send和recv原理剖析图</h5><p> <img src="/2020/01/09/TCP%E5%8D%8F%E8%AE%AE/send%E5%92%8Crecv%E5%8E%9F%E7%90%86.png" alt="send和recv原理剖析图"> </p>
+<ul>
+<li>发送数据是发送到发送缓冲区</li>
+<li>接收数据是从接收缓冲区 获取</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+            <!---<a href="/tags/%E4%BC%A0%E8%BE%93%E5%B1%82%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" rel="tag"># 传输层通信协议</a>--->
+            <a href="/tags/%E4%BC%A0%E8%BE%93%E5%B1%82%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/" rel="tag">传输层通信协议</a>
+            <!---<a href="/tags/TCP%E5%8D%8F%E8%AE%AE/" rel="tag"># TCP协议</a>--->
+            <a href="/tags/TCP%E5%8D%8F%E8%AE%AE/" rel="tag">TCP协议</a>
+            <!---<a href="/tags/TCP%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/" rel="tag"># TCP应用程序开发</a>--->
+            <a href="/tags/TCP%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/" rel="tag">TCP应用程序开发</a>
+            <br>
+          <div class="fa fa-tag">本文结束</div>
+          <br/>
+          </div>
+        
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/09/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/" rel="prev" title="逻辑回归">
+      <i class="fa fa-chevron-left"></i> 逻辑回归
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/01/10/%E5%86%B3%E7%AD%96%E6%A0%91/" rel="next" title="决策树算法">
+      决策树算法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#网络应用程序之间的通信流程"><span class="nav-number">1.</span> <span class="nav-text">网络应用程序之间的通信流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-的概念"><span class="nav-number">2.</span> <span class="nav-text">TCP 的概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-的特点"><span class="nav-number">3.</span> <span class="nav-text">TCP 的特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP在建立连接时的三次握手"><span class="nav-number">4.</span> <span class="nav-text">TCP在建立连接时的三次握手</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP在断开连接时的四次挥手"><span class="nav-number">5.</span> <span class="nav-text">TCP在断开连接时的四次挥手</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-网络应用程序开发流程"><span class="nav-number">6.</span> <span class="nav-text">TCP 网络应用程序开发流程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#TCP-客户端程序开发流程的介绍"><span class="nav-number">6.1.</span> <span class="nav-text">TCP 客户端程序开发流程的介绍</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TCP-服务端程序开发流程的介绍"><span class="nav-number">6.2.</span> <span class="nav-text">TCP 服务端程序开发流程的介绍</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#socket-介绍"><span class="nav-number">7.</span> <span class="nav-text">socket 介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-客户端程序开发API"><span class="nav-number">8.</span> <span class="nav-text">TCP 客户端程序开发API</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-客户端程序开发示例代码"><span class="nav-number">9.</span> <span class="nav-text">TCP 客户端程序开发示例代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#案例-多任务版TCP服务端程序开发"><span class="nav-number">10.</span> <span class="nav-text">案例-多任务版TCP服务端程序开发</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-需求"><span class="nav-number">10.1.</span> <span class="nav-text">1. 需求</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-具体实现步骤"><span class="nav-number">10.2.</span> <span class="nav-text">2. 具体实现步骤</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-多任务版TCP服务端程序的示例代码"><span class="nav-number">10.3.</span> <span class="nav-text">3. 多任务版TCP服务端程序的示例代码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#socket之send和recv原理剖析"><span class="nav-number">11.</span> <span class="nav-text">socket之send和recv原理剖析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-认识TCP-socket的发送和接收缓冲区"><span class="nav-number">11.1.</span> <span class="nav-text">1.认识TCP socket的发送和接收缓冲区</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-send原理剖析"><span class="nav-number">11.2.</span> <span class="nav-text">2.send原理剖析</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-recv原理剖析"><span class="nav-number">11.3.</span> <span class="nav-text">3.recv原理剖析</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-send和recv原理剖析图"><span class="nav-number">11.4.</span> <span class="nav-text">4.send和recv原理剖析图</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/"><img class="site-author-image" itemprop="image" alt="小廖子"
+      src="/images/avter.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">小廖子</p>
+  <div class="site-description" itemprop="description">学无止境</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xlztongxue" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xlztongxue" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xlz_tongxue@163.com" title="E-Mail → mailto:xlz_tongxue@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/weixin_45439324" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_45439324" rel="noopener" target="_blank"><i class="fa fa-fw fa-copyright"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+
+
+    <p class="site-author-name" itemprop="name">关注我哟</p>
+    <img class="site-author-image" itemprop="image" alt="微信公众号"
+      src="/images/xlzblog.jpg">
+    <div class="site-description" itemprop="description">关注公众号，更多精彩等着你</div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-小廖子"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小廖子</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">54k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:29</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'Ed2mvWHWKlphKGAa6hId76UP-gzGzoHsz',
+      appKey: '7MYwWTLCtelB1RHhedbF58S4',
+      placeholder: "Just go go",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
