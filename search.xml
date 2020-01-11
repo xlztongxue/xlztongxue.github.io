@@ -1,6 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>特征工程-特征提取</title>
+    <url>/2020/01/11/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B-%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/</url>
+    <content><![CDATA[<h4 id="特征提取"><a href="#特征提取" class="headerlink" title="特征提取"></a>特征提取</h4><ul>
+<li><p>定义</p>
+<p><strong>将任意数据（如文本或图像）转换为可用于机器学习的数字特征</strong></p>
+<blockquote>
+<p>注：特征值化是为了计算机更好的去理解数据</p>
+</blockquote>
+<ul>
+<li>特征提取分类:<ul>
+<li>字典特征提取(特征离散化)</li>
+<li>文本特征提取</li>
+<li>图像特征提取（深度学习将介绍）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<ul>
+<li><p>特征提取API</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">sklearn</span><span class="selector-class">.feature_extraction</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="字典特征提取"><a href="#字典特征提取" class="headerlink" title="字典特征提取"></a>字典特征提取</h4><p><strong>作用：对字典数据进行特征值化</strong></p>
+<ul>
+<li>sklearn.feature_extraction.DictVectorizer(sparse=True,…)<ul>
+<li>DictVectorizer.fit_transform(X)<ul>
+<li>X：字典或者包含字典的迭代器返回值</li>
+<li>返回sparse矩阵</li>
+</ul>
+</li>
+<li>DictVectorizer.get_feature_names() 返回类别名称</li>
+</ul>
+</li>
+</ul>
+<p><strong>应用：</strong></p>
+<ul>
+<li>实例化类DictVectorizer</li>
+<li>调用fit_transform方法输入数据并转换（注意返回格式）</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_extraction <span class="keyword">import</span> DictVectorizer</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dict_demo</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    对字典类型的数据进行特征抽取</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    data = [&#123;<span class="string">'city'</span>: <span class="string">'北京'</span>,<span class="string">'temperature'</span>:<span class="number">100</span>&#125;, </span><br><span class="line">            &#123;<span class="string">'city'</span>: <span class="string">'上海'</span>,<span class="string">'temperature'</span>:<span class="number">60</span>&#125;,</span><br><span class="line">            &#123;<span class="string">'city'</span>: <span class="string">'深圳'</span>,<span class="string">'temperature'</span>:<span class="number">30</span>&#125;]</span><br><span class="line">    <span class="comment"># 1、实例化一个转换器类</span></span><br><span class="line">    transfer = DictVectorizer(sparse=<span class="literal">False</span>)</span><br><span class="line">    <span class="comment"># 2、调用fit_transform</span></span><br><span class="line">    data = transfer.fit_transform(data)</span><br><span class="line">    print(<span class="string">"返回的结果:\n"</span>, data)</span><br><span class="line">    <span class="comment"># 打印特征名字</span></span><br><span class="line">    print(<span class="string">"特征名字：\n"</span>, transfer.get_feature_names())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Nonepython</span><br></pre></td></tr></table></figure>
+<p> 注意观察没有加上sparse=False参数的结果 </p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">返回的结果:</span><br><span class="line">   (<span class="number">0</span>, <span class="number">1</span>)    <span class="number">1.0</span></span><br><span class="line">  (<span class="number">0</span>, <span class="number">3</span>)    <span class="number">100.0</span></span><br><span class="line">  (<span class="number">1</span>, <span class="number">0</span>)    <span class="number">1.0</span></span><br><span class="line">  (<span class="number">1</span>, <span class="number">3</span>)    <span class="number">60.0</span></span><br><span class="line">  (<span class="number">2</span>, <span class="number">2</span>)    <span class="number">1.0</span></span><br><span class="line">  (<span class="number">2</span>, <span class="number">3</span>)    <span class="number">30.0</span></span><br><span class="line">特征名字：</span><br><span class="line"> [<span class="string">'city=上海'</span>, <span class="string">'city=北京'</span>, <span class="string">'city=深圳'</span>, <span class="string">'temperature'</span>]</span><br></pre></td></tr></table></figure>
+<p> 这个结果并不是我们想要看到的，所以加上参数，得到想要的结果： </p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">返回的结果:</span><br><span class="line"> [[   <span class="number">0.</span>    <span class="number">1.</span>    <span class="number">0.</span>  <span class="number">100.</span>]</span><br><span class="line"> [   <span class="number">1.</span>    <span class="number">0.</span>    <span class="number">0.</span>   <span class="number">60.</span>]</span><br><span class="line"> [   <span class="number">0.</span>    <span class="number">0.</span>    <span class="number">1.</span>   <span class="number">30.</span>]]</span><br><span class="line">特征名字：</span><br><span class="line"> [<span class="string">'city=上海'</span>, <span class="string">'city=北京'</span>, <span class="string">'city=深圳'</span>, <span class="string">'temperature'</span>]</span><br></pre></td></tr></table></figure>
+<p>之前在学习pandas中的离散化的时候，也实现了类似的效果。我们把这个处理数据的技巧叫做”one-hot“编码</p>
+<p> <strong>对于特征当中存在类别信息的我们都会做one-hot编码处理</strong> 。</p>
+<h4 id="文本特征提取"><a href="#文本特征提取" class="headerlink" title="文本特征提取"></a>文本特征提取</h4><p><strong>作用：对文本数据进行特征值化</strong></p>
+<ul>
+<li><strong>sklearn.feature_extraction.text.CountVectorizer(stop_words=[])</strong><ul>
+<li>返回词频矩阵</li>
+<li>CountVectorizer.fit_transform(X)<ul>
+<li>X:文本或者包含文本字符串的可迭代对象</li>
+<li>返回值:返回sparse矩阵</li>
+</ul>
+</li>
+<li>CountVectorizer.get_feature_names() 返回值:单词列表</li>
+</ul>
+</li>
+<li><strong>sklearn.feature_extraction.text.TfidfVectorizer</strong></li>
+</ul>
+<p><strong>应用：</strong></p>
+<ul>
+<li>实例化类CountVectorizer</li>
+<li>调用fit_transform方法输入数据并转换 （注意返回格式，利用toarray()进行sparse矩阵转换array数组）</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> CountVectorizer</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">text_count_demo</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    对文本进行特征抽取，countvetorizer</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    data = [<span class="string">"life is short,i like like python"</span>, <span class="string">"life is too long,i dislike python"</span>]</span><br><span class="line">    <span class="comment"># 1、实例化一个转换器类</span></span><br><span class="line">    <span class="comment"># transfer = CountVectorizer(sparse=False) # 注意,没有sparse这个参数</span></span><br><span class="line">    transfer = CountVectorizer()</span><br><span class="line">    <span class="comment"># 2、调用fit_transform</span></span><br><span class="line">    data = transfer.fit_transform(data)</span><br><span class="line">    print(<span class="string">"文本特征抽取的结果：\n"</span>, data.toarray())</span><br><span class="line">    print(<span class="string">"返回特征名字：\n"</span>, transfer.get_feature_names())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<p>返回结果：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">文本特征抽取的结果：</span><br><span class="line"> [[<span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span>]</span><br><span class="line"> [<span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span>]]</span><br><span class="line">返回特征名字：</span><br><span class="line"> [<span class="string">'dislike'</span>, <span class="string">'is'</span>, <span class="string">'life'</span>, <span class="string">'like'</span>, <span class="string">'long'</span>, <span class="string">'python'</span>, <span class="string">'short'</span>, <span class="string">'too'</span>]</span><br></pre></td></tr></table></figure>
+<p>不支持单个中文字，中文未分词，所以我们要对中文进行分词处理 </p>
+<h4 id="jieba分词处理"><a href="#jieba分词处理" class="headerlink" title="jieba分词处理"></a>jieba分词处理</h4><ul>
+<li>jieba.cut()：返回词语组成的生成器</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 需要安装下jieba库</span></span><br><span class="line">pip3 install jieba</span><br></pre></td></tr></table></figure>
+<p><strong>案例</strong>：</p>
+<ul>
+<li>准备句子，利用jieba.cut进行分词</li>
+<li>实例化CountVectorizer</li>
+<li>将分词结果变成字符串当作fit_transform的输入值</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> CountVectorizer</span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cut_word</span><span class="params">(text)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    对中文进行分词</span></span><br><span class="line"><span class="string">    "我爱北京天安门"————&gt;"我 爱 北京 天安门"</span></span><br><span class="line"><span class="string">    :param text:</span></span><br><span class="line"><span class="string">    :return: text</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 用结巴对中文字符串进行分词</span></span><br><span class="line">    text = <span class="string">" "</span>.join(list(jieba.cut(text)))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> text</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">text_chinese_count_demo2</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    对中文进行特征抽取</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    data = [<span class="string">"一种还是一种今天很残酷，明天更残酷，后天很美好，但绝对大部分是死在明天晚上，所以每个人不要放弃今天。"</span>,</span><br><span class="line">            <span class="string">"我们看到的从很远星系来的光是在几百万年之前发出的，这样当我们看到宇宙时，我们是在看它的过去。"</span>,</span><br><span class="line">            <span class="string">"如果只用一种方式了解某样事物，你就不会真正了解它。了解事物真正含义的秘密取决于如何将其与我们所了解的事物相联系。"</span>]</span><br><span class="line">    <span class="comment"># 将原始数据转换成分好词的形式</span></span><br><span class="line">    text_list = []</span><br><span class="line">    <span class="keyword">for</span> sent <span class="keyword">in</span> data:</span><br><span class="line">        text_list.append(cut_word(sent))</span><br><span class="line">    print(text_list)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1、实例化一个转换器类</span></span><br><span class="line">    <span class="comment"># transfer = CountVectorizer(sparse=False)</span></span><br><span class="line">    transfer = CountVectorizer()</span><br><span class="line">    <span class="comment"># 2、调用fit_transform</span></span><br><span class="line">    data = transfer.fit_transform(text_list)</span><br><span class="line">    print(<span class="string">"文本特征抽取的结果：\n"</span>, data.toarray())</span><br><span class="line">    print(<span class="string">"返回特征名字：\n"</span>, transfer.get_feature_names())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<p> 返回结果： </p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">Building prefix dict <span class="keyword">from</span> the <span class="keyword">default</span> <span class="built_in">dictionary</span> ...</span><br><span class="line">Dumping model to file cache /var/folders/mz/tzf2l3sx4rgg6qpglfb035_r0000gn/T/jieba.cache</span><br><span class="line">Loading model cost <span class="number">1.032</span> seconds.</span><br><span class="line">[<span class="string">'一种 还是 一种 今天 很 残酷 ， 明天 更 残酷 ， 后天 很 美好 ， 但 绝对 大部分 是 死 在 明天 晚上 ， 所以 每个 人 不要 放弃 今天 。'</span>, <span class="string">'我们 看到 的 从 很 远 星系 来 的 光是在 几百万年 之前 发出 的 ， 这样 当 我们 看到 宇宙 时 ， 我们 是 在 看 它 的 过去 。'</span>, <span class="string">'如果 只用 一种 方式 了解 某样 事物 ， 你 就 不会 真正 了解 它 。 了解 事物 真正 含义 的 秘密 取决于 如何 将 其 与 我们 所 了解 的 事物 相 联系 。'</span>]</span><br><span class="line">Prefix dict has been built succesfully.</span><br><span class="line">文本特征抽取的结果：</span><br><span class="line"> [[<span class="number">2</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span>]</span><br><span class="line"> [<span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">3</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span>]</span><br><span class="line"> [<span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">4</span> <span class="number">3</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>]]</span><br><span class="line">返回特征名字：</span><br><span class="line"> [<span class="string">'一种'</span>, <span class="string">'不会'</span>, <span class="string">'不要'</span>, <span class="string">'之前'</span>, <span class="string">'了解'</span>, <span class="string">'事物'</span>, <span class="string">'今天'</span>, <span class="string">'光是在'</span>, <span class="string">'几百万年'</span>, <span class="string">'发出'</span>, <span class="string">'取决于'</span>, <span class="string">'只用'</span>, <span class="string">'后天'</span>, <span class="string">'含义'</span>, <span class="string">'大部分'</span>, <span class="string">'如何'</span>, <span class="string">'如果'</span>, <span class="string">'宇宙'</span>, <span class="string">'我们'</span>, <span class="string">'所以'</span>, <span class="string">'放弃'</span>, <span class="string">'方式'</span>, <span class="string">'明天'</span>, <span class="string">'星系'</span>, <span class="string">'晚上'</span>, <span class="string">'某样'</span>, <span class="string">'残酷'</span>, <span class="string">'每个'</span>, <span class="string">'看到'</span>, <span class="string">'真正'</span>, <span class="string">'秘密'</span>, <span class="string">'绝对'</span>, <span class="string">'美好'</span>, <span class="string">'联系'</span>, <span class="string">'过去'</span>, <span class="string">'还是'</span>, <span class="string">'这样'</span>]</span><br></pre></td></tr></table></figure>
+<h4 id="Tf-idf文本特征提取"><a href="#Tf-idf文本特征提取" class="headerlink" title="Tf-idf文本特征提取"></a>Tf-idf文本特征提取</h4><ul>
+<li>TF-IDF的主要思想是：如果<strong>某个词或短语在一篇文章中出现的概率高，并且在其他文章中很少出现</strong>，则认为此词或者短语具有很好的类别区分能力，能代表文章的主题，适合用来分类。</li>
+<li><strong>TF-IDF作用：用以评估一字词对于一个文件集或一个语料库中的其中一份文件的重要程度。</strong>提取文章的标签（主题）。</li>
+</ul>
+<h5 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h5><ul>
+<li>词频（term frequency，tf）指的是某一个给定的词语在该文件中出现的频率</li>
+<li><p>逆向文档频率（inverse document frequency，idf）是一个词语普遍重要性的度量。某一特定词语的idf，可以<strong>由总文件数目除以包含该词语之文件的数目，再将得到的商取以10为底的对数得到</strong></p>
+<p><img src="/2020/01/11/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B-%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/tfidf%E5%85%AC%E5%BC%8F.png" alt="tfidfå…¬å¼"></p>
+<p>最终得出结果可以理解为重要程度。 </p>
+</li>
+</ul>
+<p><strong>tfidf越大越能代表文章的主题</strong></p>
+<figure class="highlight lsl"><table><tr><td class="code"><pre><span class="line">举例：</span><br><span class="line">假如一篇文章的总词语数是<span class="number">100</span>个，而词语<span class="string">"非常"</span>出现了<span class="number">5</span>次，那么<span class="string">"非常"</span>一词在该文件中的词频就是<span class="number">5</span>/<span class="number">100</span>=<span class="number">0.05</span>。</span><br><span class="line">而计算文件频率（IDF）的方法是以文件集的文件总数，除以出现<span class="string">"非常"</span>一词的文件数。</span><br><span class="line">所以，如果<span class="string">"非常"</span>一词在<span class="number">1</span>,<span class="number">0000</span>份文件出现过，而文件总数是<span class="number">10</span>,<span class="number">000</span>,<span class="number">000</span>份的话，</span><br><span class="line">其逆向文件频率就是lg（<span class="number">10</span>,<span class="number">000</span>,<span class="number">000</span> / <span class="number">1</span>,<span class="number">0000</span>）=<span class="number">3</span>。</span><br><span class="line">最后<span class="string">"非常"</span>对于这篇文档的tf-idf的分数为<span class="number">0.05</span> * <span class="number">3</span>=<span class="number">0.15</span></span><br></pre></td></tr></table></figure>
+<h5 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> TfidfVectorizer</span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cut_word</span><span class="params">(text)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    对中文进行分词</span></span><br><span class="line"><span class="string">    "我爱北京天安门"————&gt;"我 爱 北京 天安门"</span></span><br><span class="line"><span class="string">    :param text:</span></span><br><span class="line"><span class="string">    :return: text</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 用结巴对中文字符串进行分词</span></span><br><span class="line">    text = <span class="string">" "</span>.join(list(jieba.cut(text)))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> text</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">text_chinese_tfidf_demo</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    对中文进行特征抽取</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    data = [<span class="string">"一种还是一种今天很残酷，明天更残酷，后天很美好，但绝对大部分是死在明天晚上，所以每个人不要放弃今天。"</span>,</span><br><span class="line">            <span class="string">"我们看到的从很远星系来的光是在几百万年之前发出的，这样当我们看到宇宙时，我们是在看它的过去。"</span>,</span><br><span class="line">            <span class="string">"如果只用一种方式了解某样事物，你就不会真正了解它。了解事物真正含义的秘密取决于如何将其与我们所了解的事物相联系。"</span>]</span><br><span class="line">    <span class="comment"># 将原始数据转换成分好词的形式</span></span><br><span class="line">    text_list = []</span><br><span class="line">    <span class="keyword">for</span> sent <span class="keyword">in</span> data:</span><br><span class="line">        text_list.append(cut_word(sent))</span><br><span class="line">    print(text_list)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1、实例化一个转换器类</span></span><br><span class="line">    <span class="comment"># transfer = CountVectorizer(sparse=False)</span></span><br><span class="line">    <span class="comment"># 剔除'一种', '不会', '不要'这些词没有说明代表意义，减少计算</span></span><br><span class="line">    transfer = TfidfVectorizer(stop_words=[<span class="string">'一种'</span>, <span class="string">'不会'</span>, <span class="string">'不要'</span>])</span><br><span class="line">    <span class="comment"># 2、调用fit_transform</span></span><br><span class="line">    data = transfer.fit_transform(text_list)</span><br><span class="line">    print(<span class="string">"文本特征抽取的结果：\n"</span>, data.toarray())</span><br><span class="line">    print(<span class="string">"返回特征名字：\n"</span>, transfer.get_feature_names())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">Building prefix dict <span class="keyword">from</span> the <span class="keyword">default</span> <span class="built_in">dictionary</span> ...</span><br><span class="line">Loading model <span class="keyword">from</span> cache /var/folders/mz/tzf2l3sx4rgg6qpglfb035_r0000gn/T/jieba.cache</span><br><span class="line">Loading model cost <span class="number">0.856</span> seconds.</span><br><span class="line">Prefix dict has been built succesfully.</span><br><span class="line">[<span class="string">'一种 还是 一种 今天 很 残酷 ， 明天 更 残酷 ， 后天 很 美好 ， 但 绝对 大部分 是 死 在 明天 晚上 ， 所以 每个 人 不要 放弃 今天 。'</span>, <span class="string">'我们 看到 的 从 很 远 星系 来 的 光是在 几百万年 之前 发出 的 ， 这样 当 我们 看到 宇宙 时 ， 我们 是 在 看 它 的 过去 。'</span>, <span class="string">'如果 只用 一种 方式 了解 某样 事物 ， 你 就 不会 真正 了解 它 。 了解 事物 真正 含义 的 秘密 取决于 如何 将 其 与 我们 所 了解 的 事物 相 联系 。'</span>]</span><br><span class="line">文本特征抽取的结果：</span><br><span class="line"> [[ <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.43643578</span>  <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span></span><br><span class="line">   <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.21821789</span>  <span class="number">0.</span>          <span class="number">0.21821789</span>  <span class="number">0.</span>          <span class="number">0.</span></span><br><span class="line">   <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.21821789</span>  <span class="number">0.21821789</span>  <span class="number">0.</span>          <span class="number">0.43643578</span></span><br><span class="line">   <span class="number">0.</span>          <span class="number">0.21821789</span>  <span class="number">0.</span>          <span class="number">0.43643578</span>  <span class="number">0.21821789</span>  <span class="number">0.</span>          <span class="number">0.</span></span><br><span class="line">   <span class="number">0.</span>          <span class="number">0.21821789</span>  <span class="number">0.21821789</span>  <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.21821789</span></span><br><span class="line">   <span class="number">0.</span>        ]</span><br><span class="line"> [ <span class="number">0.2410822</span>   <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.2410822</span>   <span class="number">0.2410822</span></span><br><span class="line">   <span class="number">0.2410822</span>   <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span></span><br><span class="line">   <span class="number">0.</span>          <span class="number">0.2410822</span>   <span class="number">0.55004769</span>  <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span></span><br><span class="line">   <span class="number">0.2410822</span>   <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.48216441</span></span><br><span class="line">   <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.2410822</span></span><br><span class="line">   <span class="number">0.</span>          <span class="number">0.2410822</span> ]</span><br><span class="line"> [ <span class="number">0.</span>          <span class="number">0.644003</span>    <span class="number">0.48300225</span>  <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span></span><br><span class="line">   <span class="number">0.16100075</span>  <span class="number">0.16100075</span>  <span class="number">0.</span>          <span class="number">0.16100075</span>  <span class="number">0.</span>          <span class="number">0.16100075</span></span><br><span class="line">   <span class="number">0.16100075</span>  <span class="number">0.</span>          <span class="number">0.12244522</span>  <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.16100075</span></span><br><span class="line">   <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.16100075</span>  <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.</span></span><br><span class="line">   <span class="number">0.3220015</span>   <span class="number">0.16100075</span>  <span class="number">0.</span>          <span class="number">0.</span>          <span class="number">0.16100075</span>  <span class="number">0.</span>          <span class="number">0.</span></span><br><span class="line">   <span class="number">0.</span>        ]]</span><br><span class="line">返回特征名字：</span><br><span class="line">[<span class="string">'之前'</span>, <span class="string">'了解'</span>, <span class="string">'事物'</span>, <span class="string">'今天'</span>, <span class="string">'光是在'</span>, <span class="string">'几百万年'</span>, <span class="string">'发出'</span>, <span class="string">'取决于'</span>, <span class="string">'只用'</span>, <span class="string">'后天'</span>, <span class="string">'含义'</span>, <span class="string">'大部分'</span>, <span class="string">'如何'</span>, <span class="string">'如果'</span>, <span class="string">'宇宙'</span>, <span class="string">'我们'</span>, <span class="string">'所以'</span>, <span class="string">'放弃'</span>, <span class="string">'方式'</span>, <span class="string">'明天'</span>, <span class="string">'星系'</span>, <span class="string">'晚上'</span>, <span class="string">'某样'</span>, <span class="string">'残酷'</span>, <span class="string">'每个'</span>, <span class="string">'看到'</span>, <span class="string">'真正'</span>, <span class="string">'秘密'</span>, <span class="string">'绝对'</span>, <span class="string">'美好'</span>, <span class="string">'联系'</span>, <span class="string">'过去'</span>, <span class="string">'还是'</span>, <span class="string">'这样'</span>]</span><br></pre></td></tr></table></figure>
+<h5 id="Tf-idf的重要性"><a href="#Tf-idf的重要性" class="headerlink" title="Tf-idf的重要性"></a>Tf-idf的重要性</h5><p> <strong>分类机器学习算法进行文章分类中前期数据处理方式</strong> </p>
+<p>举例：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">文章库中  <span class="number">1000</span>篇文章</span><br><span class="line">的  在 <span class="number">1000</span> 篇文章中都出现过</span><br><span class="line">python  在<span class="number">100</span> 文章中出现过</span><br><span class="line">java       在 <span class="number">100</span> 文章中出现过</span><br><span class="line"></span><br><span class="line">idf(的)  = lg(<span class="number">1000</span>/<span class="number">1000</span>)  = <span class="number">0</span></span><br><span class="line">idf(python) = lg(<span class="number">1000</span>/<span class="number">100</span>) = <span class="number">1</span></span><br><span class="line">idf(java) = lg(<span class="number">1000</span>/<span class="number">100</span>) = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">文章<span class="number">1</span> python  出现了 <span class="number">100</span>次，java也出现了<span class="number">10</span>次， 文章<span class="number">1</span>中一共有一千个词</span><br><span class="line">文章<span class="number">2</span> python  出现了 <span class="number">10</span>次，java也出现了<span class="number">100</span>次， 文章<span class="number">2</span>中一共有一千个词</span><br><span class="line"></span><br><span class="line">tf(python , 文章<span class="number">1</span>) = <span class="number">100</span> /<span class="number">1000</span> = <span class="number">0.1</span></span><br><span class="line">tf(java, 文章<span class="number">1</span>) = <span class="number">10</span>/<span class="number">1000</span> = <span class="number">0.01</span></span><br><span class="line">tf(python , 文章<span class="number">2</span>) = <span class="number">10</span> /<span class="number">1000</span> = <span class="number">00.1</span></span><br><span class="line">tf(java, 文章<span class="number">2</span>) = <span class="number">100</span>/<span class="number">1000</span> = <span class="number">0.1</span></span><br><span class="line"></span><br><span class="line">tfidf(python , 文章<span class="number">1</span>) = <span class="number">0.1</span> * <span class="number">1</span>  = <span class="number">0.1</span></span><br><span class="line">tfidf(java, 文章<span class="number">1</span>) = <span class="number">0.01</span></span><br><span class="line">tfidf(的, 文章<span class="number">1</span>) = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">tfidf(python , 文章<span class="number">2</span>)  = <span class="number">00.1</span></span><br><span class="line">tfidf(java, 文章<span class="number">2</span>)  = <span class="number">0.1</span></span><br><span class="line">tfidf(的, 文章<span class="number">2</span>) = <span class="number">0</span></span><br><span class="line">相对而言，Java代表文章<span class="number">2</span>的主题，python代表文章<span class="number">1</span>的主题</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>特征工程</tag>
+        <tag>特征提取</tag>
+        <tag>jieba分词处理</tag>
+        <tag>词袋模型</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>决策树算法案例</title>
     <url>/2020/01/10/%E5%86%B3%E7%AD%96%E6%A0%91%E7%AE%97%E6%B3%95%E6%A1%88%E4%BE%8B/</url>
     <content><![CDATA[<h4 id="决策树算法API"><a href="#决策树算法API" class="headerlink" title="决策树算法API"></a>决策树算法API</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">sklearn</span>.<span class="title">tree</span>.<span class="title">DecisionTreeClassifier</span><span class="params">(criterion=’gini’, max_depth=None,random_state=None)</span></span></span><br></pre></td></tr></table></figure>
@@ -75,12 +191,12 @@
 <p><strong>注：企业重要决策，由于决策树很好的分析能力，在决策过程应用较多， 可以选择特征</strong></p>
 ]]></content>
       <categories>
-        <category>机器学习算法</category>
+        <category>机器学习</category>
       </categories>
       <tags>
         <tag>机器学习算法</tag>
-        <tag>人工智能</tag>
         <tag>机器学习</tag>
+        <tag>决策树可视化</tag>
       </tags>
   </entry>
   <entry>
@@ -410,12 +526,12 @@
 </ol>
 ]]></content>
       <categories>
-        <category>机器学习算法</category>
+        <category>机器学习</category>
       </categories>
       <tags>
         <tag>机器学习算法</tag>
-        <tag>人工智能</tag>
         <tag>机器学习</tag>
+        <tag>决策树分类原理</tag>
       </tags>
   </entry>
   <entry>
@@ -757,12 +873,12 @@
 <p>绘制ROC曲线的意义很明显，不断地把可能分错的情况扣除掉，从概率最高往下取的点，每有一个是负样本，就会导致分错排在它下面的所有正样本，所以要把它下面的正样本数扣除掉（1-TPR，剩下的正样本的比例）。总的ROC曲线绘制出来了，AUC就定了，分对的概率也能求出来了。</p>
 ]]></content>
       <categories>
-        <category>机器学习算法</category>
+        <category>机器学习</category>
       </categories>
       <tags>
         <tag>机器学习算法</tag>
-        <tag>人工智能</tag>
         <tag>机器学习</tag>
+        <tag>人工智能</tag>
       </tags>
   </entry>
   <entry>
@@ -1070,12 +1186,15 @@
 </ul>
 ]]></content>
       <categories>
-        <category>机器学习算法</category>
+        <category>机器学习</category>
       </categories>
       <tags>
         <tag>机器学习算法</tag>
-        <tag>人工智能</tag>
         <tag>机器学习</tag>
+        <tag>梯度下降，正规方程</tag>
+        <tag>正则化</tag>
+        <tag>岭回归</tag>
+        <tag>模型保存和加载</tag>
       </tags>
   </entry>
   <entry>
@@ -1300,12 +1419,13 @@
 <p><strong>代码实现：</strong></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split, GridSearchCV</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1.获取数据集</span></span><br><span class="line">facebook = pd.read_csv(<span class="string">"./data/FBlocation/train.csv"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.基本数据处理</span></span><br><span class="line"><span class="comment"># 2.1 缩小数据范围</span></span><br><span class="line">facebook_data = facebook.query(<span class="string">"x&gt;2.0 &amp; x&lt;2.2 &amp; y&gt;2.0 &amp; y&lt;2.2"</span>)</span><br><span class="line"><span class="comment"># 2.2 选择时间特征(脱敏)</span></span><br><span class="line">time = pd.to_datetime(facebook_data[<span class="string">"time"</span>], unit=<span class="string">"s"</span>)</span><br><span class="line"><span class="comment"># 转换</span></span><br><span class="line">time = pd.DatetimeIndex(time)</span><br><span class="line">facebook_data[<span class="string">"day"</span>] = time.day</span><br><span class="line">facebook_data[<span class="string">"hour"</span>] = time.hour</span><br><span class="line">facebook_data[<span class="string">"weekday"</span>] = time.weekday</span><br><span class="line"><span class="comment"># 2.3 去掉签到较少的地方</span></span><br><span class="line">place_count = facebook_data.groupby(<span class="string">"place_id"</span>).count()</span><br><span class="line">place_count = place_count[place_count[<span class="string">"row_id"</span>]&gt;<span class="number">3</span>]</span><br><span class="line">facebook_data = facebook_data[facebook_data[<span class="string">"place_id"</span>]].isin(place_count.index)</span><br><span class="line"><span class="comment"># 2.4 确定特征值和目标值</span></span><br><span class="line">x = facebook_data[[<span class="string">"x"</span>, <span class="string">"y"</span>, <span class="string">"accuracy"</span>, <span class="string">"day"</span>, <span class="string">"hour"</span>, <span class="string">"weekday"</span>]]</span><br><span class="line">y = facebook_data[<span class="string">"place_id"</span>]</span><br><span class="line"><span class="comment"># 2.5 分割数据集</span></span><br><span class="line">x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=<span class="number">22</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3.特征工程 -- 特征预处理(标准化)</span></span><br><span class="line"><span class="comment"># 3.1 实例化一个转换器</span></span><br><span class="line">transfer = StandardScaler()</span><br><span class="line"><span class="comment"># 3.2 调用fit_transform</span></span><br><span class="line">x_train = transfer.fit_transform(x_train)</span><br><span class="line">x_test = transfer.fit_transform(x_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4.机器学习 -- knn+cv</span></span><br><span class="line"><span class="comment"># 4.1 实例化一个训练器</span></span><br><span class="line">estimator = KNeighborsClassifier()</span><br><span class="line"><span class="comment"># 4.2 交叉验证，网格搜索实现，调用gridsearchCV</span></span><br><span class="line">param_grid = &#123;<span class="string">"n_neighbors"</span>: [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]&#125;</span><br><span class="line"><span class="comment"># n_jobs：指定几个CPU跑程序</span></span><br><span class="line">estimator = GridSearchCV(estimator, param_grid=param_grid, cv=<span class="number">5</span>, n_jobs=<span class="number">8</span>)</span><br><span class="line"><span class="comment"># 4.3 模型训练</span></span><br><span class="line">estimator.fit(x_train, y_train)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5.模型评估</span></span><br><span class="line"><span class="comment"># 5.1 基本评估方式</span></span><br><span class="line">score = estimator.score(x_test, y_test)</span><br><span class="line">print(<span class="string">"最后预测的准确率为:\n"</span>, score)</span><br><span class="line">y_predict = estimator.predict(x_test)</span><br><span class="line">print(<span class="string">"最后的预测值为:\n"</span>, y_predict)</span><br><span class="line">print(<span class="string">"预测值和真实值的对比情况:\n"</span>, y_predict == y_test)</span><br><span class="line"><span class="comment"># 5.2 使用交叉验证后的评估方式</span></span><br><span class="line">print(<span class="string">"在交叉验证中验证的最好结果:\n"</span>, estimator.best_score_)</span><br><span class="line">print(<span class="string">"最好的参数模型:\n"</span>, estimator.best_estimator_)</span><br><span class="line">print(<span class="string">"每次交叉验证后的验证集准确率结果和训练集准确率结果:\n"</span>,estimator.cv_results_)</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>机器学习算法</category>
+        <category>机器学习</category>
       </categories>
       <tags>
         <tag>机器学习算法</tag>
-        <tag>人工智能</tag>
         <tag>机器学习</tag>
+        <tag>特征工程预处理</tag>
+        <tag>交叉验证网格搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -1395,9 +1515,10 @@
 <p><img src="/2020/01/06/%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F/%E9%A9%AC%E6%B0%8F%E8%B7%9D%E7%A6%BB%E4%B8%BE%E4%BE%8B2.png" alt="image-20190316192851778"> </p>
 ]]></content>
       <categories>
-        <category>距离计算公式</category>
+        <category>机器学习</category>
       </categories>
       <tags>
+        <tag>机器学习</tag>
         <tag>距离计算公式</tag>
       </tags>
   </entry>
