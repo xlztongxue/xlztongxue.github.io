@@ -878,7 +878,7 @@
       <tags>
         <tag>机器学习算法</tag>
         <tag>机器学习</tag>
-        <tag>人工智能</tag>
+        <tag>分类评估方法</tag>
       </tags>
   </entry>
   <entry>
@@ -1191,7 +1191,8 @@
       <tags>
         <tag>机器学习算法</tag>
         <tag>机器学习</tag>
-        <tag>梯度下降，正规方程</tag>
+        <tag>梯度下降</tag>
+        <tag>正规方程</tag>
         <tag>正则化</tag>
         <tag>岭回归</tag>
         <tag>模型保存和加载</tag>
