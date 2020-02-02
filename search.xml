@@ -70,7 +70,20 @@
   <entry>
     <title>推荐算法</title>
     <url>/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<h4 id="学习目标"><a href="#学习目标" class="headerlink" title="学习目标"></a>学习目标</h4><ul>
+<li>了解推荐模型构建流程</li>
+<li>理解协同过滤原理</li>
+<li>记忆相似度计算方法</li>
+<li>应用杰卡德相似度实现简单协同过滤推荐案例</li>
+</ul>
+<a id="more"></a>]]></content>
+      <categories>
+        <category>推荐系统</category>
+      </categories>
+      <tags>
+        <tag>推荐算法</tag>
+        <tag>协同过滤推荐算法</tag>
+      </tags>
   </entry>
   <entry>
     <title>推荐系统</title>
@@ -82,6 +95,7 @@
 <li>了解推荐系统要素</li>
 <li>理解推荐系统架构</li>
 </ul>
+<a id="more"></a>
 <h4 id="推荐系统概念"><a href="#推荐系统概念" class="headerlink" title="推荐系统概念"></a>推荐系统概念</h4><ol>
 <li><h5 id="什么是推荐系统"><a href="#什么是推荐系统" class="headerlink" title="什么是推荐系统"></a>什么是推荐系统</h5><p> 没有明确需求的用户访问了我们的服务, 且服务的物品对用户构成了信息过载，系统通过一定的规则对物品进行排序，并将排在前面的物品展示给用户，这样的系统就是推荐系统 。</p>
 </li>
@@ -135,11 +149,11 @@
 </ol>
 ]]></content>
       <categories>
-        <category>大数据推荐系统</category>
+        <category>推荐系统</category>
       </categories>
       <tags>
-        <tag>大数据推荐</tag>
-        <tag>推荐系统</tag>
+        <tag>推荐系统简介</tag>
+        <tag>推荐系统架构</tag>
       </tags>
   </entry>
   <entry>

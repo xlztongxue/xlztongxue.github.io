@@ -346,6 +346,24 @@
 
               <time title="创建时间：2020-01-15 11:12:49" itemprop="dateCreated datePublished" datetime="2020-01-15T11:12:49+08:00">2020-01-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-02 12:34:12" itemprop="dateModified" datetime="2020-02-02T12:34:12+08:00">2020-02-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index">
+                    <span itemprop="name">推荐系统</span>
+                  </a>
+                </span>
+            </span>
 
           
   
@@ -367,7 +385,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>0</span>
+              <span>51</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -386,7 +404,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <h4 id="学习目标"><a href="#学习目标" class="headerlink" title="学习目标"></a>学习目标</h4><ul>
+<li>了解推荐模型构建流程</li>
+<li>理解协同过滤原理</li>
+<li>记忆相似度计算方法</li>
+<li>应用杰卡德相似度实现简单协同过滤推荐案例</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -428,18 +459,24 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-01-15 09:33:02 / 修改时间：10:03:19" itemprop="dateCreated datePublished" datetime="2020-01-15T09:33:02+08:00">2020-01-15</time>
+              <time title="创建时间：2020-01-15 09:33:02" itemprop="dateCreated datePublished" datetime="2020-01-15T09:33:02+08:00">2020-01-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-02 12:30:28" itemprop="dateModified" datetime="2020-02-02T12:30:28+08:00">2020-02-02</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据推荐系统</span>
+                  <a href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index">
+                    <span itemprop="name">推荐系统</span>
                   </a>
                 </span>
             </span>
@@ -490,58 +527,14 @@
 <li>了解推荐系统要素</li>
 <li>理解推荐系统架构</li>
 </ul>
-<h4 id="推荐系统概念"><a href="#推荐系统概念" class="headerlink" title="推荐系统概念"></a>推荐系统概念</h4><ol>
-<li><h5 id="什么是推荐系统"><a href="#什么是推荐系统" class="headerlink" title="什么是推荐系统"></a>什么是推荐系统</h5><p> 没有明确需求的用户访问了我们的服务, 且服务的物品对用户构成了信息过载，系统通过一定的规则对物品进行排序，并将排在前面的物品展示给用户，这样的系统就是推荐系统 。</p>
-</li>
-<li><h5 id="信息过载-amp-用户需求不明确"><a href="#信息过载-amp-用户需求不明确" class="headerlink" title="信息过载 &amp; 用户需求不明确"></a>信息过载 &amp; 用户需求不明确</h5><ul>
-<li>分类⽬录（1990s）：覆盖少量热门⽹站。典型应用：Hao123 Yahoo</li>
-<li>搜索引擎（2000s）：通过搜索词明确需求。典型应用：Google Baidu</li>
-<li>推荐系统（2010s）：不需要⽤户提供明确的需求，通过分析⽤ 户的历史⾏为给⽤户的兴趣进⾏建模，从⽽主动给⽤户推荐能 够满⾜他们兴趣和需求的信息。</li>
-</ul>
-</li>
-<li><h5 id="推荐系统与搜索引擎"><a href="#推荐系统与搜索引擎" class="headerlink" title="推荐系统与搜索引擎"></a>推荐系统与搜索引擎</h5><p>| 搜索     | 推荐     |          |<br>| ———— | ———— | ———— |<br>| 行为方式 | 主动     | 被动     |<br>| 意图     | 明确     | 模糊     |<br>| 个性化   | 弱       | 强       |<br>| 流量分布 | 马太效应 | 长尾效应 |<br>| 目标     | 快速满足 | 持续服务 |<br>| 评估指标 | 简明     | 复杂     |</p>
-</li>
-</ol>
-<h4 id="推荐系统的工作原理"><a href="#推荐系统的工作原理" class="headerlink" title="推荐系统的工作原理"></a>推荐系统的工作原理</h4><ul>
-<li><strong>社会化推荐</strong> 例如：向朋友咨询，社会化推荐，让好友给自己推荐物品</li>
-<li><strong>基于内容的推荐</strong> 例如：打开搜索引擎，输入自己喜欢的演员的名字，然后看看返回结果中还有什么电影是自己没看过的</li>
-<li><strong>基于流行度的推荐</strong> 例如：查看票房排行榜</li>
-<li><strong>基于协同过滤的推荐</strong> 例如：找到和自己历史兴趣相似的用户，看看他们最近在看什么电影</li>
-</ul>
-<h4 id="推荐系统的作用"><a href="#推荐系统的作用" class="headerlink" title="推荐系统的作用"></a>推荐系统的作用</h4><ul>
-<li>高效连接用户和物品</li>
-<li>提高用户停留时间和用户活跃程度</li>
-<li>有效的帮助产品实现其商业价值</li>
-</ul>
-<h4 id="推荐系统的应用场景"><a href="#推荐系统的应用场景" class="headerlink" title="推荐系统的应用场景"></a>推荐系统的应用场景</h4><ul>
-<li>头条</li>
-<li>淘宝京东</li>
-<li>抖音</li>
-</ul>
-<h4 id="推荐系统和Web项目的区别"><a href="#推荐系统和Web项目的区别" class="headerlink" title="推荐系统和Web项目的区别"></a>推荐系统和Web项目的区别</h4><ul>
-<li>通过信息过滤实现目标提升 V.S. 稳定的信息流通系统<ul>
-<li>web项目: 处理复杂业务逻辑，处理高并发，为用户构建一个稳定的信息流通服务</li>
-<li>推荐系统: 追求指标增长， 留存率/阅读时间/GMV (Gross Merchandise Volume电商网站成交金额)/视频网站VV (Video View)</li>
-</ul>
-</li>
-<li>确定 V.S. 不确定思维<ul>
-<li>web项目: 对结果有确定预期</li>
-<li>推荐系统: 结果是概率问题</li>
-</ul>
-</li>
-</ul>
-<h4 id="推荐系统要素"><a href="#推荐系统要素" class="headerlink" title="推荐系统要素"></a>推荐系统要素</h4><ul>
-<li>UI 和 UE(前端界面)</li>
-<li>数据 (Lambda架构)</li>
-<li>业务知识</li>
-<li>算法</li>
-</ul>
-<h4 id="推荐系统架构"><a href="#推荐系统架构" class="headerlink" title="推荐系统架构"></a>推荐系统架构</h4><ol>
-<li><h5 id="推荐系统整体架构"><a href="#推荐系统整体架构" class="headerlink" title="推荐系统整体架构"></a>推荐系统整体架构</h5></li>
-<li><h5 id="大数据Lambda架构"><a href="#大数据Lambda架构" class="headerlink" title="大数据Lambda架构"></a>大数据Lambda架构</h5></li>
-<li><h5 id="推荐算法架构"><a href="#推荐算法架构" class="headerlink" title="推荐算法架构"></a>推荐算法架构</h5></li>
-</ol>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -642,7 +635,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
