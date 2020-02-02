@@ -1,6 +1,400 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>聚类算法</title>
+    <url>/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<h4 id="聚类算法简介"><a href="#聚类算法简介" class="headerlink" title="聚类算法简介"></a>聚类算法简介</h4><p> <strong>使用不同的聚类准则，产生的聚类结果不同</strong>。 </p>
+<a id="more"></a>
+<ol>
+<li><h5 id="聚类算法在现实中的应用"><a href="#聚类算法在现实中的应用" class="headerlink" title="聚类算法在现实中的应用"></a>聚类算法在现实中的应用</h5><ul>
+<li>用户画像，广告推荐，Data Segmentation，搜索引擎的流量推荐，恶意流量识别</li>
+<li>基于位置信息的商业推送，新闻聚类，筛选排序</li>
+<li>图像分割，降维，识别；离群点检测；信用卡异常消费；发掘相同功能的基因片段</li>
+</ul>
+</li>
+<li><h5 id="聚类算法的概念"><a href="#聚类算法的概念" class="headerlink" title="聚类算法的概念"></a>聚类算法的概念</h5><p>一种典型的<strong>无监督</strong>学习算法，主要用于将相似的样本自动归到一个类别中。在聚类算法中根据样本之间的相似性，将样本划分到不同的类别中，对于不同的相似度计算方法，会得到不同的聚类结果，常用的相似度计算方法有欧式距离法。</p>
+</li>
+<li><h5 id="聚类算法与分类算法最大的区别"><a href="#聚类算法与分类算法最大的区别" class="headerlink" title="聚类算法与分类算法最大的区别"></a>聚类算法与分类算法最大的区别</h5><p> 聚类算法是无监督的学习算法，而分类算法属于监督的学习算法。 </p>
+</li>
+</ol>
+<h4 id="聚类算法API"><a href="#聚类算法API" class="headerlink" title="聚类算法API"></a>聚类算法API</h4><ol>
+<li><h5 id="API介绍"><a href="#API介绍" class="headerlink" title="API介绍"></a>API介绍</h5><figure class="highlight gml"><table><tr><td class="code"><pre><span class="line">sklearn.cluster.KMeans(n_clusters=<span class="number">8</span>)</span><br><span class="line">参数:</span><br><span class="line">	n_clusters:开始的聚类中心数量</span><br><span class="line">		整型，缺省值=<span class="number">8</span>，生成的聚类数，即产生的质心（centroids）数。</span><br><span class="line">方法:</span><br><span class="line">	estimator.fit(<span class="symbol">x</span>)</span><br><span class="line">	estimator.predict(<span class="symbol">x</span>)</span><br><span class="line">	estimator.fit_predict(<span class="symbol">x</span>)</span><br><span class="line">		计算聚类中心并预测每个样本属于哪个类别,相当于先调用fit(<span class="symbol">x</span>),然后再调用predict(<span class="symbol">x</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><h5 id="小案例"><a href="#小案例" class="headerlink" title="小案例"></a>小案例</h5><p> 随机创建不同二维数据集作为训练集，并结合k-means算法将其聚类，你可以尝试分别聚类不同数量的簇，并观察聚类效果： </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/cluser_demo1.png" alt="image-20190219163451509" style="zoom:33%;"> </p>
+<p> 聚类参数n_cluster传值不同，得到的聚类结果不同 </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/cluster_demo2.png" alt="image-20190219163505530" style="zoom:33%;"> </p>
+<p>1.<strong>流程分析</strong></p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/cluster_demo3.png" alt="image-20190219163649472" style="zoom:33%;"> </p>
+<p>2.<strong>代码实现</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets.samples_generator <span class="keyword">import</span> make_blobs</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> calinski_harabaz_score</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1.创建数据集</span></span><br><span class="line"><span class="comment"># X为样本特征，Y为样本簇类别， 共1000个样本，每个样本4个特征，共4个簇，</span></span><br><span class="line"><span class="comment"># 簇中心在[-1,-1], [0,0],[1,1], [2,2]， 簇方差分别为[0.4, 0.2, 0.2, 0.2]</span></span><br><span class="line">X, y = make_blobs(n_samples=<span class="number">1000</span>, n_features=<span class="number">2</span>, centers=[[<span class="number">-1</span>, <span class="number">-1</span>], [<span class="number">0</span>, <span class="number">0</span>], [<span class="number">1</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>]],</span><br><span class="line">                  cluster_std=[<span class="number">0.4</span>, <span class="number">0.2</span>, <span class="number">0.2</span>, <span class="number">0.2</span>],</span><br><span class="line">                  random_state=<span class="number">9</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据集可视化</span></span><br><span class="line">plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], marker=<span class="string">'o'</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.使用k-means进行聚类,并使用CH方法评估</span></span><br><span class="line">y_pred = KMeans(n_clusters=<span class="number">2</span>, random_state=<span class="number">9</span>).fit_predict(X)</span><br><span class="line"><span class="comment"># 分别尝试n_cluses=2\3\4,然后查看聚类效果</span></span><br><span class="line">plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], c=y_pred)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用Calinski-Harabasz Index评估的聚类分数</span></span><br><span class="line">print(calinski_harabaz_score(X, y_pred))</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="聚类算法实现流程"><a href="#聚类算法实现流程" class="headerlink" title="聚类算法实现流程"></a>聚类算法实现流程</h4><blockquote>
+<p><strong>k-means其实包含两层内容：</strong></p>
+<ul>
+<li>K : 初始中心点个数（计划聚类数）</li>
+<li>means：求中心点到其他数据点距离的平均值</li>
+</ul>
+</blockquote>
+<h5 id="1-k-means聚类步骤"><a href="#1-k-means聚类步骤" class="headerlink" title="1. k-means聚类步骤"></a>1. k-means聚类步骤</h5><figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span>、随机设置K个特征空间内的点作为初始的聚类中心</span><br><span class="line"><span class="number">2</span>、对于其他每个点计算到K个中心的距离，未知的点选择最近的一个聚类中心点作为标记类别</span><br><span class="line"><span class="number">3</span>、接着对着标记的聚类中心之后，重新计算出每个聚类的新中心点（平均值）</span><br><span class="line"><span class="number">4</span>、如果计算得出的新中心点与原中心点一样（质心不再移动），那么结束，否则重新进行第二步过程</span><br></pre></td></tr></table></figure>
+<p> 通过下图解释实现流程： </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/K-means%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90.png" alt="K-meansè¿‡ç¨‹åˆ†æž" style="zoom:33%;"></p>
+<p>  k聚类动态效果图 </p>
+<p><img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_dynamic.png" alt="2019-02-19 17.06.49" style="zoom: 33%;"></p>
+<h5 id="2-案例练习"><a href="#2-案例练习" class="headerlink" title="2.案例练习"></a>2.案例练习</h5><p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo1.png" alt="image-20190219171158984" style="zoom:33%;"></p>
+<p>  1.随机设置K个特征空间内的点作为初始的聚类中心（本案例中设置p1和p2） </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo2.png" alt="image-20190219171244828" style="zoom:33%;"></p>
+<p>  2.对于其他每个点计算到K个中心的距离，未知的点选择最近的一个聚类中心点作为标记类别 </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo3.png" alt="image-20190219171326923" style="zoom:33%;"></p>
+<p>  <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo4.png" alt="image-20190219171338441" style="zoom:33%;"></p>
+<p>  3.接着对着标记的聚类中心之后，重新计算出每个聚类的新中心点（平均值） </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo5.png" alt="image-20190219171727035" style="zoom:33%;"></p>
+<p> 4.如果计算得出的新中心点与原中心点一样（质心不再移动），那么结束，否则重新进行第二步过程【经过判断，需要重复上述步骤，开始新一轮迭代】 </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo6.png" alt="image-20190219171951607" style="zoom:33%;"></p>
+<p>  <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo7.png" alt="image-20190219172011618" style="zoom:33%;"> </p>
+<p>  5.当每次迭代结果不变时，认为算法收敛，聚类完成，<strong>K-Means一定会停下，不可能陷入一直选质心的过程。</strong> </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo8.png" alt="image-20190219172125388" style="zoom:33%;"></p>
+<h4 id="聚类算法模型评估"><a href="#聚类算法模型评估" class="headerlink" title="聚类算法模型评估"></a>聚类算法模型评估</h4><h4 id="聚类算法算法优化"><a href="#聚类算法算法优化" class="headerlink" title="聚类算法算法优化"></a>聚类算法算法优化</h4><h4 id="聚类算法特征降维"><a href="#聚类算法特征降维" class="headerlink" title="聚类算法特征降维"></a>聚类算法特征降维</h4><h4 id="案例-探究用户对物品类别的喜好细分"><a href="#案例-探究用户对物品类别的喜好细分" class="headerlink" title="案例-探究用户对物品类别的喜好细分"></a>案例-探究用户对物品类别的喜好细分</h4><h4 id="拓展-算法选择指导"><a href="#拓展-算法选择指导" class="headerlink" title="拓展-算法选择指导"></a>拓展-算法选择指导</h4><h4 id="关于在计算的过程中，如何选择合适的算法进行计算，可以参考scikit-learn官方给的指导意见："><a href="#关于在计算的过程中，如何选择合适的算法进行计算，可以参考scikit-learn官方给的指导意见：" class="headerlink" title="关于在计算的过程中，如何选择合适的算法进行计算，可以参考scikit learn官方给的指导意见："></a><strong>关于在计算的过程中，如何选择合适的算法进行计算，可以参考scikit learn官方给的指导意见：</strong></h4><p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/scikit-learn%E7%AE%97%E6%B3%95%E9%80%89%E6%8B%A9%E8%B7%AF%E5%BE%84%E5%9B%BE.png" alt="scikit-learn算法选择路径图" style="zoom:33%;"> </p>
+]]></content>
+      <categories>
+        <category>机器学习算法</category>
+      </categories>
+      <tags>
+        <tag>机器</tag>
+        <tag>学习机器学习算法</tag>
+        <tag>聚类算法</tag>
+        <tag>无监督学习算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>推荐算法</title>
+    <url>/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>推荐系统</title>
+    <url>/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/</url>
+    <content><![CDATA[<h4 id="学习目标"><a href="#学习目标" class="headerlink" title="学习目标"></a>学习目标</h4><ul>
+<li>了解推荐系统概念及产生背景</li>
+<li>理解推荐系统工作原理及作用</li>
+<li>了解推荐系统与web项目区别</li>
+<li>了解推荐系统要素</li>
+<li>理解推荐系统架构</li>
+</ul>
+<h4 id="推荐系统概念"><a href="#推荐系统概念" class="headerlink" title="推荐系统概念"></a>推荐系统概念</h4><ol>
+<li><h5 id="什么是推荐系统"><a href="#什么是推荐系统" class="headerlink" title="什么是推荐系统"></a>什么是推荐系统</h5><p> 没有明确需求的用户访问了我们的服务, 且服务的物品对用户构成了信息过载，系统通过一定的规则对物品进行排序，并将排在前面的物品展示给用户，这样的系统就是推荐系统 。</p>
+</li>
+<li><h5 id="信息过载-amp-用户需求不明确"><a href="#信息过载-amp-用户需求不明确" class="headerlink" title="信息过载 &amp; 用户需求不明确"></a>信息过载 &amp; 用户需求不明确</h5><ul>
+<li>分类⽬录（1990s）：覆盖少量热门⽹站。典型应用：Hao123 Yahoo</li>
+<li>搜索引擎（2000s）：通过搜索词明确需求。典型应用：Google Baidu</li>
+<li>推荐系统（2010s）：不需要⽤户提供明确的需求，通过分析⽤ 户的历史⾏为给⽤户的兴趣进⾏建模，从⽽主动给⽤户推荐能 够满⾜他们兴趣和需求的信息。</li>
+</ul>
+</li>
+<li><h5 id="推荐系统与搜索引擎"><a href="#推荐系统与搜索引擎" class="headerlink" title="推荐系统与搜索引擎"></a>推荐系统与搜索引擎</h5><p>| 搜索     | 推荐     |          |<br>| ———— | ———— | ———— |<br>| 行为方式 | 主动     | 被动     |<br>| 意图     | 明确     | 模糊     |<br>| 个性化   | 弱       | 强       |<br>| 流量分布 | 马太效应 | 长尾效应 |<br>| 目标     | 快速满足 | 持续服务 |<br>| 评估指标 | 简明     | 复杂     |</p>
+</li>
+</ol>
+<h4 id="推荐系统的工作原理"><a href="#推荐系统的工作原理" class="headerlink" title="推荐系统的工作原理"></a>推荐系统的工作原理</h4><ul>
+<li><strong>社会化推荐</strong> 例如：向朋友咨询，社会化推荐，让好友给自己推荐物品</li>
+<li><strong>基于内容的推荐</strong> 例如：打开搜索引擎，输入自己喜欢的演员的名字，然后看看返回结果中还有什么电影是自己没看过的</li>
+<li><strong>基于流行度的推荐</strong> 例如：查看票房排行榜</li>
+<li><strong>基于协同过滤的推荐</strong> 例如：找到和自己历史兴趣相似的用户，看看他们最近在看什么电影</li>
+</ul>
+<h4 id="推荐系统的作用"><a href="#推荐系统的作用" class="headerlink" title="推荐系统的作用"></a>推荐系统的作用</h4><ul>
+<li>高效连接用户和物品</li>
+<li>提高用户停留时间和用户活跃程度</li>
+<li>有效的帮助产品实现其商业价值</li>
+</ul>
+<h4 id="推荐系统的应用场景"><a href="#推荐系统的应用场景" class="headerlink" title="推荐系统的应用场景"></a>推荐系统的应用场景</h4><ul>
+<li>头条</li>
+<li>淘宝京东</li>
+<li>抖音</li>
+</ul>
+<h4 id="推荐系统和Web项目的区别"><a href="#推荐系统和Web项目的区别" class="headerlink" title="推荐系统和Web项目的区别"></a>推荐系统和Web项目的区别</h4><ul>
+<li>通过信息过滤实现目标提升 V.S. 稳定的信息流通系统<ul>
+<li>web项目: 处理复杂业务逻辑，处理高并发，为用户构建一个稳定的信息流通服务</li>
+<li>推荐系统: 追求指标增长， 留存率/阅读时间/GMV (Gross Merchandise Volume电商网站成交金额)/视频网站VV (Video View)</li>
+</ul>
+</li>
+<li>确定 V.S. 不确定思维<ul>
+<li>web项目: 对结果有确定预期</li>
+<li>推荐系统: 结果是概率问题</li>
+</ul>
+</li>
+</ul>
+<h4 id="推荐系统要素"><a href="#推荐系统要素" class="headerlink" title="推荐系统要素"></a>推荐系统要素</h4><ul>
+<li>UI 和 UE(前端界面)</li>
+<li>数据 (Lambda架构)</li>
+<li>业务知识</li>
+<li>算法</li>
+</ul>
+<h4 id="推荐系统架构"><a href="#推荐系统架构" class="headerlink" title="推荐系统架构"></a>推荐系统架构</h4><ol>
+<li><h5 id="推荐系统整体架构"><a href="#推荐系统整体架构" class="headerlink" title="推荐系统整体架构"></a>推荐系统整体架构</h5></li>
+<li><h5 id="大数据Lambda架构"><a href="#大数据Lambda架构" class="headerlink" title="大数据Lambda架构"></a>大数据Lambda架构</h5></li>
+<li><h5 id="推荐算法架构"><a href="#推荐算法架构" class="headerlink" title="推荐算法架构"></a>推荐算法架构</h5></li>
+</ol>
+]]></content>
+      <categories>
+        <category>大数据推荐系统</category>
+      </categories>
+      <tags>
+        <tag>大数据推荐</tag>
+        <tag>推荐系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>五大常用算法</title>
+    <url>/2020/01/13/%E4%BA%94%E5%A4%A7%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>据说有人归纳了计算机的五大常用算法，它们是贪婪算法，动态规划算法，分治算法，回溯算法以及分支限界算法。这五个算法是有很多应用场景的，最优化问题大多可以利用这些算法解决。算法的本质就是解决问题。当数据量比较小时，其实根本就不需要什么算法，写一些for循环完全就可以很快速的搞定了，但是当数据量比较大，场景比较复杂的时候，算法就尤为重要了，本文先归纳这几个算法及应用场景，随后在细细品味。</p>
+<a id="more"></a>
+<h4 id="穷举法"><a href="#穷举法" class="headerlink" title="穷举法"></a>穷举法</h4><h5 id="1-定义"><a href="#1-定义" class="headerlink" title="1.定义"></a>1.定义</h5><p>穷举法也叫枚举法， 在进行归纳推理时，如果逐个考察了某类事件的所有可能情况，因而得出一般结论，那么这结论是可靠的，这种归纳方法叫做枚举法。枚举法是利用计算机运算速度快、精确度高的特点，对要解决问题的所有可能情况，一个不漏地进行检验，从中找出符合要求的答案，因此枚举法是通过牺牲时间来换取答案的全面性 。穷举法属于暴力破解法， 暴力破解法，就是把所有条件，相关情况统统考虑进去，让计算机进行检索，指导得出与之所有条件符合的结果 。</p>
+<h5 id="2-基本思想"><a href="#2-基本思想" class="headerlink" title="2.基本思想"></a>2.基本思想</h5><ol>
+<li>确定枚举对象、枚举范围和判定条件</li>
+<li>枚举可能的解，验证是否是问题的解</li>
+</ol>
+<h5 id="3-应用实例"><a href="#3-应用实例" class="headerlink" title="3.应用实例"></a>3.应用实例</h5><ol>
+<li>百钱买鸡问题</li>
+<li>鸡兔同笼问题</li>
+<li>搬砖块问题</li>
+<li>猜数字</li>
+<li>韩信点兵 </li>
+</ol>
+<h4 id="贪婪算法"><a href="#贪婪算法" class="headerlink" title="贪婪算法"></a>贪婪算法</h4><h5 id="1-定义-1"><a href="#1-定义-1" class="headerlink" title="1.定义"></a>1.定义</h5><p>贪婪算法(贪心算法)是指在对问题进行求解时，在每一步选择中都采取最好或者最优(即最有利)的选择，从而希望能够导致结果是最好或者最优的算法。贪婪算法所得到的结果往往不是最优的结果(有时候会是最优解)，但是都是相对近似(接近)最优解的结果。</p>
+<h5 id="2-基本思想-1"><a href="#2-基本思想-1" class="headerlink" title="2.基本思想"></a>2.基本思想</h5><ol>
+<li><p>建立数学模型来描述问题</p>
+</li>
+<li><p>把求解的问题分成若干个子问题</p>
+</li>
+<li><p>对每一子问题求解，得到子问题的局部最优解</p>
+</li>
+<li><p>把子问题对应的局部最优解合成原来整个问题的一个近似最优解</p>
+</li>
+</ol>
+<h5 id="3-应用实例-1"><a href="#3-应用实例-1" class="headerlink" title="3.应用实例"></a>3.应用实例</h5><ol>
+<li>钱币找零问题 </li>
+<li>区间调度问题</li>
+<li>背包问题 </li>
+<li>均分纸牌 </li>
+<li>最大整数</li>
+</ol>
+<h4 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h4><h5 id="1-定义-2"><a href="#1-定义-2" class="headerlink" title="1.定义"></a>1.定义</h5><p> 动态规划过程是：每次决策依赖于当前状态，又随即引起状态的转移。一个决策序列就是在变化的状态中产生出来的，所以，这种多阶段最优化决策解决问题的过程就称为动态规划。 </p>
+<h5 id="2-基本思想-2"><a href="#2-基本思想-2" class="headerlink" title="2.基本思想"></a>2.基本思想</h5><ol>
+<li>将待求解的问题分解为若干个子问题（阶段）</li>
+<li>按顺序求解子阶段，前一子问题的解，为后一子问题的求解提供了有用的信息</li>
+<li>在求解任一子问题时，列出各种可能的局部解，通过决策保留那些有可能达到最优的局部解，丢弃其他局部解</li>
+<li>依次解决各子问题，最后一个子问题就是初始问题的解。 </li>
+</ol>
+<h5 id="3-应用实例-2"><a href="#3-应用实例-2" class="headerlink" title="3.应用实例"></a>3.应用实例</h5><ol>
+<li>数字三角形问题</li>
+<li>找零钱问题</li>
+<li>走方格问题</li>
+<li>最长公共序列数</li>
+</ol>
+<h4 id="分治算法"><a href="#分治算法" class="headerlink" title="分治算法"></a>分治算法</h4><h5 id="1-定义-3"><a href="#1-定义-3" class="headerlink" title="1.定义"></a>1.定义</h5><p> 分治算法的基本思想是将一个规模为N的问题分解为K个规模较小的子问题，这些子问题相互独立且与原问题性质相同。求出子问题的解，就可得到原问题的解。即一种分目标完成程序算法，简单问题可用二分法完成。 </p>
+<h5 id="2-基本思想-3"><a href="#2-基本思想-3" class="headerlink" title="2.基本思想"></a>2.基本思想</h5><ol>
+<li>先把问题分解成几个子问题</li>
+<li>求出这几个子问题的解法</li>
+<li>再找到合适的方法，把它们组合成求整个问题的解法。</li>
+<li>如果这些子问题还较大，难以解决，可以再把它们分成几个更小的子问题</li>
+<li>以此类推，直至可以直接求出解为止</li>
+</ol>
+<h5 id="3-应用实例-3"><a href="#3-应用实例-3" class="headerlink" title="3.应用实例"></a>3.应用实例</h5><ol>
+<li>找出伪币</li>
+<li>二分搜索</li>
+<li>汉诺塔</li>
+<li>归并排序</li>
+<li>快速排序</li>
+<li>大整数乘法</li>
+</ol>
+<h4 id="回溯算法"><a href="#回溯算法" class="headerlink" title="回溯算法"></a>回溯算法</h4><h5 id="1-定义-4"><a href="#1-定义-4" class="headerlink" title="1.定义"></a>1.定义</h5><p> 回溯算法实际上一个类似枚举的搜索尝试过程，主要是在搜索尝试过程中寻找问题的解，当发现已不满足求解条件时，就“回溯”返回，尝试别的路径。回溯法是一种选优搜索法，按选优条件向前搜索，以达到目标。但当探索到某一步时，发现原先选择并不优或达不到目标，就退回一步重新选择，这种走不通就退回再走的技术为回溯法，而满足回溯条件的某个状态的点称为“回溯点”。许多复杂的，规模较大的问题都可以使用回溯法，有“通用解题方法”的美称。 </p>
+<h5 id="2-基本思想-4"><a href="#2-基本思想-4" class="headerlink" title="2.基本思想"></a>2.基本思想</h5><p> 从一条路往前走，能进则进，不能进则退回来，换一条路再试 </p>
+<h5 id="3-应用实例-4"><a href="#3-应用实例-4" class="headerlink" title="3.应用实例"></a>3.应用实例</h5><ol>
+<li>八皇后问题</li>
+<li>图的着色问题 </li>
+<li>装载问题 </li>
+<li>批处理作业调度问题 </li>
+<li>背包问题 </li>
+<li>最大团问题 </li>
+</ol>
+<h4 id="分支限界算法"><a href="#分支限界算法" class="headerlink" title="分支限界算法"></a>分支限界算法</h4><h5 id="1-定义-5"><a href="#1-定义-5" class="headerlink" title="1.定义"></a>1.定义</h5><p>分支限界算法是按照广度优先的方式对解空间树（状态空间树）进行搜索，从而求得最优解的算法。</p>
+<h5 id="2-基本思想-5"><a href="#2-基本思想-5" class="headerlink" title="2.基本思想"></a>2.基本思想</h5><p>在搜索的过程中，采用<strong>限界函数</strong>（bound function）估算所有子节点的目标函数的可能取值，从而选择使目标函数取极值（极大值或者极小值）的节点作为扩展结点（如果限界值没有超过目前的最优解，则剪枝）进行下一步搜索（重复 BFS -&gt; 计算所有子节点限界 -&gt; 选择最优子节点作为扩展结点的过程），从而不断调整搜索的方向，尽快找到问题的最优解。分支限界的思想类似于：图的广度优先搜索，树的层序遍历。</p>
+<h5 id="3-应用实例-5"><a href="#3-应用实例-5" class="headerlink" title="3.应用实例"></a>3.应用实例</h5><ol>
+<li>单源最短路径问题</li>
+<li>装载问题</li>
+<li>布线问题</li>
+<li>0-1背包问题</li>
+<li>最大团问题</li>
+<li>旅行售货员问题</li>
+</ol>
+<h4 id="总结说明"><a href="#总结说明" class="headerlink" title="总结说明"></a>总结说明</h4><p>对于一个应用实例可能会有多种算法解决，算法是一种解决问题的思想，任意一个算法绝对不是一两篇文章可以讲清楚的。当然也不是通过一两道题目可以完全学会。学习算法的关键是<strong>用算法的思想去想问题，去解决实际问题</strong>，多刷题是养成算法思维解决问题的基础。</p>
+<h4 id="学习算法方法"><a href="#学习算法方法" class="headerlink" title="学习算法方法"></a>学习算法方法</h4><h5 id="1-书籍"><a href="#1-书籍" class="headerlink" title="1.书籍"></a>1.书籍</h5><ol>
+<li>数据结构</li>
+<li>数据结构与算法分析 </li>
+<li>算法导论</li>
+</ol>
+<h5 id="2-刷题"><a href="#2-刷题" class="headerlink" title="2.刷题"></a>2.刷题</h5><ol>
+<li>牛客</li>
+<li>LeeCode</li>
+</ol>
+<h5 id="3-在线视频课程"><a href="#3-在线视频课程" class="headerlink" title="3.在线视频课程"></a>3.在线视频课程</h5><ol>
+<li>慕课</li>
+<li>网易云课程（强烈推荐）</li>
+</ol>
+<h5 id="4-可视化工具"><a href="#4-可视化工具" class="headerlink" title="4.可视化工具"></a>4.可视化工具</h5><ul>
+<li><a href="https://visualgo.net/" target="_blank" rel="noopener">visualgo 网址 </a> </li>
+</ul>
+<p>最重要的是耐心，自律，有毅力，坚持。</p>
+<p>作为才入门的程序员，我已经沉浸在知识海洋中无法自拔，深深感受到了自己的渺小。</p>
+]]></content>
+      <categories>
+        <category>计算机常用算法</category>
+      </categories>
+      <tags>
+        <tag>计算机常用算法</tag>
+        <tag>算法思想</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>集成学习</title>
+    <url>/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<h4 id="什么是集成学习"><a href="#什么是集成学习" class="headerlink" title="什么是集成学习"></a>什么是集成学习</h4><p> 集成学习通过建立几个模型来解决单一预测问题。它的工作原理是<strong>生成多个分类器/模型</strong>，各自独立地学习和作出预测。<strong>这些预测最后结合成组合预测，因此优于任何一个单分类的做出预测。</strong> </p>
+<a id="more"></a>
+<p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/ensemble1.png" alt="image-20190214154128155" style="zoom: 25%;"></p>
+<h4 id="机器学习的两个核心任务"><a href="#机器学习的两个核心任务" class="headerlink" title="机器学习的两个核心任务"></a>机器学习的两个核心任务</h4><ul>
+<li>任务一：<strong>如何优化训练数据</strong> —&gt; 主要用于<strong>解决欠拟合问题</strong></li>
+<li>任务二：<strong>如何提升泛化性能</strong> —&gt; 主要用于<strong>解决过拟合问题</strong></li>
+</ul>
+<h4 id="集成学习中boosting和Bagging"><a href="#集成学习中boosting和Bagging" class="headerlink" title="集成学习中boosting和Bagging"></a>集成学习中boosting和Bagging</h4><p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/ensemble3.png" alt="image-20190214155522366" style="zoom:25%;"> </p>
+<p><strong>只要单分类器的表现不太差，集成学习的结果总是要好于单分类器的</strong></p>
+<h4 id="Bagging集成原理"><a href="#Bagging集成原理" class="headerlink" title="Bagging集成原理"></a>Bagging集成原理</h4><p> 目标：把下面的圈和方块进行分类 </p>
+<p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/bagging1.png" alt="image-20190214160011298" style="zoom: 33%;"> </p>
+<p>实现过程：</p>
+<p>1.采样不同数据集</p>
+<p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/bagging2.png" alt="image-20190214160047813" style="zoom:33%;"></p>
+<p> 2.训练分类器 </p>
+<p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/bagging3.png" alt="image-20190214160135609" style="zoom:33%;"> </p>
+<ol>
+<li><p>平权投票，获取最终结果 </p>
+<p><img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/bagging4.png" alt="image-20190214160208609" style="zoom:33%;"></p>
+<p>4.主要实现过程小结 </p>
+<p><img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/bagging5.png" alt="image-20190214160248137" style="zoom:50%;"> </p>
+</li>
+</ol>
+<h4 id="随机森林构造过程"><a href="#随机森林构造过程" class="headerlink" title="随机森林构造过程"></a>随机森林构造过程</h4><p>在机器学习中，<strong>随机森林是一个包含多个决策树的分类器</strong>，并且其输出的类别是由个别树输出的类别的众数而定。</p>
+<p><strong>随机森林</strong> <strong>= Bagging +</strong> <strong>决策树</strong></p>
+<p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/tf1.png" alt="image-20190214160355272" style="zoom:33%;"></p>
+<h4 id="随机森林api介绍"><a href="#随机森林api介绍" class="headerlink" title="随机森林api介绍"></a>随机森林api介绍</h4><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">sklearn.ensemble.RandomForestClassifier(<span class="attribute">n_estimators</span>=10, <span class="attribute">criterion</span>=’gini’, <span class="attribute">max_depth</span>=None, <span class="attribute">bootstrap</span>=<span class="literal">True</span>, <span class="attribute">random_state</span>=None, <span class="attribute">min_samples_split</span>=2)</span><br><span class="line">	n_estimators：integer，optional（default = 10）森林里的树木数量120,200,300,500,800,1200</span><br><span class="line">	Criterion：string，可选（default =“gini”）分割特征的测量方法</span><br><span class="line">	max_depth：integer或None，可选（默认=无）树的最大深度 5,8,15,25,30</span><br><span class="line">	<span class="attribute">max_features</span>=<span class="string">"auto”,每个决策树的最大特征数量</span></span><br><span class="line"><span class="string">		If "</span>auto", then <span class="attribute">max_features</span>=sqrt(n_features).</span><br><span class="line">		<span class="keyword">If</span> <span class="string">"sqrt"</span>, then <span class="attribute">max_features</span>=sqrt(n_features)(same as <span class="string">"auto"</span>).</span><br><span class="line">		<span class="keyword">If</span> <span class="string">"log2"</span>, then <span class="attribute">max_features</span>=log2(n_features).</span><br><span class="line">		<span class="keyword">If</span> None, then <span class="attribute">max_features</span>=n_features.</span><br><span class="line">	bootstrap：boolean，optional（default = <span class="literal">True</span>）是否在构建树时使用放回抽样</span><br><span class="line">	min_samples_split:节点划分最少样本数</span><br><span class="line">	min_samples_leaf:叶子节点的最小样本数</span><br><span class="line">超参数：n_estimator, max_depth, min_samples_split,min_samples_leaf</span><br></pre></td></tr></table></figure>
+<h4 id="随机森林预测案例"><a href="#随机森林预测案例" class="headerlink" title="随机森林预测案例"></a>随机森林预测案例</h4><ul>
+<li>实例化随机森林</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 随机森林去进行预测</span></span><br><span class="line">rf = RandomForestClassifier()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>定义超参数的选择列表</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">param = &#123;<span class="string">"n_estimators"</span>: [<span class="number">120</span>,<span class="number">200</span>,<span class="number">300</span>,<span class="number">500</span>,<span class="number">800</span>,<span class="number">1200</span>], <span class="string">"max_depth"</span>: [<span class="number">5</span>, <span class="number">8</span>, <span class="number">15</span>, <span class="number">25</span>, <span class="number">30</span>]&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用GridSearchCV进行网格搜索</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 超参数调优</span></span><br><span class="line">gc = GridSearchCV(rf, param_grid=param, cv=<span class="number">2</span>)</span><br><span class="line">gc.fit(x_train, y_train)</span><br><span class="line">print(<span class="string">"随机森林预测的准确率为："</span>, gc.score(x_test, y_test))</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意</p>
+<ul>
+<li>随机森林的建立过程</li>
+<li>树的深度、树的个数等需要进行超参数调优</li>
+</ul>
+</blockquote>
+<h4 id="bagging集成优点"><a href="#bagging集成优点" class="headerlink" title="bagging集成优点"></a>bagging集成优点</h4><p><strong>Bagging + 决策树/线性回归/逻辑回归/深度学习… = bagging集成学习方法</strong></p>
+<p>经过上面方式组成的集成学习方法:</p>
+<ol>
+<li><strong>均可在原有算法上提高约2%左右的泛化正确率</strong></li>
+<li><strong>简单, 方便, 通用</strong></li>
+</ol>
+<h4 id="boosting集成原理"><a href="#boosting集成原理" class="headerlink" title="boosting集成原理"></a>boosting集成原理</h4><p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/boosting1.png" alt="image-20190214160534929" style="zoom:33%;"> </p>
+<p><strong>随着学习的积累从弱到强</strong></p>
+<p><strong>简而言之：每新加入一个弱学习器，整体能力就会得到提升</strong></p>
+<p>代表算法：Adaboost，GBDT，XGBoost</p>
+<h4 id="boosting实现过程"><a href="#boosting实现过程" class="headerlink" title="boosting实现过程"></a>boosting实现过程</h4><p>1.<strong>训练第一个学习器</strong></p>
+<p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/boosting2.png" alt="image-20190214160657608" style="zoom:33%;"></p>
+<p> 2.<strong>调整数据分布</strong></p>
+<p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/boosting3.png" alt="image-20190214160727582" style="zoom:33%;"></p>
+<p> 3.<strong>训练第二个学习器</strong></p>
+<p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/boostin4.png" alt="image-20190214160805813" style="zoom:33%;"></p>
+<p> 4.<strong>再次调整数据分布</strong></p>
+<p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/boosting5.png" alt="image-20190214160900951" style="zoom:33%;"></p>
+<p> 5.<strong>依次训练学习器，调整数据分布</strong></p>
+<p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/boosting6.png" alt="image-20190214160951473" style="zoom:33%;"></p>
+<p> 6.<strong>整体过程实现</strong></p>
+<p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/boosting7.png" alt="image-20190214161215163" style="zoom:33%;"> </p>
+<blockquote>
+<p>关键点：<br>如何确认投票权重？<br>如何调整数据分布？</p>
+</blockquote>
+<p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/boosting8.png" alt="image-20190214161243306" style="zoom:33%;"></p>
+<p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/boosting9.png" alt="image-20190214161305414" style="zoom:33%;">  </p>
+<p><img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/boosting10.png" alt="image-20190214161432444" style="zoom:33%;"> </p>
+<h4 id="bagging与boosting比较"><a href="#bagging与boosting比较" class="headerlink" title="bagging与boosting比较"></a>bagging与boosting比较</h4><blockquote>
+<p>区别一：数据方面</p>
+<p>​    Bagging：对数据进行采样训练；</p>
+<p>​    Boosting：根据前一轮学习结果调整数据的重要性。</p>
+<p>区别二：投票方面</p>
+<p>​    Bagging：所有学习器平权投票；</p>
+<p>​    Boosting：对学习器进行加权投票。</p>
+<p>区别三：学习顺序</p>
+<p>​    Bagging的学习是并行的，每个学习器没有依赖关系；</p>
+<p>​    Boosting学习是串行，学习有先后顺序。</p>
+<p>区别四：主要作用</p>
+<p>​    Bagging主要用于提高泛化性能（解决过拟合，也可以说降低方差）</p>
+<p>​    Boosting主要用于提高训练精度 （解决欠拟合，也可以说降低偏差）</p>
+</blockquote>
+<h4 id="boostingAPI介绍"><a href="#boostingAPI介绍" class="headerlink" title="boostingAPI介绍"></a>boostingAPI介绍</h4><figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line">from sklearn.ensemble <span class="keyword">import</span> AdaBoostClassifier</span><br><span class="line">api链接<span class="symbol">:https</span><span class="symbol">://scikit-learn</span>.org/stable/modules/generated/sklearn.ensemble.AdaBoostClassifier.html<span class="comment">#sklearn.ensemble.AdaBoostClassifier</span></span><br></pre></td></tr></table></figure>
+<h4 id="梯度提升决策树-GBDT"><a href="#梯度提升决策树-GBDT" class="headerlink" title="梯度提升决策树 GBDT"></a>梯度提升决策树 GBDT</h4><ol>
+<li><h5 id="GBDT定义"><a href="#GBDT定义" class="headerlink" title="GBDT定义"></a>GBDT定义</h5><p>梯度提升决策树(GBDT Gradient Boosting Decision Tree) <strong>是一种迭代的决策树算法</strong>，<strong>该算法由多棵决策树组成，所有树的结论累加起来做最终答案。</strong>它在被提出之初就被认为是泛化能力（generalization)较强的算法。近些年更因为被用于搜索排序的机器学习模型而引起大家关注。</p>
+<p><strong>GBDT = 梯度下降 + Boosting + 决策树</strong></p>
+</li>
+<li><h5 id="GBDT执行流程"><a href="#GBDT执行流程" class="headerlink" title="GBDT执行流程"></a>GBDT执行流程</h5><p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/gbdt4.png" alt="image-20190307231055168"></p>
+<p> 如果上式中的$h_i(x)=$决策树模型,则上式就变为:</p>
+<p><strong>GBDT = 梯度下降 + Boosting + 决策树</strong></p>
+</li>
+<li><h5 id="GBDT案例"><a href="#GBDT案例" class="headerlink" title="GBDT案例"></a>GBDT案例</h5><p> 预测编号5的身高: </p>
+<p>| 编号 | 年龄(岁) | 体重(KG) | 身高(M) |<br>| —— | ———— | ———— | ———- |<br>| 1    | 5        | 20       | 1.1     |<br>| 2    | 7        | 30       | 1.3     |<br>| 3    | 21       | 70       | 1.7     |<br>| 4    | 30       | 60       | 1.8     |<br>| 5    | 25       | 65       | ?       |</p>
+<p>第一步：计算损失函数,并求出第一个预测值:</p>
+<p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/gbdt5.png" alt="image-20190307231938147" style="zoom:33%;"> </p>
+<p> 第二步：求解划分点 </p>
+<p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/gbdt6.png" alt="image-20190307232225237" style="zoom:33%;"></p>
+<p> 得出:年龄21为划分点的方差=0.01+0.0025=0.0125</p>
+<p>第三步：通过调整后目标值,求解得出h1(x)</p>
+<p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/gbdt8.png" alt="image-20190307232510232" style="zoom:33%;"></p>
+<p>  第四步：求解h2(x) </p>
+<p> <img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/gbdt9.png" alt="image-20190307232816506" style="zoom:33%;"></p>
+<p> 得出结果:</p>
+<p><img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/gbdt10.png" alt="image-20190307232909127" style="zoom:33%;"> 编号5身高 = 1.475 + 0.03 + 0.275 = 1.78</p>
+</li>
+<li><h5 id="GBDT主要执行思想"><a href="#GBDT主要执行思想" class="headerlink" title="GBDT主要执行思想"></a>GBDT主要执行思想</h5><p>1.使用梯度下降法优化代价函数；</p>
+<p>2.使用一层决策树作为弱学习器，负梯度作为目标值；</p>
+<p>3.利用boosting思想进行集成。</p>
+</li>
+</ol>
+<h4 id="XGBoost"><a href="#XGBoost" class="headerlink" title="XGBoost"></a>XGBoost</h4><p> <strong>XGBoost= 二阶泰勒展开+boosting+决策树+正则化</strong> </p>
+<p><strong>Boosting</strong>：XGBoost使用Boosting提升思想对多个弱学习器进行迭代式学习</p>
+<p><strong>二阶泰勒展开</strong>：每一轮学习中，XGBoost对损失函数进行二阶泰勒展开，使用一阶和二阶梯度进行优化。</p>
+<p><strong>决策树</strong>：在每一轮学习中，XGBoost使用决策树算法作为弱学习进行优化。</p>
+<p><strong>正则化</strong>：在优化过程中XGBoost为防止过拟合，在损失函数中加入惩罚项，限制决策树的叶子节点个数以及决策树叶子节点的值。</p>
+<p><img src="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/taylor.png" alt="image-20190307234553645" style="zoom:33%;"> </p>
+<p>泰勒展开越多，计算结果越精确</p>
+]]></content>
+      <categories>
+        <category>机器学习算法</category>
+      </categories>
+      <tags>
+        <tag>机器学习算法</tag>
+        <tag>机器学习</tag>
+        <tag>监督学习算法</tag>
+        <tag>集成学习</tag>
+        <tag>欠拟合过拟合</tag>
+        <tag>bagging集成</tag>
+        <tag>boosting集成</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>特征工程-特征提取</title>
     <url>/2020/01/11/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B-%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/</url>
     <content><![CDATA[<h4 id="特征提取"><a href="#特征提取" class="headerlink" title="特征提取"></a>特征提取</h4><ul>
@@ -191,12 +585,13 @@
 <p><strong>注：企业重要决策，由于决策树很好的分析能力，在决策过程应用较多， 可以选择特征</strong></p>
 ]]></content>
       <categories>
-        <category>机器学习</category>
+        <category>机器学习算法</category>
       </categories>
       <tags>
         <tag>机器学习算法</tag>
         <tag>机器学习</tag>
         <tag>决策树可视化</tag>
+        <tag>监督学习算法</tag>
       </tags>
   </entry>
   <entry>
@@ -526,11 +921,12 @@
 </ol>
 ]]></content>
       <categories>
-        <category>机器学习</category>
+        <category>机器学习算法</category>
       </categories>
       <tags>
         <tag>机器学习算法</tag>
         <tag>机器学习</tag>
+        <tag>监督学习算法</tag>
         <tag>决策树分类原理</tag>
       </tags>
   </entry>
@@ -1186,11 +1582,12 @@
 </ul>
 ]]></content>
       <categories>
-        <category>机器学习</category>
+        <category>机器学习算法</category>
       </categories>
       <tags>
         <tag>机器学习算法</tag>
         <tag>机器学习</tag>
+        <tag>监督学习算法</tag>
         <tag>梯度下降</tag>
         <tag>正规方程</tag>
         <tag>正则化</tag>
@@ -1420,11 +1817,12 @@
 <p><strong>代码实现：</strong></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split, GridSearchCV</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1.获取数据集</span></span><br><span class="line">facebook = pd.read_csv(<span class="string">"./data/FBlocation/train.csv"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.基本数据处理</span></span><br><span class="line"><span class="comment"># 2.1 缩小数据范围</span></span><br><span class="line">facebook_data = facebook.query(<span class="string">"x&gt;2.0 &amp; x&lt;2.2 &amp; y&gt;2.0 &amp; y&lt;2.2"</span>)</span><br><span class="line"><span class="comment"># 2.2 选择时间特征(脱敏)</span></span><br><span class="line">time = pd.to_datetime(facebook_data[<span class="string">"time"</span>], unit=<span class="string">"s"</span>)</span><br><span class="line"><span class="comment"># 转换</span></span><br><span class="line">time = pd.DatetimeIndex(time)</span><br><span class="line">facebook_data[<span class="string">"day"</span>] = time.day</span><br><span class="line">facebook_data[<span class="string">"hour"</span>] = time.hour</span><br><span class="line">facebook_data[<span class="string">"weekday"</span>] = time.weekday</span><br><span class="line"><span class="comment"># 2.3 去掉签到较少的地方</span></span><br><span class="line">place_count = facebook_data.groupby(<span class="string">"place_id"</span>).count()</span><br><span class="line">place_count = place_count[place_count[<span class="string">"row_id"</span>]&gt;<span class="number">3</span>]</span><br><span class="line">facebook_data = facebook_data[facebook_data[<span class="string">"place_id"</span>]].isin(place_count.index)</span><br><span class="line"><span class="comment"># 2.4 确定特征值和目标值</span></span><br><span class="line">x = facebook_data[[<span class="string">"x"</span>, <span class="string">"y"</span>, <span class="string">"accuracy"</span>, <span class="string">"day"</span>, <span class="string">"hour"</span>, <span class="string">"weekday"</span>]]</span><br><span class="line">y = facebook_data[<span class="string">"place_id"</span>]</span><br><span class="line"><span class="comment"># 2.5 分割数据集</span></span><br><span class="line">x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=<span class="number">22</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3.特征工程 -- 特征预处理(标准化)</span></span><br><span class="line"><span class="comment"># 3.1 实例化一个转换器</span></span><br><span class="line">transfer = StandardScaler()</span><br><span class="line"><span class="comment"># 3.2 调用fit_transform</span></span><br><span class="line">x_train = transfer.fit_transform(x_train)</span><br><span class="line">x_test = transfer.fit_transform(x_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4.机器学习 -- knn+cv</span></span><br><span class="line"><span class="comment"># 4.1 实例化一个训练器</span></span><br><span class="line">estimator = KNeighborsClassifier()</span><br><span class="line"><span class="comment"># 4.2 交叉验证，网格搜索实现，调用gridsearchCV</span></span><br><span class="line">param_grid = &#123;<span class="string">"n_neighbors"</span>: [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]&#125;</span><br><span class="line"><span class="comment"># n_jobs：指定几个CPU跑程序</span></span><br><span class="line">estimator = GridSearchCV(estimator, param_grid=param_grid, cv=<span class="number">5</span>, n_jobs=<span class="number">8</span>)</span><br><span class="line"><span class="comment"># 4.3 模型训练</span></span><br><span class="line">estimator.fit(x_train, y_train)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5.模型评估</span></span><br><span class="line"><span class="comment"># 5.1 基本评估方式</span></span><br><span class="line">score = estimator.score(x_test, y_test)</span><br><span class="line">print(<span class="string">"最后预测的准确率为:\n"</span>, score)</span><br><span class="line">y_predict = estimator.predict(x_test)</span><br><span class="line">print(<span class="string">"最后的预测值为:\n"</span>, y_predict)</span><br><span class="line">print(<span class="string">"预测值和真实值的对比情况:\n"</span>, y_predict == y_test)</span><br><span class="line"><span class="comment"># 5.2 使用交叉验证后的评估方式</span></span><br><span class="line">print(<span class="string">"在交叉验证中验证的最好结果:\n"</span>, estimator.best_score_)</span><br><span class="line">print(<span class="string">"最好的参数模型:\n"</span>, estimator.best_estimator_)</span><br><span class="line">print(<span class="string">"每次交叉验证后的验证集准确率结果和训练集准确率结果:\n"</span>,estimator.cv_results_)</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>机器学习</category>
+        <category>机器学习算法</category>
       </categories>
       <tags>
         <tag>机器学习算法</tag>
         <tag>机器学习</tag>
+        <tag>监督学习算法</tag>
         <tag>特征工程</tag>
         <tag>特征工程预处理</tag>
         <tag>交叉验证网格搜索</tag>

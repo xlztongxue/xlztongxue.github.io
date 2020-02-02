@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon16x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://xiaoliaozi.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="聚类算法简介 使用不同的聚类准则，产生的聚类结果不同。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聚类算法">
+<meta property="og:url" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="小廖子的博客">
+<meta property="og:description" content="聚类算法简介 使用不同的聚类准则，产生的聚类结果不同。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/cluser_demo1.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/cluster_demo2.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/cluster_demo3.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/K-means%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_dynamic.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo1.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo2.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo3.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo4.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo5.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo6.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo7.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo8.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/scikit-learn%E7%AE%97%E6%B3%95%E9%80%89%E6%8B%A9%E8%B7%AF%E5%BE%84%E5%9B%BE.png">
+<meta property="article:published_time" content="2020-02-01T05:09:38.000Z">
+<meta property="article:modified_time" content="2020-02-02T03:52:13.830Z">
+<meta property="article:author" content="小廖子">
+<meta property="article:tag" content="机器">
+<meta property="article:tag" content="学习机器学习算法">
+<meta property="article:tag" content="聚类算法">
+<meta property="article:tag" content="无监督学习算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/cluser_demo1.png">
+
+<link rel="canonical" href="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>聚类算法 | 小廖子的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="小廖子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小廖子的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">好记性不如记笔记</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avter.jpg">
+      <meta itemprop="name" content="小廖子">
+      <meta itemprop="description" content="学无止境">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小廖子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          聚类算法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-01 13:09:38" itemprop="dateCreated datePublished" datetime="2020-02-01T13:09:38+08:00">2020-02-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-02 11:52:13" itemprop="dateModified" datetime="2020-02-02T11:52:13+08:00">2020-02-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习算法</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="聚类算法简介"><a href="#聚类算法简介" class="headerlink" title="聚类算法简介"></a>聚类算法简介</h4><p> <strong>使用不同的聚类准则，产生的聚类结果不同</strong>。 </p>
+<a id="more"></a>
+<ol>
+<li><h5 id="聚类算法在现实中的应用"><a href="#聚类算法在现实中的应用" class="headerlink" title="聚类算法在现实中的应用"></a>聚类算法在现实中的应用</h5><ul>
+<li>用户画像，广告推荐，Data Segmentation，搜索引擎的流量推荐，恶意流量识别</li>
+<li>基于位置信息的商业推送，新闻聚类，筛选排序</li>
+<li>图像分割，降维，识别；离群点检测；信用卡异常消费；发掘相同功能的基因片段</li>
+</ul>
+</li>
+<li><h5 id="聚类算法的概念"><a href="#聚类算法的概念" class="headerlink" title="聚类算法的概念"></a>聚类算法的概念</h5><p>一种典型的<strong>无监督</strong>学习算法，主要用于将相似的样本自动归到一个类别中。在聚类算法中根据样本之间的相似性，将样本划分到不同的类别中，对于不同的相似度计算方法，会得到不同的聚类结果，常用的相似度计算方法有欧式距离法。</p>
+</li>
+<li><h5 id="聚类算法与分类算法最大的区别"><a href="#聚类算法与分类算法最大的区别" class="headerlink" title="聚类算法与分类算法最大的区别"></a>聚类算法与分类算法最大的区别</h5><p> 聚类算法是无监督的学习算法，而分类算法属于监督的学习算法。 </p>
+</li>
+</ol>
+<h4 id="聚类算法API"><a href="#聚类算法API" class="headerlink" title="聚类算法API"></a>聚类算法API</h4><ol>
+<li><h5 id="API介绍"><a href="#API介绍" class="headerlink" title="API介绍"></a>API介绍</h5><figure class="highlight gml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sklearn.cluster.KMeans(n_clusters=<span class="number">8</span>)</span><br><span class="line">参数:</span><br><span class="line">	n_clusters:开始的聚类中心数量</span><br><span class="line">		整型，缺省值=<span class="number">8</span>，生成的聚类数，即产生的质心（centroids）数。</span><br><span class="line">方法:</span><br><span class="line">	estimator.fit(<span class="symbol">x</span>)</span><br><span class="line">	estimator.predict(<span class="symbol">x</span>)</span><br><span class="line">	estimator.fit_predict(<span class="symbol">x</span>)</span><br><span class="line">		计算聚类中心并预测每个样本属于哪个类别,相当于先调用fit(<span class="symbol">x</span>),然后再调用predict(<span class="symbol">x</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><h5 id="小案例"><a href="#小案例" class="headerlink" title="小案例"></a>小案例</h5><p> 随机创建不同二维数据集作为训练集，并结合k-means算法将其聚类，你可以尝试分别聚类不同数量的簇，并观察聚类效果： </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/cluser_demo1.png" alt="image-20190219163451509" style="zoom:33%;"> </p>
+<p> 聚类参数n_cluster传值不同，得到的聚类结果不同 </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/cluster_demo2.png" alt="image-20190219163505530" style="zoom:33%;"> </p>
+<p>1.<strong>流程分析</strong></p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/cluster_demo3.png" alt="image-20190219163649472" style="zoom:33%;"> </p>
+<p>2.<strong>代码实现</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets.samples_generator <span class="keyword">import</span> make_blobs</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> calinski_harabaz_score</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1.创建数据集</span></span><br><span class="line"><span class="comment"># X为样本特征，Y为样本簇类别， 共1000个样本，每个样本4个特征，共4个簇，</span></span><br><span class="line"><span class="comment"># 簇中心在[-1,-1], [0,0],[1,1], [2,2]， 簇方差分别为[0.4, 0.2, 0.2, 0.2]</span></span><br><span class="line">X, y = make_blobs(n_samples=<span class="number">1000</span>, n_features=<span class="number">2</span>, centers=[[<span class="number">-1</span>, <span class="number">-1</span>], [<span class="number">0</span>, <span class="number">0</span>], [<span class="number">1</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>]],</span><br><span class="line">                  cluster_std=[<span class="number">0.4</span>, <span class="number">0.2</span>, <span class="number">0.2</span>, <span class="number">0.2</span>],</span><br><span class="line">                  random_state=<span class="number">9</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据集可视化</span></span><br><span class="line">plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], marker=<span class="string">'o'</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.使用k-means进行聚类,并使用CH方法评估</span></span><br><span class="line">y_pred = KMeans(n_clusters=<span class="number">2</span>, random_state=<span class="number">9</span>).fit_predict(X)</span><br><span class="line"><span class="comment"># 分别尝试n_cluses=2\3\4,然后查看聚类效果</span></span><br><span class="line">plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], c=y_pred)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用Calinski-Harabasz Index评估的聚类分数</span></span><br><span class="line">print(calinski_harabaz_score(X, y_pred))</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="聚类算法实现流程"><a href="#聚类算法实现流程" class="headerlink" title="聚类算法实现流程"></a>聚类算法实现流程</h4><blockquote>
+<p><strong>k-means其实包含两层内容：</strong></p>
+<ul>
+<li>K : 初始中心点个数（计划聚类数）</li>
+<li>means：求中心点到其他数据点距离的平均值</li>
+</ul>
+</blockquote>
+<h5 id="1-k-means聚类步骤"><a href="#1-k-means聚类步骤" class="headerlink" title="1. k-means聚类步骤"></a>1. k-means聚类步骤</h5><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、随机设置K个特征空间内的点作为初始的聚类中心</span><br><span class="line"><span class="number">2</span>、对于其他每个点计算到K个中心的距离，未知的点选择最近的一个聚类中心点作为标记类别</span><br><span class="line"><span class="number">3</span>、接着对着标记的聚类中心之后，重新计算出每个聚类的新中心点（平均值）</span><br><span class="line"><span class="number">4</span>、如果计算得出的新中心点与原中心点一样（质心不再移动），那么结束，否则重新进行第二步过程</span><br></pre></td></tr></table></figure>
+<p> 通过下图解释实现流程： </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/K-means%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90.png" alt="K-meansè¿‡ç¨‹åˆ†æž" style="zoom:33%;"></p>
+<p>  k聚类动态效果图 </p>
+<p><img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_dynamic.png" alt="2019-02-19 17.06.49" style="zoom: 33%;"></p>
+<h5 id="2-案例练习"><a href="#2-案例练习" class="headerlink" title="2.案例练习"></a>2.案例练习</h5><p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo1.png" alt="image-20190219171158984" style="zoom:33%;"></p>
+<p>  1.随机设置K个特征空间内的点作为初始的聚类中心（本案例中设置p1和p2） </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo2.png" alt="image-20190219171244828" style="zoom:33%;"></p>
+<p>  2.对于其他每个点计算到K个中心的距离，未知的点选择最近的一个聚类中心点作为标记类别 </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo3.png" alt="image-20190219171326923" style="zoom:33%;"></p>
+<p>  <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo4.png" alt="image-20190219171338441" style="zoom:33%;"></p>
+<p>  3.接着对着标记的聚类中心之后，重新计算出每个聚类的新中心点（平均值） </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo5.png" alt="image-20190219171727035" style="zoom:33%;"></p>
+<p> 4.如果计算得出的新中心点与原中心点一样（质心不再移动），那么结束，否则重新进行第二步过程【经过判断，需要重复上述步骤，开始新一轮迭代】 </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo6.png" alt="image-20190219171951607" style="zoom:33%;"></p>
+<p>  <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo7.png" alt="image-20190219172011618" style="zoom:33%;"> </p>
+<p>  5.当每次迭代结果不变时，认为算法收敛，聚类完成，<strong>K-Means一定会停下，不可能陷入一直选质心的过程。</strong> </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo8.png" alt="image-20190219172125388" style="zoom:33%;"></p>
+<h4 id="聚类算法模型评估"><a href="#聚类算法模型评估" class="headerlink" title="聚类算法模型评估"></a>聚类算法模型评估</h4><h4 id="聚类算法算法优化"><a href="#聚类算法算法优化" class="headerlink" title="聚类算法算法优化"></a>聚类算法算法优化</h4><h4 id="聚类算法特征降维"><a href="#聚类算法特征降维" class="headerlink" title="聚类算法特征降维"></a>聚类算法特征降维</h4><h4 id="案例-探究用户对物品类别的喜好细分"><a href="#案例-探究用户对物品类别的喜好细分" class="headerlink" title="案例-探究用户对物品类别的喜好细分"></a>案例-探究用户对物品类别的喜好细分</h4><h4 id="拓展-算法选择指导"><a href="#拓展-算法选择指导" class="headerlink" title="拓展-算法选择指导"></a>拓展-算法选择指导</h4><h4 id="关于在计算的过程中，如何选择合适的算法进行计算，可以参考scikit-learn官方给的指导意见："><a href="#关于在计算的过程中，如何选择合适的算法进行计算，可以参考scikit-learn官方给的指导意见：" class="headerlink" title="关于在计算的过程中，如何选择合适的算法进行计算，可以参考scikit learn官方给的指导意见："></a><strong>关于在计算的过程中，如何选择合适的算法进行计算，可以参考scikit learn官方给的指导意见：</strong></h4><p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/scikit-learn%E7%AE%97%E6%B3%95%E9%80%89%E6%8B%A9%E8%B7%AF%E5%BE%84%E5%9B%BE.png" alt="scikit-learn算法选择路径图" style="zoom:33%;"> </p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+            <!---<a href="/tags/%E6%9C%BA%E5%99%A8/" rel="tag"># 机器</a>--->
+            <a href="/tags/%E6%9C%BA%E5%99%A8/" rel="tag">机器</a>
+            <!---<a href="/tags/%E5%AD%A6%E4%B9%A0%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95/" rel="tag"># 学习机器学习算法</a>--->
+            <a href="/tags/%E5%AD%A6%E4%B9%A0%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95/" rel="tag">学习机器学习算法</a>
+            <!---<a href="/tags/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/" rel="tag"># 聚类算法</a>--->
+            <a href="/tags/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/" rel="tag">聚类算法</a>
+            <!---<a href="/tags/%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95/" rel="tag"># 无监督学习算法</a>--->
+            <a href="/tags/%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95/" rel="tag">无监督学习算法</a>
+            <br>
+          <div class="fa fa-tag">本文结束</div>
+          <br/>
+          </div>
+        
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/" rel="prev" title="推荐算法">
+      <i class="fa fa-chevron-left"></i> 推荐算法
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#聚类算法简介"><span class="nav-number">1.</span> <span class="nav-text">聚类算法简介</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#聚类算法在现实中的应用"><span class="nav-number">1.1.</span> <span class="nav-text">聚类算法在现实中的应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#聚类算法的概念"><span class="nav-number">1.2.</span> <span class="nav-text">聚类算法的概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#聚类算法与分类算法最大的区别"><span class="nav-number">1.3.</span> <span class="nav-text">聚类算法与分类算法最大的区别</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚类算法API"><span class="nav-number">2.</span> <span class="nav-text">聚类算法API</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#API介绍"><span class="nav-number">2.1.</span> <span class="nav-text">API介绍</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#小案例"><span class="nav-number">2.2.</span> <span class="nav-text">小案例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚类算法实现流程"><span class="nav-number">3.</span> <span class="nav-text">聚类算法实现流程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-k-means聚类步骤"><span class="nav-number">3.1.</span> <span class="nav-text">1. k-means聚类步骤</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-案例练习"><span class="nav-number">3.2.</span> <span class="nav-text">2.案例练习</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚类算法模型评估"><span class="nav-number">4.</span> <span class="nav-text">聚类算法模型评估</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚类算法算法优化"><span class="nav-number">5.</span> <span class="nav-text">聚类算法算法优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚类算法特征降维"><span class="nav-number">6.</span> <span class="nav-text">聚类算法特征降维</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#案例-探究用户对物品类别的喜好细分"><span class="nav-number">7.</span> <span class="nav-text">案例-探究用户对物品类别的喜好细分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拓展-算法选择指导"><span class="nav-number">8.</span> <span class="nav-text">拓展-算法选择指导</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于在计算的过程中，如何选择合适的算法进行计算，可以参考scikit-learn官方给的指导意见："><span class="nav-number">9.</span> <span class="nav-text">关于在计算的过程中，如何选择合适的算法进行计算，可以参考scikit learn官方给的指导意见：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/"><img class="site-author-image" itemprop="image" alt="小廖子"
+      src="/images/avter.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">小廖子</p>
+  <div class="site-description" itemprop="description">学无止境</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xlztongxue" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xlztongxue" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xlz_tongxue@163.com" title="E-Mail → mailto:xlz_tongxue@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/weixin_45439324" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_45439324" rel="noopener" target="_blank"><i class="fa fa-fw fa-copyright"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+
+
+    <p class="site-author-name" itemprop="name">关注我哟</p>
+    <img class="site-author-image" itemprop="image" alt="微信公众号"
+      src="/images/xlzblog.jpg">
+    <div class="site-description" itemprop="description">关注公众号，更多精彩等着你</div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-小廖子"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小廖子</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">68k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:54</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'Ed2mvWHWKlphKGAa6hId76UP-gzGzoHsz',
+      appKey: '7MYwWTLCtelB1RHhedbF58S4',
+      placeholder: "Just go go",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

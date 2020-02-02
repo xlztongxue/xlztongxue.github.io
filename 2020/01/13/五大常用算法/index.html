@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon16x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://xiaoliaozi.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="前言据说有人归纳了计算机的五大常用算法，它们是贪婪算法，动态规划算法，分治算法，回溯算法以及分支限界算法。这五个算法是有很多应用场景的，最优化问题大多可以利用这些算法解决。算法的本质就是解决问题。当数据量比较小时，其实根本就不需要什么算法，写一些for循环完全就可以很快速的搞定了，但是当数据量比较大，场景比较复杂的时候，算法就尤为重要了，本文先归纳这几个算法及应用场景，随后在细细品味。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="五大常用算法">
+<meta property="og:url" content="https://xiaoliaozi.com/2020/01/13/%E4%BA%94%E5%A4%A7%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="小廖子的博客">
+<meta property="og:description" content="前言据说有人归纳了计算机的五大常用算法，它们是贪婪算法，动态规划算法，分治算法，回溯算法以及分支限界算法。这五个算法是有很多应用场景的，最优化问题大多可以利用这些算法解决。算法的本质就是解决问题。当数据量比较小时，其实根本就不需要什么算法，写一些for循环完全就可以很快速的搞定了，但是当数据量比较大，场景比较复杂的时候，算法就尤为重要了，本文先归纳这几个算法及应用场景，随后在细细品味。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-13T06:40:47.000Z">
+<meta property="article:modified_time" content="2020-01-14T06:30:47.546Z">
+<meta property="article:author" content="小廖子">
+<meta property="article:tag" content="计算机常用算法">
+<meta property="article:tag" content="算法思想">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://xiaoliaozi.com/2020/01/13/%E4%BA%94%E5%A4%A7%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>五大常用算法 | 小廖子的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="小廖子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小廖子的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">好记性不如记笔记</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xiaoliaozi.com/2020/01/13/%E4%BA%94%E5%A4%A7%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avter.jpg">
+      <meta itemprop="name" content="小廖子">
+      <meta itemprop="description" content="学无止境">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小廖子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          五大常用算法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-13 14:40:47" itemprop="dateCreated datePublished" datetime="2020-01-13T14:40:47+08:00">2020-01-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-01-14 14:30:47" itemprop="dateModified" datetime="2020-01-14T14:30:47+08:00">2020-01-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机常用算法</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/01/13/%E4%BA%94%E5%A4%A7%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/13/%E4%BA%94%E5%A4%A7%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>据说有人归纳了计算机的五大常用算法，它们是贪婪算法，动态规划算法，分治算法，回溯算法以及分支限界算法。这五个算法是有很多应用场景的，最优化问题大多可以利用这些算法解决。算法的本质就是解决问题。当数据量比较小时，其实根本就不需要什么算法，写一些for循环完全就可以很快速的搞定了，但是当数据量比较大，场景比较复杂的时候，算法就尤为重要了，本文先归纳这几个算法及应用场景，随后在细细品味。</p>
+<a id="more"></a>
+<h4 id="穷举法"><a href="#穷举法" class="headerlink" title="穷举法"></a>穷举法</h4><h5 id="1-定义"><a href="#1-定义" class="headerlink" title="1.定义"></a>1.定义</h5><p>穷举法也叫枚举法， 在进行归纳推理时，如果逐个考察了某类事件的所有可能情况，因而得出一般结论，那么这结论是可靠的，这种归纳方法叫做枚举法。枚举法是利用计算机运算速度快、精确度高的特点，对要解决问题的所有可能情况，一个不漏地进行检验，从中找出符合要求的答案，因此枚举法是通过牺牲时间来换取答案的全面性 。穷举法属于暴力破解法， 暴力破解法，就是把所有条件，相关情况统统考虑进去，让计算机进行检索，指导得出与之所有条件符合的结果 。</p>
+<h5 id="2-基本思想"><a href="#2-基本思想" class="headerlink" title="2.基本思想"></a>2.基本思想</h5><ol>
+<li>确定枚举对象、枚举范围和判定条件</li>
+<li>枚举可能的解，验证是否是问题的解</li>
+</ol>
+<h5 id="3-应用实例"><a href="#3-应用实例" class="headerlink" title="3.应用实例"></a>3.应用实例</h5><ol>
+<li>百钱买鸡问题</li>
+<li>鸡兔同笼问题</li>
+<li>搬砖块问题</li>
+<li>猜数字</li>
+<li>韩信点兵 </li>
+</ol>
+<h4 id="贪婪算法"><a href="#贪婪算法" class="headerlink" title="贪婪算法"></a>贪婪算法</h4><h5 id="1-定义-1"><a href="#1-定义-1" class="headerlink" title="1.定义"></a>1.定义</h5><p>贪婪算法(贪心算法)是指在对问题进行求解时，在每一步选择中都采取最好或者最优(即最有利)的选择，从而希望能够导致结果是最好或者最优的算法。贪婪算法所得到的结果往往不是最优的结果(有时候会是最优解)，但是都是相对近似(接近)最优解的结果。</p>
+<h5 id="2-基本思想-1"><a href="#2-基本思想-1" class="headerlink" title="2.基本思想"></a>2.基本思想</h5><ol>
+<li><p>建立数学模型来描述问题</p>
+</li>
+<li><p>把求解的问题分成若干个子问题</p>
+</li>
+<li><p>对每一子问题求解，得到子问题的局部最优解</p>
+</li>
+<li><p>把子问题对应的局部最优解合成原来整个问题的一个近似最优解</p>
+</li>
+</ol>
+<h5 id="3-应用实例-1"><a href="#3-应用实例-1" class="headerlink" title="3.应用实例"></a>3.应用实例</h5><ol>
+<li>钱币找零问题 </li>
+<li>区间调度问题</li>
+<li>背包问题 </li>
+<li>均分纸牌 </li>
+<li>最大整数</li>
+</ol>
+<h4 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h4><h5 id="1-定义-2"><a href="#1-定义-2" class="headerlink" title="1.定义"></a>1.定义</h5><p> 动态规划过程是：每次决策依赖于当前状态，又随即引起状态的转移。一个决策序列就是在变化的状态中产生出来的，所以，这种多阶段最优化决策解决问题的过程就称为动态规划。 </p>
+<h5 id="2-基本思想-2"><a href="#2-基本思想-2" class="headerlink" title="2.基本思想"></a>2.基本思想</h5><ol>
+<li>将待求解的问题分解为若干个子问题（阶段）</li>
+<li>按顺序求解子阶段，前一子问题的解，为后一子问题的求解提供了有用的信息</li>
+<li>在求解任一子问题时，列出各种可能的局部解，通过决策保留那些有可能达到最优的局部解，丢弃其他局部解</li>
+<li>依次解决各子问题，最后一个子问题就是初始问题的解。 </li>
+</ol>
+<h5 id="3-应用实例-2"><a href="#3-应用实例-2" class="headerlink" title="3.应用实例"></a>3.应用实例</h5><ol>
+<li>数字三角形问题</li>
+<li>找零钱问题</li>
+<li>走方格问题</li>
+<li>最长公共序列数</li>
+</ol>
+<h4 id="分治算法"><a href="#分治算法" class="headerlink" title="分治算法"></a>分治算法</h4><h5 id="1-定义-3"><a href="#1-定义-3" class="headerlink" title="1.定义"></a>1.定义</h5><p> 分治算法的基本思想是将一个规模为N的问题分解为K个规模较小的子问题，这些子问题相互独立且与原问题性质相同。求出子问题的解，就可得到原问题的解。即一种分目标完成程序算法，简单问题可用二分法完成。 </p>
+<h5 id="2-基本思想-3"><a href="#2-基本思想-3" class="headerlink" title="2.基本思想"></a>2.基本思想</h5><ol>
+<li>先把问题分解成几个子问题</li>
+<li>求出这几个子问题的解法</li>
+<li>再找到合适的方法，把它们组合成求整个问题的解法。</li>
+<li>如果这些子问题还较大，难以解决，可以再把它们分成几个更小的子问题</li>
+<li>以此类推，直至可以直接求出解为止</li>
+</ol>
+<h5 id="3-应用实例-3"><a href="#3-应用实例-3" class="headerlink" title="3.应用实例"></a>3.应用实例</h5><ol>
+<li>找出伪币</li>
+<li>二分搜索</li>
+<li>汉诺塔</li>
+<li>归并排序</li>
+<li>快速排序</li>
+<li>大整数乘法</li>
+</ol>
+<h4 id="回溯算法"><a href="#回溯算法" class="headerlink" title="回溯算法"></a>回溯算法</h4><h5 id="1-定义-4"><a href="#1-定义-4" class="headerlink" title="1.定义"></a>1.定义</h5><p> 回溯算法实际上一个类似枚举的搜索尝试过程，主要是在搜索尝试过程中寻找问题的解，当发现已不满足求解条件时，就“回溯”返回，尝试别的路径。回溯法是一种选优搜索法，按选优条件向前搜索，以达到目标。但当探索到某一步时，发现原先选择并不优或达不到目标，就退回一步重新选择，这种走不通就退回再走的技术为回溯法，而满足回溯条件的某个状态的点称为“回溯点”。许多复杂的，规模较大的问题都可以使用回溯法，有“通用解题方法”的美称。 </p>
+<h5 id="2-基本思想-4"><a href="#2-基本思想-4" class="headerlink" title="2.基本思想"></a>2.基本思想</h5><p> 从一条路往前走，能进则进，不能进则退回来，换一条路再试 </p>
+<h5 id="3-应用实例-4"><a href="#3-应用实例-4" class="headerlink" title="3.应用实例"></a>3.应用实例</h5><ol>
+<li>八皇后问题</li>
+<li>图的着色问题 </li>
+<li>装载问题 </li>
+<li>批处理作业调度问题 </li>
+<li>背包问题 </li>
+<li>最大团问题 </li>
+</ol>
+<h4 id="分支限界算法"><a href="#分支限界算法" class="headerlink" title="分支限界算法"></a>分支限界算法</h4><h5 id="1-定义-5"><a href="#1-定义-5" class="headerlink" title="1.定义"></a>1.定义</h5><p>分支限界算法是按照广度优先的方式对解空间树（状态空间树）进行搜索，从而求得最优解的算法。</p>
+<h5 id="2-基本思想-5"><a href="#2-基本思想-5" class="headerlink" title="2.基本思想"></a>2.基本思想</h5><p>在搜索的过程中，采用<strong>限界函数</strong>（bound function）估算所有子节点的目标函数的可能取值，从而选择使目标函数取极值（极大值或者极小值）的节点作为扩展结点（如果限界值没有超过目前的最优解，则剪枝）进行下一步搜索（重复 BFS -&gt; 计算所有子节点限界 -&gt; 选择最优子节点作为扩展结点的过程），从而不断调整搜索的方向，尽快找到问题的最优解。分支限界的思想类似于：图的广度优先搜索，树的层序遍历。</p>
+<h5 id="3-应用实例-5"><a href="#3-应用实例-5" class="headerlink" title="3.应用实例"></a>3.应用实例</h5><ol>
+<li>单源最短路径问题</li>
+<li>装载问题</li>
+<li>布线问题</li>
+<li>0-1背包问题</li>
+<li>最大团问题</li>
+<li>旅行售货员问题</li>
+</ol>
+<h4 id="总结说明"><a href="#总结说明" class="headerlink" title="总结说明"></a>总结说明</h4><p>对于一个应用实例可能会有多种算法解决，算法是一种解决问题的思想，任意一个算法绝对不是一两篇文章可以讲清楚的。当然也不是通过一两道题目可以完全学会。学习算法的关键是<strong>用算法的思想去想问题，去解决实际问题</strong>，多刷题是养成算法思维解决问题的基础。</p>
+<h4 id="学习算法方法"><a href="#学习算法方法" class="headerlink" title="学习算法方法"></a>学习算法方法</h4><h5 id="1-书籍"><a href="#1-书籍" class="headerlink" title="1.书籍"></a>1.书籍</h5><ol>
+<li>数据结构</li>
+<li>数据结构与算法分析 </li>
+<li>算法导论</li>
+</ol>
+<h5 id="2-刷题"><a href="#2-刷题" class="headerlink" title="2.刷题"></a>2.刷题</h5><ol>
+<li>牛客</li>
+<li>LeeCode</li>
+</ol>
+<h5 id="3-在线视频课程"><a href="#3-在线视频课程" class="headerlink" title="3.在线视频课程"></a>3.在线视频课程</h5><ol>
+<li>慕课</li>
+<li>网易云课程（强烈推荐）</li>
+</ol>
+<h5 id="4-可视化工具"><a href="#4-可视化工具" class="headerlink" title="4.可视化工具"></a>4.可视化工具</h5><ul>
+<li><a href="https://visualgo.net/" target="_blank" rel="noopener">visualgo 网址 </a> </li>
+</ul>
+<p>最重要的是耐心，自律，有毅力，坚持。</p>
+<p>作为才入门的程序员，我已经沉浸在知识海洋中无法自拔，深深感受到了自己的渺小。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+            <!---<a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95/" rel="tag"># 计算机常用算法</a>--->
+            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95/" rel="tag">计算机常用算法</a>
+            <!---<a href="/tags/%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/" rel="tag"># 算法思想</a>--->
+            <a href="/tags/%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/" rel="tag">算法思想</a>
+            <br>
+          <div class="fa fa-tag">本文结束</div>
+          <br/>
+          </div>
+        
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/13/%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/" rel="prev" title="集成学习">
+      <i class="fa fa-chevron-left"></i> 集成学习
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="next" title="推荐系统">
+      推荐系统 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#穷举法"><span class="nav-number">2.</span> <span class="nav-text">穷举法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-定义"><span class="nav-number">2.1.</span> <span class="nav-text">1.定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-基本思想"><span class="nav-number">2.2.</span> <span class="nav-text">2.基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-应用实例"><span class="nav-number">2.3.</span> <span class="nav-text">3.应用实例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#贪婪算法"><span class="nav-number">3.</span> <span class="nav-text">贪婪算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-定义-1"><span class="nav-number">3.1.</span> <span class="nav-text">1.定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-基本思想-1"><span class="nav-number">3.2.</span> <span class="nav-text">2.基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-应用实例-1"><span class="nav-number">3.3.</span> <span class="nav-text">3.应用实例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态规划"><span class="nav-number">4.</span> <span class="nav-text">动态规划</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-定义-2"><span class="nav-number">4.1.</span> <span class="nav-text">1.定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-基本思想-2"><span class="nav-number">4.2.</span> <span class="nav-text">2.基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-应用实例-2"><span class="nav-number">4.3.</span> <span class="nav-text">3.应用实例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分治算法"><span class="nav-number">5.</span> <span class="nav-text">分治算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-定义-3"><span class="nav-number">5.1.</span> <span class="nav-text">1.定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-基本思想-3"><span class="nav-number">5.2.</span> <span class="nav-text">2.基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-应用实例-3"><span class="nav-number">5.3.</span> <span class="nav-text">3.应用实例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#回溯算法"><span class="nav-number">6.</span> <span class="nav-text">回溯算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-定义-4"><span class="nav-number">6.1.</span> <span class="nav-text">1.定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-基本思想-4"><span class="nav-number">6.2.</span> <span class="nav-text">2.基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-应用实例-4"><span class="nav-number">6.3.</span> <span class="nav-text">3.应用实例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分支限界算法"><span class="nav-number">7.</span> <span class="nav-text">分支限界算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-定义-5"><span class="nav-number">7.1.</span> <span class="nav-text">1.定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-基本思想-5"><span class="nav-number">7.2.</span> <span class="nav-text">2.基本思想</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-应用实例-5"><span class="nav-number">7.3.</span> <span class="nav-text">3.应用实例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结说明"><span class="nav-number">8.</span> <span class="nav-text">总结说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#学习算法方法"><span class="nav-number">9.</span> <span class="nav-text">学习算法方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-书籍"><span class="nav-number">9.1.</span> <span class="nav-text">1.书籍</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-刷题"><span class="nav-number">9.2.</span> <span class="nav-text">2.刷题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-在线视频课程"><span class="nav-number">9.3.</span> <span class="nav-text">3.在线视频课程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-可视化工具"><span class="nav-number">9.4.</span> <span class="nav-text">4.可视化工具</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/"><img class="site-author-image" itemprop="image" alt="小廖子"
+      src="/images/avter.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">小廖子</p>
+  <div class="site-description" itemprop="description">学无止境</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xlztongxue" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xlztongxue" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xlz_tongxue@163.com" title="E-Mail → mailto:xlz_tongxue@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/weixin_45439324" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_45439324" rel="noopener" target="_blank"><i class="fa fa-fw fa-copyright"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+
+
+    <p class="site-author-name" itemprop="name">关注我哟</p>
+    <img class="site-author-image" itemprop="image" alt="微信公众号"
+      src="/images/xlzblog.jpg">
+    <div class="site-description" itemprop="description">关注公众号，更多精彩等着你</div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-小廖子"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小廖子</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">68k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:54</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'Ed2mvWHWKlphKGAa6hId76UP-gzGzoHsz',
+      appKey: '7MYwWTLCtelB1RHhedbF58S4',
+      placeholder: "Just go go",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
