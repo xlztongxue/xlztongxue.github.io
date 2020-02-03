@@ -66,9 +66,23 @@
 <meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo6.png">
 <meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo7.png">
 <meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo8.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sse1.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sse2.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sse3.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sse4.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sse5.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sse6.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/elbow_method.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sc.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sc1.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sc2.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sc3.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sc4.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/ch1.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/ch2.png">
 <meta property="og:image" content="https://xiaoliaozi.com/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/scikit-learn%E7%AE%97%E6%B3%95%E9%80%89%E6%8B%A9%E8%B7%AF%E5%BE%84%E5%9B%BE.png">
 <meta property="article:published_time" content="2020-02-01T05:09:38.000Z">
-<meta property="article:modified_time" content="2020-02-02T03:52:13.830Z">
+<meta property="article:modified_time" content="2020-02-03T07:39:41.336Z">
 <meta property="article:author" content="小廖子">
 <meta property="article:tag" content="机器">
 <meta property="article:tag" content="学习机器学习算法">
@@ -260,7 +274,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-02 11:52:13" itemprop="dateModified" datetime="2020-02-02T11:52:13+08:00">2020-02-02</time>
+                <time title="修改时间：2020-02-03 15:39:41" itemprop="dateModified" datetime="2020-02-03T15:39:41+08:00">2020-02-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -301,14 +315,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.9k</span>
+              <span>3.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -372,7 +386,80 @@
 <p>  <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo7.png" alt="image-20190219172011618" style="zoom:33%;"> </p>
 <p>  5.当每次迭代结果不变时，认为算法收敛，聚类完成，<strong>K-Means一定会停下，不可能陷入一直选质心的过程。</strong> </p>
 <p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/kmeans_demo8.png" alt="image-20190219172125388" style="zoom:33%;"></p>
-<h4 id="聚类算法模型评估"><a href="#聚类算法模型评估" class="headerlink" title="聚类算法模型评估"></a>聚类算法模型评估</h4><h4 id="聚类算法算法优化"><a href="#聚类算法算法优化" class="headerlink" title="聚类算法算法优化"></a>聚类算法算法优化</h4><h4 id="聚类算法特征降维"><a href="#聚类算法特征降维" class="headerlink" title="聚类算法特征降维"></a>聚类算法特征降维</h4><h4 id="案例-探究用户对物品类别的喜好细分"><a href="#案例-探究用户对物品类别的喜好细分" class="headerlink" title="案例-探究用户对物品类别的喜好细分"></a>案例-探究用户对物品类别的喜好细分</h4><h4 id="拓展-算法选择指导"><a href="#拓展-算法选择指导" class="headerlink" title="拓展-算法选择指导"></a>拓展-算法选择指导</h4><h4 id="关于在计算的过程中，如何选择合适的算法进行计算，可以参考scikit-learn官方给的指导意见："><a href="#关于在计算的过程中，如何选择合适的算法进行计算，可以参考scikit-learn官方给的指导意见：" class="headerlink" title="关于在计算的过程中，如何选择合适的算法进行计算，可以参考scikit learn官方给的指导意见："></a><strong>关于在计算的过程中，如何选择合适的算法进行计算，可以参考scikit learn官方给的指导意见：</strong></h4><p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/scikit-learn%E7%AE%97%E6%B3%95%E9%80%89%E6%8B%A9%E8%B7%AF%E5%BE%84%E5%9B%BE.png" alt="scikit-learn算法选择路径图" style="zoom:33%;"> </p>
+<h4 id="聚类算法模型评估"><a href="#聚类算法模型评估" class="headerlink" title="聚类算法模型评估"></a>聚类算法模型评估</h4><h5 id="1-误差平方和-SSE-The-sum-of-squares-due-to-error"><a href="#1-误差平方和-SSE-The-sum-of-squares-due-to-error" class="headerlink" title="1.误差平方和(SSE \The sum of squares due to error)"></a>1.误差平方和(SSE \The sum of squares due to error)</h5><p> 举例:(下图中数据-0.2, 0.4, -0.8, 1.3, -0.7, 均为真实值和预测值的差) </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sse1.png" alt="image-20190308211436382"></p>
+<p>  在k-means中的应用: </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sse2.png" alt="img"></p>
+<p>  <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sse3.png" alt="image-20190219173610490"> </p>
+<p> 公式各部分内容: </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sse4.png" alt="image-20190308211313308"></p>
+<p> 上图中: k=2</p>
+<ul>
+<li><p><strong>SSE图最终的结果，对图松散度的衡量.</strong>(eg: **SSE(左图))</p>
+</li>
+<li><p>SSE随着聚类迭代，其值会越来越小，直到最后趋于稳定</p>
+<p><img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sse5.png" alt="2019-02-19 17.38.11"> </p>
+</li>
+<li><p>如果质心的初始值选择不好，SSE只会达到一个不怎么好的局部最优解. </p>
+<p><img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sse6.png" alt="2019-02-19 17.39.29"> </p>
+</li>
+</ul>
+<h5 id="2-“肘”方法-Elbow-method-—-K值确定"><a href="#2-“肘”方法-Elbow-method-—-K值确定" class="headerlink" title="2.“肘”方法 (Elbow method) — K值确定"></a>2.“肘”方法 (Elbow method) — K值确定</h5><p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/elbow_method.png" alt="image-20190219174520309"></p>
+<p> （1）对于n个点的数据集，迭代计算k from 1 to n，每次聚类完成后计算每个点到其所属的簇中心的距离的平方和；</p>
+<p>（2）平方和是会逐渐变小的，直到k==n时平方和为0，因为每个点都是它所在的簇中心本身。</p>
+<p>（3）在这个平方和变化过程中，会出现一个拐点也即“肘”点，<strong>下降率突然变缓时即认为是最佳的k值</strong>。</p>
+<p>在决定什么时候停止训练时，肘形判据同样有效，数据通常有更多的噪音，在<strong>增加分类无法带来更多回报时，我们停止增加类别</strong>。</p>
+<h5 id="3-轮廓系数法（Silhouette-Coefficient）"><a href="#3-轮廓系数法（Silhouette-Coefficient）" class="headerlink" title="3.轮廓系数法（Silhouette Coefficient）"></a>3.轮廓系数法（Silhouette Coefficient）</h5><p> 结合了聚类的凝聚度（Cohesion）和分离度（Separation），用于评估聚类的效果： </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sc.png" alt="image-20190219174853018"></p>
+<p> <strong>目的：</strong> 内部距离最小化，外部距离最大化</p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sc1.png" alt="image-20190219175813875"> </p>
+<p>计算样本$i$到同簇其他样本的平均距离$a_i$，$a_i$ 越小样本i的簇内不相似度越小，说明样本$i$越应该被聚类到该簇。</p>
+<p>计算样本i到最近簇$C<em>j$ 的所有样本的平均距离$b</em>(ij)$，称样本$i$与最近簇$C_j$ 的不相似度，定义为样本i的簇间不相似度：</p>
+<p>$b<em>i =min{b</em>(i1), b<em>(i2), …, b</em>(ik)}$，$b_i$越大，说明样本$i$越不属于其他簇。</p>
+<p>求出所有样本的轮廓系数后再求平均值就得到了<strong>平均轮廓系数</strong>。</p>
+<p>平均轮廓系数的取值范围为[-1,1]，系数越大，聚类效果越好。</p>
+<p>簇内样本的距离越近，簇间样本距离越远</p>
+<p><strong>案例：</strong></p>
+<p>下图是500个样本含有2个feature的数据分布情况，我们对它进行SC系数效果衡量：</p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sc2.png" alt="image-20190219175321181"> </p>
+<p><strong>n_clusters = 2 The average silhouette_score is : 0.7049787496083262</strong></p>
+<p>n_clusters = 3 The average silhouette_score is : 0.5882004012129721</p>
+<p><strong>n_clusters = 4 The average silhouette_score is : 0.6505186632729437</strong></p>
+<p>n_clusters = 5 The average silhouette_score is : 0.56376469026194</p>
+<p>n_clusters = 6 The average silhouette_score is : 0.4504666294372765</p>
+<p>n_clusters 分别为 2，3，4，5，6时，SC系数如下，是介于[-1,1]之间的度量指标：</p>
+<p><strong>每次聚类后，每个样本都会得到一个轮廓系数，当它为1时，说明这个点与周围簇距离较远，结果非常好，当它为0，说明这个点可能处在两个簇的边界上，当值为负时，暗含该点可能被误分了。</strong></p>
+<p>从平均SC系数结果来看，K取3，5，6是不好的，那么2和4呢？</p>
+<p>k=2的情况：</p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sc3.png" alt="image-20190219175529440"></p>
+<p>  k=4的情况： </p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/sc4.png" alt="image-20190219175611967"></p>
+<p> n_clusters = 2时，第0簇的宽度远宽于第1簇；</p>
+<p>n_clusters = 4时，所聚的簇宽度相差不大，因此选择K=4，作为最终聚类个数。</p>
+<h5 id="4-CH系数（Calinski-Harabasz-Index）"><a href="#4-CH系数（Calinski-Harabasz-Index）" class="headerlink" title="4.CH系数（Calinski-Harabasz Index）"></a>4.CH系数（Calinski-Harabasz Index）</h5><p><strong>Calinski-Harabasz：</strong>类别内部数据的协方差越小越好，类别之间的协方差越大越好（换句话说：类别内部数据的距离平方和越小越好，类别之间的距离平方和越大越好），</p>
+<p>这样的Calinski-Harabasz分数s会高，分数s高则聚类效果越好。</p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/ch1.png" alt="image-20190219182033877"> </p>
+<p>tr为<strong>矩阵的迹</strong>, Bk为类别之间的协方差矩阵，Wk为类别内部数据的协方差矩阵;</p>
+<p>m为训练集样本数，k为类别数。</p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/ch2.png" alt="image-20190219182615777"></p>
+<p> 使用矩阵的迹进行求解的理解：</p>
+<p>矩阵的对角线可以表示一个物体的相似性</p>
+<p>在机器学习里，主要为了获取数据的特征值，那么就是说，在任何一个矩阵计算出来之后，都可以简单化，只要获取矩阵的迹，就可以表示这一块数据的最重要的特征了，这样就可以把很多无关紧要的数据删除掉，达到简化数据，提高处理速度。</p>
+<p>CH需要达到的目的：<strong>用尽量少的类别聚类尽量多的样本，同时获得较好的聚类效果。</strong></p>
+<h4 id="聚类算法算法优化"><a href="#聚类算法算法优化" class="headerlink" title="聚类算法算法优化"></a>聚类算法算法优化</h4><p><strong>k-means算法小结</strong></p>
+<p><strong>优点：</strong></p>
+<p> 1.原理简单（靠近中心点），实现容易</p>
+<p> 2.聚类效果中上（依赖K的选择）</p>
+<p> 3.空间复杂度o(N)，时间复杂度o(I<em>K</em>N)</p>
+<blockquote>
+<p>N为样本点个数，K为中心点个数，I为迭代次数</p>
+</blockquote>
+<p><strong>缺点：</strong></p>
+<p> 1.对离群点，噪声敏感 （中心点易偏移）</p>
+<p> 2.很难发现大小差别很大的簇及进行增量计算</p>
+<p> 3.结果不一定是全局最优，只能保证局部最优（与K的个数及初值选取有关）</p>
+<h5 id="1-Canopy算法配合初始聚类"><a href="#1-Canopy算法配合初始聚类" class="headerlink" title="1.Canopy算法配合初始聚类"></a>1.Canopy算法配合初始聚类</h5><h5 id="2-K-means"><a href="#2-K-means" class="headerlink" title="2.K-means++"></a>2.K-means++</h5><h5 id="3-二分k-means"><a href="#3-二分k-means" class="headerlink" title="3.二分k-means"></a>3.二分k-means</h5><h5 id="4-k-medoids（k-中心聚类算法）"><a href="#4-k-medoids（k-中心聚类算法）" class="headerlink" title="4.k-medoids（k-中心聚类算法）"></a>4.k-medoids（k-中心聚类算法）</h5><h5 id="5-Kernel-k-means"><a href="#5-Kernel-k-means" class="headerlink" title="5.Kernel k-means"></a>5.Kernel k-means</h5><h5 id="6-ISODATA"><a href="#6-ISODATA" class="headerlink" title="6.ISODATA"></a>6.ISODATA</h5><h5 id="7-Mini-Batch-K-Means"><a href="#7-Mini-Batch-K-Means" class="headerlink" title="7.Mini Batch K-Means"></a>7.Mini Batch K-Means</h5><h4 id="案例-探究用户对物品类别的喜好细分"><a href="#案例-探究用户对物品类别的喜好细分" class="headerlink" title="案例-探究用户对物品类别的喜好细分"></a>案例-探究用户对物品类别的喜好细分</h4><h4 id="拓展-算法选择指导"><a href="#拓展-算法选择指导" class="headerlink" title="拓展-算法选择指导"></a>拓展-算法选择指导</h4><p><strong>关于在计算的过程中，如何选择合适的算法进行计算，可以参考scikit learn官方给的指导意见：</strong></p>
+<p> <img src="/2020/02/01/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95/scikit-learn%E7%AE%97%E6%B3%95%E9%80%89%E6%8B%A9%E8%B7%AF%E5%BE%84%E5%9B%BE.png" alt="scikit-learn算法选择路径图" style="zoom:33%;"> </p>
 
     </div>
 
@@ -402,7 +489,10 @@
     <a href="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/" rel="prev" title="推荐算法">
       <i class="fa fa-chevron-left"></i> 推荐算法
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/03/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B-%E7%89%B9%E5%BE%81%E9%99%8D%E7%BB%B4/" rel="next" title="特征工程-特征降维">
+      特征工程-特征降维 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -463,7 +553,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#聚类算法简介"><span class="nav-number">1.</span> <span class="nav-text">聚类算法简介</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#聚类算法在现实中的应用"><span class="nav-number">1.1.</span> <span class="nav-text">聚类算法在现实中的应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#聚类算法的概念"><span class="nav-number">1.2.</span> <span class="nav-text">聚类算法的概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#聚类算法与分类算法最大的区别"><span class="nav-number">1.3.</span> <span class="nav-text">聚类算法与分类算法最大的区别</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚类算法API"><span class="nav-number">2.</span> <span class="nav-text">聚类算法API</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#API介绍"><span class="nav-number">2.1.</span> <span class="nav-text">API介绍</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#小案例"><span class="nav-number">2.2.</span> <span class="nav-text">小案例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚类算法实现流程"><span class="nav-number">3.</span> <span class="nav-text">聚类算法实现流程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-k-means聚类步骤"><span class="nav-number">3.1.</span> <span class="nav-text">1. k-means聚类步骤</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-案例练习"><span class="nav-number">3.2.</span> <span class="nav-text">2.案例练习</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚类算法模型评估"><span class="nav-number">4.</span> <span class="nav-text">聚类算法模型评估</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚类算法算法优化"><span class="nav-number">5.</span> <span class="nav-text">聚类算法算法优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚类算法特征降维"><span class="nav-number">6.</span> <span class="nav-text">聚类算法特征降维</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#案例-探究用户对物品类别的喜好细分"><span class="nav-number">7.</span> <span class="nav-text">案例-探究用户对物品类别的喜好细分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拓展-算法选择指导"><span class="nav-number">8.</span> <span class="nav-text">拓展-算法选择指导</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于在计算的过程中，如何选择合适的算法进行计算，可以参考scikit-learn官方给的指导意见："><span class="nav-number">9.</span> <span class="nav-text">关于在计算的过程中，如何选择合适的算法进行计算，可以参考scikit learn官方给的指导意见：</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#聚类算法简介"><span class="nav-number">1.</span> <span class="nav-text">聚类算法简介</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#聚类算法在现实中的应用"><span class="nav-number">1.1.</span> <span class="nav-text">聚类算法在现实中的应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#聚类算法的概念"><span class="nav-number">1.2.</span> <span class="nav-text">聚类算法的概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#聚类算法与分类算法最大的区别"><span class="nav-number">1.3.</span> <span class="nav-text">聚类算法与分类算法最大的区别</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚类算法API"><span class="nav-number">2.</span> <span class="nav-text">聚类算法API</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#API介绍"><span class="nav-number">2.1.</span> <span class="nav-text">API介绍</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#小案例"><span class="nav-number">2.2.</span> <span class="nav-text">小案例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚类算法实现流程"><span class="nav-number">3.</span> <span class="nav-text">聚类算法实现流程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-k-means聚类步骤"><span class="nav-number">3.1.</span> <span class="nav-text">1. k-means聚类步骤</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-案例练习"><span class="nav-number">3.2.</span> <span class="nav-text">2.案例练习</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚类算法模型评估"><span class="nav-number">4.</span> <span class="nav-text">聚类算法模型评估</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-误差平方和-SSE-The-sum-of-squares-due-to-error"><span class="nav-number">4.1.</span> <span class="nav-text">1.误差平方和(SSE \The sum of squares due to error)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-“肘”方法-Elbow-method-—-K值确定"><span class="nav-number">4.2.</span> <span class="nav-text">2.“肘”方法 (Elbow method) — K值确定</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-轮廓系数法（Silhouette-Coefficient）"><span class="nav-number">4.3.</span> <span class="nav-text">3.轮廓系数法（Silhouette Coefficient）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-CH系数（Calinski-Harabasz-Index）"><span class="nav-number">4.4.</span> <span class="nav-text">4.CH系数（Calinski-Harabasz Index）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚类算法算法优化"><span class="nav-number">5.</span> <span class="nav-text">聚类算法算法优化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Canopy算法配合初始聚类"><span class="nav-number">5.1.</span> <span class="nav-text">1.Canopy算法配合初始聚类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-K-means"><span class="nav-number">5.2.</span> <span class="nav-text">2.K-means++</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-二分k-means"><span class="nav-number">5.3.</span> <span class="nav-text">3.二分k-means</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-k-medoids（k-中心聚类算法）"><span class="nav-number">5.4.</span> <span class="nav-text">4.k-medoids（k-中心聚类算法）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-Kernel-k-means"><span class="nav-number">5.5.</span> <span class="nav-text">5.Kernel k-means</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-ISODATA"><span class="nav-number">5.6.</span> <span class="nav-text">6.ISODATA</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-Mini-Batch-K-Means"><span class="nav-number">5.7.</span> <span class="nav-text">7.Mini Batch K-Means</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#案例-探究用户对物品类别的喜好细分"><span class="nav-number">6.</span> <span class="nav-text">案例-探究用户对物品类别的喜好细分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拓展-算法选择指导"><span class="nav-number">7.</span> <span class="nav-text">拓展-算法选择指导</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -480,7 +570,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -546,13 +636,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">68k</span>
+    <span title="站点总字数">70k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:54</span>
+    <span title="站点阅读时长">1:57</span>
 </div>
 
         
