@@ -46,19 +46,25 @@
   };
 </script>
 
-  <meta name="description" content="学习目标 了解推荐系统概念及产生背景 理解推荐系统工作原理及作用 了解推荐系统与web项目区别 了解推荐系统要素 理解推荐系统架构">
+  <meta name="description" content="推荐系统概念什么是推荐系统没有明确需求的用户访问了我们的服务, 且服务的物品对用户构成了信息过载，系统通过一定的规则对物品进行排序，并将排在前面的物品展示给用户，这样的系统就是推荐系统 。 信息过载 &amp; 用户需求不明确 分类⽬录（1990s）：覆盖少量热门⽹站。典型应用：Hao123 Yahoo 搜索引擎（2000s）：通过搜索词明确需求。典型应用：Google Baidu 推荐系统（20">
 <meta property="og:type" content="article">
 <meta property="og:title" content="推荐系统">
 <meta property="og:url" content="https://xiaoliaozi.com/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/index.html">
 <meta property="og:site_name" content="小廖子的博客">
-<meta property="og:description" content="学习目标 了解推荐系统概念及产生背景 理解推荐系统工作原理及作用 了解推荐系统与web项目区别 了解推荐系统要素 理解推荐系统架构">
+<meta property="og:description" content="推荐系统概念什么是推荐系统没有明确需求的用户访问了我们的服务, 且服务的物品对用户构成了信息过载，系统通过一定的规则对物品进行排序，并将排在前面的物品展示给用户，这样的系统就是推荐系统 。 信息过载 &amp; 用户需求不明确 分类⽬录（1990s）：覆盖少量热门⽹站。典型应用：Hao123 Yahoo 搜索引擎（2000s）：通过搜索词明确需求。典型应用：Google Baidu 推荐系统（20">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/%E6%8E%A8%E8%8D%90%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/lambda3.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/recommend7.jpeg">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/rs%E5%9F%BA%E7%A1%80%E4%B8%9A%E5%8A%A1%E6%9E%B6%E6%9E%84.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/rs%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84.png">
 <meta property="article:published_time" content="2020-01-15T01:33:02.000Z">
-<meta property="article:modified_time" content="2020-02-02T04:30:28.762Z">
+<meta property="article:modified_time" content="2020-02-11T01:44:33.629Z">
 <meta property="article:author" content="小廖子">
 <meta property="article:tag" content="推荐系统简介">
 <meta property="article:tag" content="推荐系统架构">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xiaoliaozi.com/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/%E6%8E%A8%E8%8D%90%E6%B5%81%E7%A8%8B.png">
 
 <link rel="canonical" href="https://xiaoliaozi.com/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">
 
@@ -243,7 +249,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-02 12:30:28" itemprop="dateModified" datetime="2020-02-02T12:30:28+08:00">2020-02-02</time>
+                <time title="修改时间：2020-02-11 09:44:33" itemprop="dateModified" datetime="2020-02-11T09:44:33+08:00">2020-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -284,14 +290,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>882</span>
+              <span>1.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -303,26 +309,56 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="学习目标"><a href="#学习目标" class="headerlink" title="学习目标"></a>学习目标</h4><ul>
-<li>了解推荐系统概念及产生背景</li>
-<li>理解推荐系统工作原理及作用</li>
-<li>了解推荐系统与web项目区别</li>
-<li>了解推荐系统要素</li>
-<li>理解推荐系统架构</li>
-</ul>
-<a id="more"></a>
-<h4 id="推荐系统概念"><a href="#推荐系统概念" class="headerlink" title="推荐系统概念"></a>推荐系统概念</h4><ol>
-<li><h5 id="什么是推荐系统"><a href="#什么是推荐系统" class="headerlink" title="什么是推荐系统"></a>什么是推荐系统</h5><p> 没有明确需求的用户访问了我们的服务, 且服务的物品对用户构成了信息过载，系统通过一定的规则对物品进行排序，并将排在前面的物品展示给用户，这样的系统就是推荐系统 。</p>
-</li>
-<li><h5 id="信息过载-amp-用户需求不明确"><a href="#信息过载-amp-用户需求不明确" class="headerlink" title="信息过载 &amp; 用户需求不明确"></a>信息过载 &amp; 用户需求不明确</h5><ul>
+        <h4 id="推荐系统概念"><a href="#推荐系统概念" class="headerlink" title="推荐系统概念"></a>推荐系统概念</h4><h5 id="什么是推荐系统"><a href="#什么是推荐系统" class="headerlink" title="什么是推荐系统"></a>什么是推荐系统</h5><p>没有明确需求的用户访问了我们的服务, 且服务的物品对用户构成了信息过载，系统通过一定的规则对物品进行排序，并将排在前面的物品展示给用户，这样的系统就是推荐系统 。</p>
+<h5 id="信息过载-amp-用户需求不明确"><a href="#信息过载-amp-用户需求不明确" class="headerlink" title="信息过载 &amp; 用户需求不明确"></a>信息过载 &amp; 用户需求不明确</h5><ul>
 <li>分类⽬录（1990s）：覆盖少量热门⽹站。典型应用：Hao123 Yahoo</li>
 <li>搜索引擎（2000s）：通过搜索词明确需求。典型应用：Google Baidu</li>
 <li>推荐系统（2010s）：不需要⽤户提供明确的需求，通过分析⽤ 户的历史⾏为给⽤户的兴趣进⾏建模，从⽽主动给⽤户推荐能 够满⾜他们兴趣和需求的信息。</li>
 </ul>
-</li>
-<li><h5 id="推荐系统与搜索引擎"><a href="#推荐系统与搜索引擎" class="headerlink" title="推荐系统与搜索引擎"></a>推荐系统与搜索引擎</h5><p>| 搜索     | 推荐     |          |<br>| ———— | ———— | ———— |<br>| 行为方式 | 主动     | 被动     |<br>| 意图     | 明确     | 模糊     |<br>| 个性化   | 弱       | 强       |<br>| 流量分布 | 马太效应 | 长尾效应 |<br>| 目标     | 快速满足 | 持续服务 |<br>| 评估指标 | 简明     | 复杂     |</p>
-</li>
-</ol>
+<a id="more"></a>
+<h5 id="推荐系统与搜索引擎"><a href="#推荐系统与搜索引擎" class="headerlink" title="推荐系统与搜索引擎"></a>推荐系统与搜索引擎</h5><div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>搜索</th>
+<th>推荐</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>行为方式</td>
+<td>主动</td>
+<td>被动</td>
+</tr>
+<tr>
+<td>意图</td>
+<td>明确</td>
+<td>模糊</td>
+</tr>
+<tr>
+<td>个性化</td>
+<td>弱</td>
+<td>强</td>
+</tr>
+<tr>
+<td>流量分布</td>
+<td>马太效应</td>
+<td>长尾效应</td>
+</tr>
+<tr>
+<td>目标</td>
+<td>快速满足</td>
+<td>持续服务</td>
+</tr>
+<tr>
+<td>评估指标</td>
+<td>简明</td>
+<td>复杂</td>
+</tr>
+</tbody>
+</table>
+</div>
 <h4 id="推荐系统的工作原理"><a href="#推荐系统的工作原理" class="headerlink" title="推荐系统的工作原理"></a>推荐系统的工作原理</h4><ul>
 <li><strong>社会化推荐</strong> 例如：向朋友咨询，社会化推荐，让好友给自己推荐物品</li>
 <li><strong>基于内容的推荐</strong> 例如：打开搜索引擎，输入自己喜欢的演员的名字，然后看看返回结果中还有什么电影是自己没看过的</li>
@@ -357,11 +393,77 @@
 <li>业务知识</li>
 <li>算法</li>
 </ul>
-<h4 id="推荐系统架构"><a href="#推荐系统架构" class="headerlink" title="推荐系统架构"></a>推荐系统架构</h4><ol>
-<li><h5 id="推荐系统整体架构"><a href="#推荐系统整体架构" class="headerlink" title="推荐系统整体架构"></a>推荐系统整体架构</h5></li>
-<li><h5 id="大数据Lambda架构"><a href="#大数据Lambda架构" class="headerlink" title="大数据Lambda架构"></a>大数据Lambda架构</h5></li>
-<li><h5 id="推荐算法架构"><a href="#推荐算法架构" class="headerlink" title="推荐算法架构"></a>推荐算法架构</h5></li>
-</ol>
+<h4 id="推荐系统架构"><a href="#推荐系统架构" class="headerlink" title="推荐系统架构"></a>推荐系统架构</h4><h5 id="推荐系统整体架构"><a href="#推荐系统整体架构" class="headerlink" title="推荐系统整体架构"></a>推荐系统整体架构</h5><p> <img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/%E6%8E%A8%E8%8D%90%E6%B5%81%E7%A8%8B.png" alt="img"></p>
+<h5 id="大数据Lambda架构"><a href="#大数据Lambda架构" class="headerlink" title="大数据Lambda架构"></a>大数据Lambda架构</h5><ul>
+<li>Lambda架构是由实时大数据处理框架Storm的作者Nathan Marz提出的一个实时大数据处理框架。</li>
+<li>Lambda架构的将离线计算和实时计算整合，设计出一个能满足实时大数据系统关键特性的架构，包括有：高容错、低延时和可扩展等。</li>
+<li>分层架构<ul>
+<li>批处理层（离线计算）<ul>
+<li>数据不可变, 可进行任何计算, 可水平扩展</li>
+<li>高延迟 几分钟~几小时(计算量和数据量不同)</li>
+<li>日志收集： Flume</li>
+<li>分布式存储： Hadoop</li>
+<li>分布式计算： Hadoop、Spark</li>
+<li>视图存储数据库<ul>
+<li>nosql(HBase/Cassandra)</li>
+<li>Redis/memcache</li>
+<li>MySQL</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>实时处理层<ul>
+<li>流式处理, 持续计算</li>
+<li>存储和分析某个窗口期内的数据（一段时间的热销排行，实时热搜等）</li>
+<li>实时数据收集 flume-日志收集 &amp; kafka-消息队列（数据的实时收集）</li>
+<li>实时数据分析 spark streaming/storm/flink</li>
+</ul>
+</li>
+<li>服务层<ul>
+<li>支持随机读</li>
+<li>需要在非常短的时间内返回结果</li>
+<li>读取批处理层和实时处理层结果并对其归并</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Lambda架构图</p>
+<p><img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/lambda3.png" alt="img"></p>
+</li>
+</ul>
+<h5 id="推荐算法架构"><a href="#推荐算法架构" class="headerlink" title="推荐算法架构"></a>推荐算法架构</h5><ul>
+<li>召回阶段 (海选)<ul>
+<li>召回决定了最终推荐结果的天花板</li>
+<li>常用算法:<ul>
+<li>协同过滤</li>
+<li>基于内容</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>排序阶段 （精选）<ul>
+<li>召回决定了最终推荐结果的天花板, 排序逼近这个极限, 决定了最终的推荐效果</li>
+<li>CTR预估 (点击率预估 使用LR算法) 估计用户是否会点击某个商品 需要用户的点击数据</li>
+</ul>
+</li>
+<li>过滤<ul>
+<li>法律规则</li>
+<li>没有库存问题</li>
+<li>反复曝光都没看</li>
+</ul>
+</li>
+<li><p>规则调整</p>
+<ul>
+<li>商业合作</li>
+<li>政策问题</li>
+</ul>
+<p><img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/recommend7.jpeg" alt="img"></p>
+</li>
+</ul>
+<h5 id="推荐系统的整体架构"><a href="#推荐系统的整体架构" class="headerlink" title="推荐系统的整体架构"></a>推荐系统的整体架构</h5><p> 推荐系统业务架构</p>
+<p><img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/rs%E5%9F%BA%E7%A1%80%E4%B8%9A%E5%8A%A1%E6%9E%B6%E6%9E%84.png" alt="img"></p>
+<p>  推荐系统技术架构</p>
+<p><img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/rs%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84.png" alt="img"> </p>
 
     </div>
 
@@ -451,7 +553,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#学习目标"><span class="nav-number">1.</span> <span class="nav-text">学习目标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐系统概念"><span class="nav-number">2.</span> <span class="nav-text">推荐系统概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是推荐系统"><span class="nav-number">2.1.</span> <span class="nav-text">什么是推荐系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#信息过载-amp-用户需求不明确"><span class="nav-number">2.2.</span> <span class="nav-text">信息过载 &amp; 用户需求不明确</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#推荐系统与搜索引擎"><span class="nav-number">2.3.</span> <span class="nav-text">推荐系统与搜索引擎</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐系统的工作原理"><span class="nav-number">3.</span> <span class="nav-text">推荐系统的工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐系统的作用"><span class="nav-number">4.</span> <span class="nav-text">推荐系统的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐系统的应用场景"><span class="nav-number">5.</span> <span class="nav-text">推荐系统的应用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐系统和Web项目的区别"><span class="nav-number">6.</span> <span class="nav-text">推荐系统和Web项目的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐系统要素"><span class="nav-number">7.</span> <span class="nav-text">推荐系统要素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐系统架构"><span class="nav-number">8.</span> <span class="nav-text">推荐系统架构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#推荐系统整体架构"><span class="nav-number">8.1.</span> <span class="nav-text">推荐系统整体架构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#大数据Lambda架构"><span class="nav-number">8.2.</span> <span class="nav-text">大数据Lambda架构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#推荐算法架构"><span class="nav-number">8.3.</span> <span class="nav-text">推荐算法架构</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐系统概念"><span class="nav-number">1.</span> <span class="nav-text">推荐系统概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是推荐系统"><span class="nav-number">1.1.</span> <span class="nav-text">什么是推荐系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#信息过载-amp-用户需求不明确"><span class="nav-number">1.2.</span> <span class="nav-text">信息过载 &amp; 用户需求不明确</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#推荐系统与搜索引擎"><span class="nav-number">1.3.</span> <span class="nav-text">推荐系统与搜索引擎</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐系统的工作原理"><span class="nav-number">2.</span> <span class="nav-text">推荐系统的工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐系统的作用"><span class="nav-number">3.</span> <span class="nav-text">推荐系统的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐系统的应用场景"><span class="nav-number">4.</span> <span class="nav-text">推荐系统的应用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐系统和Web项目的区别"><span class="nav-number">5.</span> <span class="nav-text">推荐系统和Web项目的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐系统要素"><span class="nav-number">6.</span> <span class="nav-text">推荐系统要素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#推荐系统架构"><span class="nav-number">7.</span> <span class="nav-text">推荐系统架构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#推荐系统整体架构"><span class="nav-number">7.1.</span> <span class="nav-text">推荐系统整体架构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#大数据Lambda架构"><span class="nav-number">7.2.</span> <span class="nav-text">大数据Lambda架构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#推荐算法架构"><span class="nav-number">7.3.</span> <span class="nav-text">推荐算法架构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#推荐系统的整体架构"><span class="nav-number">7.4.</span> <span class="nav-text">推荐系统的整体架构</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -468,7 +570,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -481,7 +583,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-count">47</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -534,13 +636,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">78k</span>
+    <span title="站点总字数">93k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:09</span>
+    <span title="站点阅读时长">2:35</span>
 </div>
 
         

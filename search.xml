@@ -1,6 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>推荐系统的冷启动问题</title>
+    <url>/2020/02/10/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%86%B7%E5%90%AF%E5%8A%A8%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h4 id="推荐系统冷启动概念"><a href="#推荐系统冷启动概念" class="headerlink" title="推荐系统冷启动概念"></a>推荐系统冷启动概念</h4><ul>
+<li>⽤户冷启动：如何为新⽤户做个性化推荐</li>
+<li>物品冷启动：如何将新物品推荐给⽤户（协同过滤）</li>
+<li>系统冷启动：⽤户冷启动+物品冷启动</li>
+<li>本质是推荐系统依赖历史数据，没有历史数据⽆法预测⽤户偏好</li>
+</ul>
+<a id="more"></a>
+<h4 id="处理推荐系统冷启动问题的常用方法"><a href="#处理推荐系统冷启动问题的常用方法" class="headerlink" title="处理推荐系统冷启动问题的常用方法"></a>处理推荐系统冷启动问题的常用方法</h4><h5 id="用户冷启动"><a href="#用户冷启动" class="headerlink" title="用户冷启动"></a>用户冷启动</h5><ul>
+<li><p>收集⽤户特征</p>
+<ul>
+<li>⽤户注册信息：性别、年龄、地域</li>
+<li>设备信息：定位、⼿机型号、app列表</li>
+<li>社交信息、推⼴素材、安装来源</li>
+</ul>
+<p><img src="/2020/02/10/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%86%B7%E5%90%AF%E5%8A%A8%E9%97%AE%E9%A2%98/recommend4.png" alt="img"></p>
+</li>
+<li><p>引导用户填写兴趣 </p>
+</li>
+<li>使用其它站点的行为数据, 例如腾讯视频&amp;QQ音乐 今日头条&amp;抖音</li>
+<li>新老用户推荐策略的差异<ul>
+<li>新⽤户在冷启动阶段更倾向于热门排⾏榜，⽼⽤户会更加需要长尾推荐</li>
+<li>Explore Exploit⼒度</li>
+<li>使⽤单独的特征和模型预估</li>
+</ul>
+</li>
+</ul>
+<h5 id="物品冷启动"><a href="#物品冷启动" class="headerlink" title="物品冷启动"></a>物品冷启动</h5><ul>
+<li>给物品打标签</li>
+<li><p>利用物品的内容信息，将新物品先投放给曾经喜欢过和它内容相似的其他物品的用户。</p>
+<p><img src="/2020/02/10/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%86%B7%E5%90%AF%E5%8A%A8%E9%97%AE%E9%A2%98/firststart2.png" alt="img"> </p>
+</li>
+</ul>
+<h5 id="系统冷启动"><a href="#系统冷启动" class="headerlink" title="系统冷启动"></a>系统冷启动</h5><ul>
+<li>基于内容的推荐 系统早期</li>
+<li>基于内容的推荐逐渐过渡到协同过滤</li>
+<li>基于内容的推荐和协同过滤的推荐结果都计算出来 加权求和得到最终推荐结果</li>
+</ul>
+]]></content>
+      <categories>
+        <category>推荐系统</category>
+      </categories>
+      <tags>
+        <tag>推荐系统冷启动</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>推荐系统评估</title>
+    <url>/2020/02/10/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BC%B0/</url>
+    <content><![CDATA[<h3 id="学习目标"><a href="#学习目标" class="headerlink" title="学习目标"></a>学习目标</h3><ul>
+<li>了解推荐系统的常用评估指标</li>
+<li>了解推荐系统的评估方法</li>
+</ul>
+<a id="more"></a>
+<h4 id="推荐系统的评估指标"><a href="#推荐系统的评估指标" class="headerlink" title="推荐系统的评估指标"></a>推荐系统的评估指标</h4><ul>
+<li><p>好的推荐系统可以实现用户, 服务提供方, 内容提供方的共赢 </p>
+<p> <img src="/2020/02/10/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BC%B0/recommend2.png" alt="img"> </p>
+</li>
+<li><p>评估数据来源显示反馈和隐式反馈 </p>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>显式反馈</th>
+<th>隐式反馈</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>例子</td>
+<td>电影/书籍评分 是否喜欢这个推荐</td>
+<td>播放/点击 评论 下载 购买</td>
+</tr>
+<tr>
+<td>准确性</td>
+<td>高</td>
+<td>低</td>
+</tr>
+<tr>
+<td>数量</td>
+<td>少</td>
+<td>多</td>
+</tr>
+<tr>
+<td>获取成本</td>
+<td>高</td>
+<td>低</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li><p>常用评估指标 </p>
+<blockquote>
+<p>• 准确性 • 信任度 • 满意度 • 实时性 • 覆盖率 • 鲁棒性<br>• 多样性 • 可扩展性 • 新颖性 • 商业⽬标 • 惊喜度 • ⽤户留存 </p>
+</blockquote>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line"><span class="bullet">- </span>准确性 (理论角度) Netflix 美国录像带租赁</span><br><span class="line"><span class="bullet">  - </span>评分预测</span><br><span class="line"><span class="bullet">    - </span>RMSE MAE</span><br><span class="line"><span class="bullet">  - </span>topN推荐</span><br><span class="line"><span class="bullet">    - </span>召回率 精准率</span><br><span class="line"><span class="bullet">- </span>准确性 (业务角度)</span><br><span class="line"><span class="bullet">- </span>覆盖度</span><br><span class="line"><span class="bullet">  - </span>信息熵 对于推荐越大越好</span><br><span class="line"><span class="bullet">  - </span>覆盖率</span><br><span class="line"><span class="bullet">- </span>多样性&amp;新颖性&amp;惊喜性</span><br><span class="line"><span class="bullet">  - </span>多样性：推荐列表中两两物品的不相似性。（相似性如何度量？</span><br><span class="line"><span class="bullet">  - </span>新颖性：未曾关注的类别、作者；推荐结果的平均流⾏度</span><br><span class="line"><span class="bullet">  - </span>惊喜性：历史不相似（惊）但很满意（喜）</span><br><span class="line"><span class="bullet">  - </span>往往需要牺牲准确性</span><br><span class="line"><span class="bullet">  - </span>使⽤历史⾏为预测⽤户对某个物品的喜爱程度</span><br><span class="line"><span class="bullet">  - </span>系统过度强调实时性</span><br><span class="line"><span class="bullet">- </span>Exploitation &amp; Exploration 探索与利用问题</span><br><span class="line"><span class="bullet">  - </span>Exploitation(开发 利用)：选择现在可能最佳的⽅案</span><br><span class="line"><span class="bullet">  - </span>Exploration(探测 搜索)：选择现在不确定的⼀些⽅案，但未来可能会有⾼收益的⽅案</span><br><span class="line"><span class="bullet">  - </span>在做两类决策的过程中，不断更新对所有决策的不确定性的认知，优化 长期的⽬标</span><br><span class="line"><span class="bullet">- </span>EE问题实践</span><br><span class="line"><span class="bullet">  - </span>兴趣扩展: 相似话题, 搭配推荐</span><br><span class="line"><span class="bullet">  - </span>人群算法: userCF 用户聚类</span><br><span class="line"><span class="bullet">  - </span>平衡个性化推荐和热门推荐比例</span><br><span class="line"><span class="bullet">  - </span>随机丢弃用户行为历史</span><br><span class="line"><span class="bullet">  - </span>随机扰动模型参数</span><br><span class="line"><span class="bullet">- </span>EE可能带来的问题</span><br><span class="line"><span class="bullet">  - </span>探索伤害用户体验, 可能导致用户流失</span><br><span class="line"><span class="bullet">  - </span>探索带来的长期收益(留存率)评估周期长, KPI压力大</span><br><span class="line"><span class="bullet">  - </span>如何平衡实时兴趣和长期兴趣</span><br><span class="line"><span class="bullet">  - </span>如何平衡短期产品体验和长期系统生态</span><br><span class="line"><span class="bullet">  - </span>如何平衡大众口味和小众需求</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="推荐系统评估方法"><a href="#推荐系统评估方法" class="headerlink" title="推荐系统评估方法"></a>推荐系统评估方法</h4><p>评估方法</p>
+<ul>
+<li>问卷调查: 成本高</li>
+<li>离线评估:<ul>
+<li>只能在用户看到过的候选集上做评估, 且跟线上真实效果存在偏差</li>
+<li>只能评估少数指标</li>
+<li>速度快, 不损害用户体验</li>
+</ul>
+</li>
+<li>在线评估: 灰度发布 &amp; A/B测试 50% 全量上线</li>
+<li>实践: 离线评估和在线评估结合，定期做问卷调查</li>
+</ul>
+]]></content>
+      <categories>
+        <category>推荐系统</category>
+      </categories>
+      <tags>
+        <tag>推荐系统的评估指标</tag>
+        <tag>推荐系统评估方法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>案例-基于协同过滤的电影推荐</title>
+    <url>/2020/02/09/%E6%A1%88%E4%BE%8B-%E5%9F%BA%E4%BA%8E%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E7%9A%84%E7%94%B5%E5%BD%B1%E6%8E%A8%E8%8D%90/</url>
+    <content><![CDATA[<h4 id="学习目标"><a href="#学习目标" class="headerlink" title="学习目标"></a>学习目标</h4><ul>
+<li>应用基于用户的协同过滤实现电影评分预测</li>
+<li>应用基于物品的协同过滤实现电影评分预测</li>
+</ul>
+<a id="more"></a>
+<h4 id="User-Based-CF-预测电影评分"><a href="#User-Based-CF-预测电影评分" class="headerlink" title="User-Based CF 预测电影评分"></a>User-Based CF 预测电影评分</h4><ul>
+<li><p>据集下载</p>
+<ul>
+<li>下载地址：<a href="https://grouplens.org/datasets/movielens/latest/" target="_blank" rel="noopener">MovieLens Latest Datasets Small</a></li>
+<li>建议下载<a href="http://files.grouplens.org/datasets/movielens/ml-latest-small.zip" target="_blank" rel="noopener">ml-latest-small.zip</a>，数据量小，便于我们单机使用和运行</li>
+</ul>
+</li>
+<li><p>加载ratings.csv，转换为用户-电影评分矩阵并计算用户之间相似度</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">DATA_PATH = <span class="string">"./datasets/ml-latest-small/ratings.csv"</span></span><br><span class="line"></span><br><span class="line">dtype = &#123;<span class="string">"userId"</span>: np.int32, <span class="string">"movieId"</span>: np.int32, <span class="string">"rating"</span>: np.float32&#125;</span><br><span class="line"><span class="comment"># 加载数据，我们只用前三列数据，分别是用户ID，电影ID，已经用户对电影的对应评分</span></span><br><span class="line">ratings = pd.read_csv(data_path, dtype=dtype, usecols=range(<span class="number">3</span>))</span><br><span class="line"><span class="comment"># 透视表，将电影ID转换为列名称，转换成为一个User-Movie的评分矩阵</span></span><br><span class="line">ratings_matrix = ratings.pivot_table(index=[<span class="string">"userId"</span>], columns=[<span class="string">"movieId"</span>],values=<span class="string">"rating"</span>)</span><br><span class="line"><span class="comment">#计算用户之间相似度</span></span><br><span class="line">user_similar = ratings_matrix.T.corr()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>预测用户对物品的评分 （以用户1对电影1评分为例） </p>
+<p><img src="/2020/02/09/%E6%A1%88%E4%BE%8B-%E5%9F%BA%E4%BA%8E%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E7%9A%84%E7%94%B5%E5%BD%B1%E6%8E%A8%E8%8D%90/1581401174483.png" alt="1581401174483"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. 找出uid用户的相似用户</span></span><br><span class="line">similar_users = user_similar[<span class="number">1</span>].drop([<span class="number">1</span>]).dropna()</span><br><span class="line"><span class="comment"># 相似用户筛选规则：正相关的用户</span></span><br><span class="line">similar_users = similar_users.where(similar_users&gt;<span class="number">0</span>).dropna()</span><br><span class="line"><span class="comment"># 2. 从用户1的近邻相似用户中筛选出对物品1有评分记录的近邻用户</span></span><br><span class="line">ids = set(ratings_matrix[<span class="number">1</span>].dropna().index)&amp;set(similar_users.index)</span><br><span class="line">finally_similar_users = similar_users.ix[list(<span class="number">1</span>)]</span><br><span class="line"><span class="comment"># 3. 结合uid用户与其近邻用户的相似度预测uid用户对iid物品的评分</span></span><br><span class="line">numerator = <span class="number">0</span>    <span class="comment"># 评分预测公式的分子部分的值</span></span><br><span class="line">denominator = <span class="number">0</span>    <span class="comment"># 评分预测公式的分母部分的值</span></span><br><span class="line"><span class="keyword">for</span> sim_uid, similarity <span class="keyword">in</span> finally_similar_users.iteritems():</span><br><span class="line">    <span class="comment"># 近邻用户的评分数据</span></span><br><span class="line">    sim_user_rated_movies = ratings_matrix.ix[sim_uid].dropna()</span><br><span class="line">    <span class="comment"># 近邻用户对iid物品的评分</span></span><br><span class="line">    sim_user_rating_for_item = sim_user_rated_movies[<span class="number">1</span>]</span><br><span class="line">    <span class="comment"># 计算分子的值</span></span><br><span class="line">    numerator += similarity * sim_user_rating_for_item</span><br><span class="line">    <span class="comment"># 计算分母的值</span></span><br><span class="line">    denominator += similarity</span><br><span class="line"><span class="comment"># 4 计算预测的评分值</span></span><br><span class="line">predict_rating = numerator/denominator</span><br><span class="line">print(<span class="string">"预测出用户&lt;%d&gt;对电影&lt;%d&gt;的评分：%0.2f"</span> % (<span class="number">1</span>, <span class="number">1</span>, predict_rating))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>封装成方法 预测任意用户对任意电影的评分 </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(uid, iid, ratings_matrix, user_similar)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    预测给定用户对给定物品的评分值</span></span><br><span class="line"><span class="string">    :param uid: 用户ID</span></span><br><span class="line"><span class="string">    :param iid: 物品ID</span></span><br><span class="line"><span class="string">    :param ratings_matrix: 用户-物品评分矩阵</span></span><br><span class="line"><span class="string">    :param user_similar: 用户两两相似度矩阵</span></span><br><span class="line"><span class="string">    :return: 预测的评分值</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    print(<span class="string">"开始预测用户&lt;%d&gt;对电影&lt;%d&gt;的评分..."</span>%(uid, iid))</span><br><span class="line">    <span class="comment"># 1. 找出uid用户的相似用户</span></span><br><span class="line">    similar_users = user_similar[uid].drop([uid]).dropna()</span><br><span class="line">    <span class="comment"># 相似用户筛选规则：正相关的用户</span></span><br><span class="line">    similar_users = similar_users.where(similar_users&gt;<span class="number">0</span>).dropna()</span><br><span class="line">    <span class="keyword">if</span> similar_users.empty <span class="keyword">is</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">raise</span> Exception(<span class="string">"用户&lt;%d&gt;没有相似的用户"</span> % uid)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. 从uid用户的近邻相似用户中筛选出对iid物品有评分记录的近邻用户</span></span><br><span class="line">    ids = set(ratings_matrix[iid].dropna().index)&amp;set(similar_users.index)</span><br><span class="line">    finally_similar_users = similar_users.ix[list(ids)]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3. 结合uid用户与其近邻用户的相似度预测uid用户对iid物品的评分</span></span><br><span class="line">    numerator = <span class="number">0</span>    <span class="comment"># 评分预测公式的分子部分的值</span></span><br><span class="line">    denominator = <span class="number">0</span>    <span class="comment"># 评分预测公式的分母部分的值</span></span><br><span class="line">    <span class="keyword">for</span> sim_uid, similarity <span class="keyword">in</span> finally_similar_users.iteritems():</span><br><span class="line">        <span class="comment"># 近邻用户的评分数据</span></span><br><span class="line">        sim_user_rated_movies = ratings_matrix.ix[sim_uid].dropna()</span><br><span class="line">        <span class="comment"># 近邻用户对iid物品的评分</span></span><br><span class="line">        sim_user_rating_for_item = sim_user_rated_movies[iid]</span><br><span class="line">        <span class="comment"># 计算分子的值</span></span><br><span class="line">        numerator += similarity * sim_user_rating_for_item</span><br><span class="line">        <span class="comment"># 计算分母的值</span></span><br><span class="line">        denominator += similarity</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算预测的评分值并返回</span></span><br><span class="line">    predict_rating = numerator/denominator</span><br><span class="line">    print(<span class="string">"预测出用户&lt;%d&gt;对电影&lt;%d&gt;的评分：%0.2f"</span> % (uid, iid, predict_rating))</span><br><span class="line">    <span class="keyword">return</span> round(predict_rating, <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>为某一用户预测所有电影评分 </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">predict_all</span><span class="params">(uid, ratings_matrix, user_similar)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    预测全部评分</span></span><br><span class="line"><span class="string">    :param uid: 用户id</span></span><br><span class="line"><span class="string">    :param ratings_matrix: 用户-物品打分矩阵</span></span><br><span class="line"><span class="string">    :param user_similar: 用户两两间的相似度</span></span><br><span class="line"><span class="string">    :return: 生成器，逐个返回预测评分</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    <span class="comment"># 准备要预测的物品的id列表</span></span><br><span class="line">    item_ids = ratings_matrix.columns</span><br><span class="line">    <span class="comment"># 逐个预测</span></span><br><span class="line">    <span class="keyword">for</span> iid <span class="keyword">in</span> item_ids:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            rating = predict(uid, iid, ratings_matrix, user_similar)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            print(e)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">yield</span> uid, iid, rating</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> predict_all(<span class="number">1</span>, ratings_matrix, user_similar):</span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>根据评分为指定用户推荐topN个电影 </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">top_k_rs_result</span><span class="params">(k)</span>:</span></span><br><span class="line">    results = predict_all(<span class="number">1</span>, ratings_matrix, user_similar)</span><br><span class="line">    <span class="keyword">return</span> sorted(results, key=<span class="keyword">lambda</span> x: x[<span class="number">2</span>], reverse=<span class="literal">True</span>)[:k]</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">from</span> pprint <span class="keyword">import</span> pprint</span><br><span class="line">    result = top_k_rs_result(<span class="number">20</span>)</span><br><span class="line">    pprint(result)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="Item-Based-CF-预测电影评分"><a href="#Item-Based-CF-预测电影评分" class="headerlink" title="Item-Based CF 预测电影评分"></a>Item-Based CF 预测电影评分</h4><ul>
+<li><p>加载ratings.csv，转换为用户-电影评分矩阵并计算用户之间相似度 </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">DATA_PATH = <span class="string">"./datasets/ml-latest-small/ratings.csv"</span></span><br><span class="line"></span><br><span class="line">dtype = &#123;<span class="string">"userId"</span>: np.int32, <span class="string">"movieId"</span>: np.int32, <span class="string">"rating"</span>: np.float32&#125;</span><br><span class="line"><span class="comment"># 加载数据，我们只用前三列数据，分别是用户ID，电影ID，已经用户对电影的对应评分</span></span><br><span class="line">ratings = pd.read_csv(data_path, dtype=dtype, usecols=range(<span class="number">3</span>))</span><br><span class="line"><span class="comment"># 透视表，将电影ID转换为列名称，转换成为一个User-Movie的评分矩阵</span></span><br><span class="line">ratings_matrix = ratings.pivot_table(index=[<span class="string">"userId"</span>], columns=[<span class="string">"movieId"</span>],values=<span class="string">"rating"</span>)</span><br><span class="line"><span class="comment">#计算用户之间相似度</span></span><br><span class="line">item_similar = ratings_matrix.corr()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>预测用户对物品的评分 （以用户1对电影1评分为例） </p>
+<p><img src="/2020/02/09/%E6%A1%88%E4%BE%8B-%E5%9F%BA%E4%BA%8E%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E7%9A%84%E7%94%B5%E5%BD%B1%E6%8E%A8%E8%8D%90/1581401422898.png" alt="1581401422898"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. 找出iid物品的相似物品</span></span><br><span class="line">similar_items = item_similar[<span class="number">1</span>].drop([<span class="number">1</span>]).dropna()</span><br><span class="line"><span class="comment"># 相似物品筛选规则：正相关的物品</span></span><br><span class="line">similar_items = similar_items.where(similar_items&gt;<span class="number">0</span>).dropna()</span><br><span class="line"><span class="comment"># 2. 从iid物品的近邻相似物品中筛选出uid用户评分过的物品</span></span><br><span class="line">ids = set(ratings_matrix.ix[<span class="number">1</span>].dropna().index)&amp;set(similar_items.index)</span><br><span class="line">finally_similar_items = similar_items.ix[list(ids)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 结合iid物品与其相似物品的相似度和uid用户对其相似物品的评分，预测uid对iid的评分</span></span><br><span class="line">numerator = <span class="number">0</span>    <span class="comment"># 评分预测公式的分子部分的值</span></span><br><span class="line">denominator = <span class="number">0</span>    <span class="comment"># 评分预测公式的分母部分的值</span></span><br><span class="line"><span class="keyword">for</span> sim_iid, similarity <span class="keyword">in</span> finally_similar_items.iteritems():</span><br><span class="line">    <span class="comment"># 近邻物品的评分数据</span></span><br><span class="line">    sim_item_rated_movies = ratings_matrix[sim_iid].dropna()</span><br><span class="line">    <span class="comment"># 1用户对相似物品物品的评分</span></span><br><span class="line">    sim_item_rating_from_user = sim_item_rated_movies[<span class="number">1</span>]</span><br><span class="line">    <span class="comment"># 计算分子的值</span></span><br><span class="line">    numerator += similarity * sim_item_rating_from_user</span><br><span class="line">    <span class="comment"># 计算分母的值</span></span><br><span class="line">    denominator += similarity</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算预测的评分值并返回</span></span><br><span class="line">predict_rating = sum_up/sum_down</span><br><span class="line">print(<span class="string">"预测出用户&lt;%d&gt;对电影&lt;%d&gt;的评分：%0.2f"</span> % (uid, iid, predict_rating))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>封装成方法 预测任意用户对任意电影的评分 </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(uid, iid, ratings_matrix, user_similar)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    预测给定用户对给定物品的评分值</span></span><br><span class="line"><span class="string">    :param uid: 用户ID</span></span><br><span class="line"><span class="string">    :param iid: 物品ID</span></span><br><span class="line"><span class="string">    :param ratings_matrix: 用户-物品评分矩阵</span></span><br><span class="line"><span class="string">    :param user_similar: 用户两两相似度矩阵</span></span><br><span class="line"><span class="string">    :return: 预测的评分值</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    print(<span class="string">"开始预测用户&lt;%d&gt;对电影&lt;%d&gt;的评分..."</span>%(uid, iid))</span><br><span class="line">    <span class="comment"># 1. 找出uid用户的相似用户</span></span><br><span class="line">    similar_users = user_similar[uid].drop([uid]).dropna()</span><br><span class="line">    <span class="comment"># 相似用户筛选规则：正相关的用户</span></span><br><span class="line">    similar_users = similar_users.where(similar_users&gt;<span class="number">0</span>).dropna()</span><br><span class="line">    <span class="keyword">if</span> similar_users.empty <span class="keyword">is</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">raise</span> Exception(<span class="string">"用户&lt;%d&gt;没有相似的用户"</span> % uid)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. 从uid用户的近邻相似用户中筛选出对iid物品有评分记录的近邻用户</span></span><br><span class="line">    ids = set(ratings_matrix[iid].dropna().index)&amp;set(similar_users.index)</span><br><span class="line">    finally_similar_users = similar_users.ix[list(ids)]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 3. 结合uid用户与其近邻用户的相似度预测uid用户对iid物品的评分</span></span><br><span class="line">    numerator = <span class="number">0</span>    <span class="comment"># 评分预测公式的分子部分的值</span></span><br><span class="line">    denominator = <span class="number">0</span>    <span class="comment"># 评分预测公式的分母部分的值</span></span><br><span class="line">    <span class="keyword">for</span> sim_uid, similarity <span class="keyword">in</span> finally_similar_users.iteritems():</span><br><span class="line">        <span class="comment"># 近邻用户的评分数据</span></span><br><span class="line">        sim_user_rated_movies = ratings_matrix.ix[sim_uid].dropna()</span><br><span class="line">        <span class="comment"># 近邻用户对iid物品的评分</span></span><br><span class="line">        sim_user_rating_for_item = sim_user_rated_movies[iid]</span><br><span class="line">        <span class="comment"># 计算分子的值</span></span><br><span class="line">        numerator += similarity * sim_user_rating_for_item</span><br><span class="line">        <span class="comment"># 计算分母的值</span></span><br><span class="line">        denominator += similarity</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算预测的评分值并返回</span></span><br><span class="line">    predict_rating = numerator/denominator</span><br><span class="line">    print(<span class="string">"预测出用户&lt;%d&gt;对电影&lt;%d&gt;的评分：%0.2f"</span> % (uid, iid, predict_rating))</span><br><span class="line">    <span class="keyword">return</span> round(predict_rating, <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>为某一用户预测所有电影评分 </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">predict_all</span><span class="params">(uid, ratings_matrix, item_similar)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    预测全部评分</span></span><br><span class="line"><span class="string">    :param uid: 用户id</span></span><br><span class="line"><span class="string">    :param ratings_matrix: 用户-物品打分矩阵</span></span><br><span class="line"><span class="string">    :param item_similar: 物品两两间的相似度</span></span><br><span class="line"><span class="string">    :return: 生成器，逐个返回预测评分</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    <span class="comment"># 准备要预测的物品的id列表</span></span><br><span class="line">    item_ids = ratings_matrix.columns</span><br><span class="line">    <span class="comment"># 逐个预测</span></span><br><span class="line">    <span class="keyword">for</span> iid <span class="keyword">in</span> item_ids:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            rating = predict(uid, iid, ratings_matrix, item_similar)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            print(e)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">yield</span> uid, iid, rating</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> predict_all(<span class="number">1</span>, ratings_matrix, item_similar):</span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>根据评分为指定用户推荐topN个电影 </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">top_k_rs_result</span><span class="params">(k)</span>:</span></span><br><span class="line">    results = predict_all(<span class="number">1</span>, ratings_matrix, item_similar)</span><br><span class="line">    <span class="keyword">return</span> sorted(results, key=<span class="keyword">lambda</span> x: x[<span class="number">2</span>], reverse=<span class="literal">True</span>)[:k]</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">from</span> pprint <span class="keyword">import</span> pprint</span><br><span class="line">    result = top_k_rs_result(<span class="number">20</span>)</span><br><span class="line">    print(result)</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <categories>
+        <category>推荐系统</category>
+      </categories>
+      <tags>
+        <tag>基于用户的协同过滤</tag>
+        <tag>基于物品的协同过滤</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>特征工程-特征降维</title>
     <url>/2020/02/03/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B-%E7%89%B9%E5%BE%81%E9%99%8D%E7%BB%B4/</url>
     <content><![CDATA[<h4 id="学习目标"><a href="#学习目标" class="headerlink" title="学习目标"></a>学习目标</h4><ul>
@@ -375,44 +558,212 @@
   <entry>
     <title>推荐算法</title>
     <url>/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/</url>
-    <content><![CDATA[<h4 id="学习目标"><a href="#学习目标" class="headerlink" title="学习目标"></a>学习目标</h4><ul>
-<li>了解推荐模型构建流程</li>
-<li>理解协同过滤原理</li>
-<li>记忆相似度计算方法</li>
-<li>应用杰卡德相似度实现简单协同过滤推荐案例</li>
+    <content><![CDATA[<h4 id="推荐模型构建流程"><a href="#推荐模型构建流程" class="headerlink" title="推荐模型构建流程"></a>推荐模型构建流程</h4><blockquote>
+<p>Data(数据)-&gt;Features(特征)-&gt;ML Algorithm(选择算法训练模型)-&gt;Prediction Output(预测输出) </p>
+</blockquote>
+<a id="more"></a>
+<ul>
+<li><p>数据清洗/数据处理 </p>
+<ul>
+<li><p>数据来源</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">- 显性数据</span><br><span class="line">  - Rating 打分</span><br><span class="line">  - Comments 评论/评价</span><br><span class="line">- 隐形数据</span><br><span class="line">  -  Order history 历史订单</span><br><span class="line">  -  Cart events 加购物车</span><br><span class="line">  - <span class="built_in"> Page </span>views 页面浏览</span><br><span class="line">  -  Click-thru 点击</span><br><span class="line">  -  Search log 搜索记录</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>数据量/数据能否满足要求</p>
+</li>
 </ul>
-<a id="more"></a>]]></content>
+</li>
+<li><p>特征工程 </p>
+<ul>
+<li><p>从数据中筛选特征</p>
+<ul>
+<li>一个给定的商品，可能被拥有类似品味或需求的用户购买</li>
+<li>使用用户行为数据描述商品</li>
+</ul>
+</li>
+<li><p>用数据表示特征</p>
+<ul>
+<li>将所有用户行为合并在一起 ，形成一个user-item 矩阵</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>选择合适的算法 </p>
+<ul>
+<li><p><strong>协同过滤</strong></p>
+</li>
+<li><p>基于内容</p>
+</li>
+</ul>
+</li>
+<li><p>产生推荐结果</p>
+<ul>
+<li>对推荐结果进行评估（评估方法后面章节介绍），评估通过后上线</li>
+</ul>
+</li>
+</ul>
+<h4 id="最经典的推荐算法：协同过滤推荐算法"><a href="#最经典的推荐算法：协同过滤推荐算法" class="headerlink" title="最经典的推荐算法：协同过滤推荐算法"></a>最经典的推荐算法：协同过滤推荐算法</h4><p>协同过滤推荐算法（Collaborative Filtering）</p>
+<p>算法思想： <strong>物以类聚，人以群分</strong> </p>
+<p> 基本的协同过滤推荐算法基于以下假设： </p>
+<ul>
+<li>“跟你喜好<strong>相似的人</strong>喜欢的东西你也很有可能喜欢” ：基于用户的协同过滤推荐（User-based CF）</li>
+<li><p>“跟你喜欢的东西<strong>相似的东西</strong>你也很有可能喜欢 ”：基于物品的协同过滤推荐（Item-based CF）</p>
+<p>实现协同过滤推荐步骤： </p>
+</li>
+</ul>
+<p>1.<strong>找出最相似的人或物品：TOP-N相似的人或物品</strong></p>
+<p>通过计算两两的相似度来进行排序，即可找出TOP-N相似的人或物品</p>
+<p>2.<strong>根据相似的人或物品产生推荐结果</strong></p>
+<p>利用TOP-N结果生成初始推荐结果，然后过滤掉用户已经有过记录的物品或明确表示不感兴趣的物品</p>
+<p>简单例子：</p>
+<p>  User-Based CF <img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/%E5%9F%BA%E4%BA%8E%E7%94%A8%E6%88%B7%E7%9A%84%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E6%8E%A8%E8%8D%901.png" alt="img"></p>
+<p> Item-Based CF   <img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/%E5%9F%BA%E4%BA%8E%E7%89%A9%E5%93%81%E7%9A%84%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E6%8E%A8%E8%8D%901.png" alt="img"> </p>
+<h4 id="相似度计算-Similarity-Calculation"><a href="#相似度计算-Similarity-Calculation" class="headerlink" title="相似度计算(Similarity Calculation)"></a>相似度计算(Similarity Calculation)</h4><h5 id="相似度的计算方法"><a href="#相似度的计算方法" class="headerlink" title="相似度的计算方法"></a>相似度的计算方法</h5><p>1.<strong>欧氏距离</strong>， 是一个欧式空间下度量距离的方法. 两个物体， 都在同一个空间下表示为两个点,，假如叫做p，q， 分别都是n个坐标，那么欧式距离就是衡量这两个点之间的距离.。欧氏距离不适用于布尔向量之间。</p>
+<p> <img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/od.png" alt="1546159024305"></p>
+<p>  欧氏距离的值是一个非负数, 最大值正无穷, 通常计算相似度的结果希望是[-1,1]或[0,1]之间,一般可以使用</p>
+<p> <img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/od2.png" alt="img"></p>
+<p>2.<strong>余弦相似度</strong> </p>
+<ul>
+<li>度量的是两个向量之间的夹角，用夹角的余弦值来度量相似的情况</li>
+<li>两个向量的夹角为0是，余弦值为1，当夹角为90度是余弦值为0，为180度是余弦值为-1</li>
+<li>余弦相似度在度量文本相似度, 用户相似度 物品相似度的时候较为常用</li>
+<li><p>余弦相似度的特点， 与向量长度无关，余弦相似度计算要对向量长度归一化， 两个向量只要方向一致，无论程度强弱，都可以视为’相似’</p>
+<p><img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/cosine.png" alt="img"></p>
+<p><img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/similarity_calc5.png" alt="img"></p>
+</li>
+</ul>
+<h5 id="皮尔逊相关系数Pearson"><a href="#皮尔逊相关系数Pearson" class="headerlink" title="皮尔逊相关系数Pearson"></a>皮尔逊相关系数Pearson</h5><ul>
+<li>实际上也是余弦相似度，不过先对向量做了中心化，向量a，b各自减去向量的均值后, 再计算余弦相似度</li>
+<li>皮尔逊相似度计算结果在-1，1之间 -1表示负相关， 1表示正相关</li>
+<li>度量两个变量是不是同增同减</li>
+<li><p>皮尔逊相关系数度量的是两个变量的变化趋势是否一致，<strong>不适合计算布尔值向量之间的相关度</strong></p>
+<p><img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/pearson.png" alt="img"> </p>
+</li>
+</ul>
+<h5 id="杰卡德相似度-Jaccard"><a href="#杰卡德相似度-Jaccard" class="headerlink" title="杰卡德相似度 Jaccard"></a>杰卡德相似度 Jaccard</h5><ul>
+<li>两个集合的交集元素个数在并集中所占的比例，非常适用于布尔向量表示</li>
+<li>分子是两个布尔向量做点积计算, 得到的就是交集元素的个数</li>
+<li><p>分母是两个布尔向量做或运算， 再求元素和</p>
+<p><img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/jaccard.png" alt="img"> </p>
+</li>
+</ul>
+<h5 id="如何选择余弦相似度"><a href="#如何选择余弦相似度" class="headerlink" title="如何选择余弦相似度"></a>如何选择余弦相似度</h5><ul>
+<li>余弦相似度/皮尔逊相关系数适合用户评分数据(实数值)；</li>
+<li>杰卡德相似度适用于隐式反馈数据(0，1布尔值 是否收藏，是否点击，是否加购物车)</li>
+</ul>
+<h4 id="协同过滤推荐算法代码案例"><a href="#协同过滤推荐算法代码案例" class="headerlink" title="协同过滤推荐算法代码案例"></a>协同过滤推荐算法代码案例</h4><p>1.构建数据集 </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">users = [<span class="string">"User1"</span>, <span class="string">"User2"</span>, <span class="string">"User3"</span>, <span class="string">"User4"</span>, <span class="string">"User5"</span>]</span><br><span class="line">items = [<span class="string">"Item A"</span>, <span class="string">"Item B"</span>, <span class="string">"Item C"</span>, <span class="string">"Item D"</span>, <span class="string">"Item E"</span>]</span><br><span class="line"><span class="comment"># 构建数据集</span></span><br><span class="line">datasets = [</span><br><span class="line">    [<span class="string">"buy"</span>,<span class="literal">None</span>,<span class="string">"buy"</span>,<span class="string">"buy"</span>,<span class="literal">None</span>],</span><br><span class="line">    [<span class="string">"buy"</span>,<span class="literal">None</span>,<span class="literal">None</span>,<span class="string">"buy"</span>,<span class="string">"buy"</span>],</span><br><span class="line">    [<span class="string">"buy"</span>,<span class="literal">None</span>,<span class="string">"buy"</span>,<span class="literal">None</span>,<span class="literal">None</span>],</span><br><span class="line">    [<span class="literal">None</span>,<span class="string">"buy"</span>,<span class="literal">None</span>,<span class="string">"buy"</span>,<span class="string">"buy"</span>],</span><br><span class="line">    [<span class="string">"buy"</span>,<span class="string">"buy"</span>,<span class="string">"buy"</span>,<span class="literal">None</span>,<span class="string">"buy"</span>],</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>2.计算时我们数据通常都需要对数据进行处理，或者编码，目的是为了便于我们对数据进行运算处理，比如这里是比较简单的情形，我们用1、0分别来表示用户的是否购买过该物品，则我们的数据集其实应该是这样的： </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">users = [<span class="string">"User1"</span>, <span class="string">"User2"</span>, <span class="string">"User3"</span>, <span class="string">"User4"</span>, <span class="string">"User5"</span>]</span><br><span class="line">items = [<span class="string">"Item A"</span>, <span class="string">"Item B"</span>, <span class="string">"Item C"</span>, <span class="string">"Item D"</span>, <span class="string">"Item E"</span>]</span><br><span class="line"><span class="comment"># 用户购买记录数据集</span></span><br><span class="line">datasets = [</span><br><span class="line">    [<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],</span><br><span class="line">    [<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>],</span><br><span class="line">    [<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">    [<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>],</span><br><span class="line">    [<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>],</span><br><span class="line">]</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">df = pd.DataFrame(datasets,</span><br><span class="line">                  columns=items,</span><br><span class="line">                  index=users)</span><br><span class="line">print(df)</span><br></pre></td></tr></table></figure>
+<p>3 .有了数据集，接下来我们就可以进行相似度的计算，不过对于相似度的计算其实是有很多专门的相似度计算方法的，比如余弦相似度、皮尔逊相关系数、杰卡德相似度等等。这里我们选择使用杰卡德相似系数[0,1] </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> jaccard_similarity_score</span><br><span class="line"><span class="comment"># 直接计算某两项的杰卡德相似系数</span></span><br><span class="line"><span class="comment"># 计算Item A 和Item B的相似度</span></span><br><span class="line">print(jaccard_similarity_score(df[<span class="string">"Item A"</span>], df[<span class="string">"Item B"</span>]))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算所有的数据两两的杰卡德相似系数</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics.pairwise <span class="keyword">import</span> pairwise_distances</span><br><span class="line"><span class="comment"># 计算用户间相似度</span></span><br><span class="line">user_similar = <span class="number">1</span> - pairwise_distances(df, metric=<span class="string">"jaccard"</span>)</span><br><span class="line">user_similar = pd.DataFrame(user_similar, columns=users, index=users)</span><br><span class="line">print(<span class="string">"用户之间的两两相似度："</span>)</span><br><span class="line">print(user_similar)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算物品间相似度</span></span><br><span class="line">item_similar = <span class="number">1</span> - pairwise_distances(df.T, metric=<span class="string">"jaccard"</span>)</span><br><span class="line">item_similar = pd.DataFrame(item_similar, columns=items, index=items)</span><br><span class="line">print(<span class="string">"物品之间的两两相似度："</span>)</span><br><span class="line">print(item_similar)</span><br></pre></td></tr></table></figure>
+<p> 有了两两的相似度，接下来就可以筛选TOP-N相似结果，并进行推荐了 </p>
+<p>4.User-Based CF </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> pprint <span class="keyword">import</span> pprint</span><br><span class="line"></span><br><span class="line">users = [<span class="string">"User1"</span>, <span class="string">"User2"</span>, <span class="string">"User3"</span>, <span class="string">"User4"</span>, <span class="string">"User5"</span>]</span><br><span class="line">items = [<span class="string">"Item A"</span>, <span class="string">"Item B"</span>, <span class="string">"Item C"</span>, <span class="string">"Item D"</span>, <span class="string">"Item E"</span>]</span><br><span class="line"><span class="comment"># 用户购买记录数据集</span></span><br><span class="line">datasets = [</span><br><span class="line">    [<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],</span><br><span class="line">    [<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>],</span><br><span class="line">    [<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">    [<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>],</span><br><span class="line">    [<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>],</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">df = pd.DataFrame(datasets,</span><br><span class="line">                  columns=items,</span><br><span class="line">                  index=users)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算所有的数据两两的杰卡德相似系数</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics.pairwise <span class="keyword">import</span> pairwise_distances</span><br><span class="line"><span class="comment"># 计算用户间相似度  1-杰卡德距离=杰卡德相似度</span></span><br><span class="line">user_similar = <span class="number">1</span> - pairwise_distances(df, metric=<span class="string">"jaccard"</span>)</span><br><span class="line">user_similar = pd.DataFrame(user_similar, columns=users, index=users)</span><br><span class="line">print(<span class="string">"用户之间的两两相似度："</span>)</span><br><span class="line">print(user_similar)</span><br><span class="line"></span><br><span class="line">topN_users = &#123;&#125;</span><br><span class="line"><span class="comment"># 遍历每一行数据</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> user_similar.index:</span><br><span class="line">    <span class="comment"># 取出每一列数据，并删除自身，然后排序数据</span></span><br><span class="line">    _df = user_similar.loc[i].drop([i])</span><br><span class="line">    <span class="comment">#sort_values 排序 按照相似度降序排列</span></span><br><span class="line">    _df_sorted = _df.sort_values(ascending=<span class="literal">False</span>)</span><br><span class="line">    <span class="comment"># 从排序之后的结果中切片 取出前两条（相似度最高的两个）</span></span><br><span class="line">    top2 = list(_df_sorted.index[:<span class="number">2</span>])</span><br><span class="line">    topN_users[i] = top2</span><br><span class="line"></span><br><span class="line">print(<span class="string">"Top2相似用户："</span>)</span><br><span class="line">pprint(topN_users)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 准备空白dict用来保存推荐结果</span></span><br><span class="line">rs_results = &#123;&#125;</span><br><span class="line"><span class="comment">#遍历所有的最相似用户</span></span><br><span class="line"><span class="keyword">for</span> user, sim_users <span class="keyword">in</span> topN_users.items():</span><br><span class="line">    rs_result = set()    <span class="comment"># 存储推荐结果</span></span><br><span class="line">    <span class="keyword">for</span> sim_user <span class="keyword">in</span> sim_users:</span><br><span class="line">        <span class="comment"># 构建初始的推荐结果</span></span><br><span class="line">        rs_result = rs_result.union(set(df.ix[sim_user].replace(<span class="number">0</span>,np.nan).dropna().index))</span><br><span class="line">    <span class="comment"># 过滤掉已经购买过的物品</span></span><br><span class="line">    rs_result -= set(df.ix[user].replace(<span class="number">0</span>,np.nan).dropna().index)</span><br><span class="line">    rs_results[user] = rs_result</span><br><span class="line">print(<span class="string">"最终推荐结果："</span>)</span><br><span class="line">pprint(rs_results)</span><br></pre></td></tr></table></figure>
+<p>5.Item-Based CF </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> pprint <span class="keyword">import</span> pprint</span><br><span class="line"></span><br><span class="line">users = [<span class="string">"User1"</span>, <span class="string">"User2"</span>, <span class="string">"User3"</span>, <span class="string">"User4"</span>, <span class="string">"User5"</span>]</span><br><span class="line">items = [<span class="string">"Item A"</span>, <span class="string">"Item B"</span>, <span class="string">"Item C"</span>, <span class="string">"Item D"</span>, <span class="string">"Item E"</span>]</span><br><span class="line"><span class="comment"># 用户购买记录数据集</span></span><br><span class="line">datasets = [</span><br><span class="line">    [<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],</span><br><span class="line">    [<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>],</span><br><span class="line">    [<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">    [<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>],</span><br><span class="line">    [<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>],</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">df = pd.DataFrame(datasets,</span><br><span class="line">                  columns=items,</span><br><span class="line">                  index=users)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算所有的数据两两的杰卡德相似系数</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics.pairwise <span class="keyword">import</span> pairwise_distances</span><br><span class="line"><span class="comment"># 计算物品间相似度</span></span><br><span class="line">item_similar = <span class="number">1</span> - pairwise_distances(df.T, metric=<span class="string">"jaccard"</span>)</span><br><span class="line">item_similar = pd.DataFrame(item_similar, columns=items, index=items)</span><br><span class="line">print(<span class="string">"物品之间的两两相似度："</span>)</span><br><span class="line">print(item_similar)</span><br><span class="line"></span><br><span class="line">topN_items = &#123;&#125;</span><br><span class="line"><span class="comment"># 遍历每一行数据</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> item_similar.index:</span><br><span class="line">    <span class="comment"># 取出每一列数据，并删除自身，然后排序数据</span></span><br><span class="line">    _df = item_similar.loc[i].drop([i])</span><br><span class="line">    _df_sorted = _df.sort_values(ascending=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    top2 = list(_df_sorted.index[:<span class="number">2</span>])</span><br><span class="line">    topN_items[i] = top2</span><br><span class="line"></span><br><span class="line">print(<span class="string">"Top2相似物品："</span>)</span><br><span class="line">pprint(topN_items)</span><br><span class="line"></span><br><span class="line">rs_results = &#123;&#125;</span><br><span class="line"><span class="comment"># 构建推荐结果</span></span><br><span class="line"><span class="keyword">for</span> user <span class="keyword">in</span> df.index:    <span class="comment"># 遍历所有用户</span></span><br><span class="line">    rs_result = set()</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> df.ix[user].replace(<span class="number">0</span>,np.nan).dropna().index:   <span class="comment"># 取出每个用户当前已购物品列表</span></span><br><span class="line">        <span class="comment"># 根据每个物品找出最相似的TOP-N物品，构建初始推荐结果</span></span><br><span class="line">        rs_result = rs_result.union(topN_items[item])</span><br><span class="line">    <span class="comment"># 过滤掉用户已购的物品</span></span><br><span class="line">    rs_result -= set(df.ix[user].replace(<span class="number">0</span>,np.nan).dropna().index)</span><br><span class="line">    <span class="comment"># 添加到结果中</span></span><br><span class="line">    rs_results[user] = rs_result</span><br><span class="line"></span><br><span class="line">print(<span class="string">"最终推荐结果："</span>)</span><br><span class="line">pprint(rs_results)</span><br></pre></td></tr></table></figure>
+<h4 id="关于协同过滤推荐算法使用的数据集"><a href="#关于协同过滤推荐算法使用的数据集" class="headerlink" title="关于协同过滤推荐算法使用的数据集"></a>关于协同过滤推荐算法使用的数据集</h4><p>在前面的demo中，我们只是使用用户对物品的一个购买记录，类似也可以是比如浏览点击记录、收听记录等等。这样数据我们预测的结果其实相当于是在预测用户是否对某物品感兴趣，对于喜好程度不能很好的预测。</p>
+<p>因此在协同过滤推荐算法中其实会更多的利用用户对物品的“评分”数据来进行预测，通过评分数据集，我们可以预测用户对于他没有评分过的物品的评分。其实现原理和思想和都是一样的，只是使用的数据集是用户-物品的评分数据。</p>
+<h5 id="关于用户-物品评分矩阵"><a href="#关于用户-物品评分矩阵" class="headerlink" title="关于用户-物品评分矩阵"></a>关于用户-物品评分矩阵</h5><p> 用户-物品的评分矩阵，根据评分矩阵的稀疏程度会有不同的解决方案 </p>
+<ul>
+<li><p><strong>稠密评分矩阵</strong> </p>
+<p><img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/%E7%A8%A0%E5%AF%86%E8%AF%84%E5%88%86%E6%95%B0%E6%8D%AE%E9%9B%86.png" alt="img"> </p>
+</li>
+<li><p><strong>稀疏评分矩阵</strong> </p>
+<p><img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/%E7%A8%80%E7%96%8F%E8%AF%84%E5%88%86%E6%95%B0%E6%8D%AE%E9%9B%86.png" alt="img"> </p>
+</li>
+</ul>
+<h4 id="使用协同过滤推荐算法对用户进行评分预测"><a href="#使用协同过滤推荐算法对用户进行评分预测" class="headerlink" title="使用协同过滤推荐算法对用户进行评分预测"></a>使用协同过滤推荐算法对用户进行评分预测</h4><ul>
+<li><p>数据集 </p>
+<p><img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/%E7%A8%A0%E5%AF%86%E8%AF%84%E5%88%86%E6%95%B0%E6%8D%AE%E9%9B%86-1581390833794.png" alt="img"></p>
+<p> <strong>目的：预测用户1对物品E的评分</strong> </p>
+</li>
+<li><p>构建数据集：注意这里构建评分数据时，对于缺失的部分我们需要保留为None，如果设置为0那么会被当作评分值为0去对待</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">users = [<span class="string">"User1"</span>, <span class="string">"User2"</span>, <span class="string">"User3"</span>, <span class="string">"User4"</span>, <span class="string">"User5"</span>]</span><br><span class="line">items = [<span class="string">"Item A"</span>, <span class="string">"Item B"</span>, <span class="string">"Item C"</span>, <span class="string">"Item D"</span>, <span class="string">"Item E"</span>]</span><br><span class="line"><span class="comment"># 用户购买记录数据集</span></span><br><span class="line">datasets = [</span><br><span class="line">    [<span class="number">5</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">4</span>,<span class="literal">None</span>],</span><br><span class="line">    [<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">3</span>],</span><br><span class="line">    [<span class="number">4</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">5</span>],</span><br><span class="line">    [<span class="number">3</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">4</span>],</span><br><span class="line">    [<span class="number">1</span>,<span class="number">5</span>,<span class="number">5</span>,<span class="number">2</span>,<span class="number">1</span>],</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>计算相似度：对于评分数据这里我们采用皮尔逊相关系数[-1,1]来计算，-1表示强负相关，+1表示强正相关</p>
+<blockquote>
+<p>pandas中corr方法可直接用于计算皮尔逊相关系数 </p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df = pd.DataFrame(datasets,</span><br><span class="line">                  columns=items,</span><br><span class="line">                  index=users)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"用户之间的两两相似度："</span>)</span><br><span class="line"><span class="comment"># 直接计算皮尔逊相关系数</span></span><br><span class="line"><span class="comment"># 默认是按列进行计算，因此如果计算用户间的相似度，当前需要进行转置</span></span><br><span class="line">user_similar = df.T.corr()</span><br><span class="line">print(user_similar.round(<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line">print(<span class="string">"物品之间的两两相似度："</span>)</span><br><span class="line">item_similar = df.corr()</span><br><span class="line">print(item_similar.round(<span class="number">4</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 运行结果：</span></span><br><span class="line"><span class="string">用户之间的两两相似度：</span></span><br><span class="line">        <span class="string">User1</span>   <span class="string">User2</span>   <span class="string">User3</span>   <span class="string">User4</span>   <span class="string">User5</span></span><br><span class="line"><span class="string">User1</span>  <span class="number">1.0000</span>  <span class="number">0.8528</span>  <span class="number">0.7071</span>  <span class="number">0.0000</span> <span class="number">-0.7921</span></span><br><span class="line"><span class="string">User2</span>  <span class="number">0.8528</span>  <span class="number">1.0000</span>  <span class="number">0.4677</span>  <span class="number">0.4900</span> <span class="number">-0.9001</span></span><br><span class="line"><span class="string">User3</span>  <span class="number">0.7071</span>  <span class="number">0.4677</span>  <span class="number">1.0000</span> <span class="number">-0.1612</span> <span class="number">-0.4666</span></span><br><span class="line"><span class="string">User4</span>  <span class="number">0.0000</span>  <span class="number">0.4900</span> <span class="number">-0.1612</span>  <span class="number">1.0000</span> <span class="number">-0.6415</span></span><br><span class="line"><span class="string">User5</span> <span class="number">-0.7921</span> <span class="number">-0.9001</span> <span class="number">-0.4666</span> <span class="number">-0.6415</span>  <span class="number">1.0000</span></span><br><span class="line"><span class="string">物品之间的两两相似度：</span></span><br><span class="line">        <span class="string">Item</span> <span class="string">A</span>  <span class="string">Item</span> <span class="string">B</span>  <span class="string">Item</span> <span class="string">C</span>  <span class="string">Item</span> <span class="string">D</span>  <span class="string">Item</span> <span class="string">E</span></span><br><span class="line"><span class="string">Item</span> <span class="string">A</span>  <span class="number">1.0000</span> <span class="number">-0.4767</span> <span class="number">-0.1231</span>  <span class="number">0.5322</span>  <span class="number">0.9695</span></span><br><span class="line"><span class="string">Item</span> <span class="string">B</span> <span class="number">-0.4767</span>  <span class="number">1.0000</span>  <span class="number">0.6455</span> <span class="number">-0.3101</span> <span class="number">-0.4781</span></span><br><span class="line"><span class="string">Item</span> <span class="string">C</span> <span class="number">-0.1231</span>  <span class="number">0.6455</span>  <span class="number">1.0000</span> <span class="number">-0.7206</span> <span class="number">-0.4276</span></span><br><span class="line"><span class="string">Item</span> <span class="string">D</span>  <span class="number">0.5322</span> <span class="number">-0.3101</span> <span class="number">-0.7206</span>  <span class="number">1.0000</span>  <span class="number">0.5817</span></span><br><span class="line"><span class="string">Item</span> <span class="string">E</span>  <span class="number">0.9695</span> <span class="number">-0.4781</span> <span class="number">-0.4276</span>  <span class="number">0.5817</span>  <span class="number">1.0000</span></span><br></pre></td></tr></table></figure>
+<p>可以看到与用户1最相似的是用户2和用户3；与物品A最相似的物品分别是物品E和物品D。</p>
+<p><strong>注意：</strong>我们在预测评分时，往往是通过与其有正相关的用户或物品进行预测，如果不存在正相关的情况，那么将无法做出预测。这一点尤其是在稀疏评分矩阵中尤为常见，因为稀疏评分矩阵中很难得出正相关系数。</p>
+</li>
+<li><p><strong>评分预测：</strong> </p>
+<p><strong>User-Based CF 评分预测：使用用户间的相似度进行预测</strong> </p>
+<p>关于评分预测的方法也有比较多的方案，下面介绍一种效果比较好的方案，该方案考虑了用户本身的评分评分以及近邻用户的加权平均相似度打分来进行预测： </p>
+<p><img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/1581391349339.png" alt="1581391349339"></p>
+<p>我们要预测用户1对物品E的评分，那么可以根据与用户1最近邻的用户2和用户3进行预测，计算如下：$pred(u_1,i_5)=(0.85∗3+0.71∗5)/(0.85+0.71)=3.91$最终预测出用户1对物品5的评分为3.91</p>
+<p><strong>Item-Based CF 评分预测：使用物品间的相似度进行预测</strong> </p>
+<p>这里利用物品相似度预测的计算同上，同样考虑了用户自身的平均打分因素，结合预测物品与相似物品的加权平均相似度打分进行来进行预测 </p>
+<p><img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/1581391384364.png" alt="1581391384364"></p>
+<p>户1对物品E的评分，那么可以根据与物品E最近邻的物品A和物品D进行预测，计算如下： $pred(u1,i5)=(0.97∗5+0.58∗4)/(0.97+0.58)=4.63$ 对比可见，User-Based CF预测评分和Item-Based CF的评分结果也是存在差异的，因为严格意义上他们其实应当属于两种不同的推荐算法，各自在不同的领域不同场景下，都会比另一种的效果更佳，但具体哪一种更佳，必须经过合理的效果评估，因此在实现推荐系统时这两种算法往往都是需要去实现的，然后对产生的推荐效果进行评估分析选出更优方案。 </p>
+</li>
+</ul>
+]]></content>
       <categories>
         <category>推荐系统</category>
       </categories>
       <tags>
+        <tag>推荐模型构建流程</tag>
         <tag>推荐算法</tag>
         <tag>协同过滤推荐算法</tag>
+        <tag>相似度计算</tag>
       </tags>
   </entry>
   <entry>
     <title>推荐系统</title>
     <url>/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/</url>
-    <content><![CDATA[<h4 id="学习目标"><a href="#学习目标" class="headerlink" title="学习目标"></a>学习目标</h4><ul>
-<li>了解推荐系统概念及产生背景</li>
-<li>理解推荐系统工作原理及作用</li>
-<li>了解推荐系统与web项目区别</li>
-<li>了解推荐系统要素</li>
-<li>理解推荐系统架构</li>
-</ul>
-<a id="more"></a>
-<h4 id="推荐系统概念"><a href="#推荐系统概念" class="headerlink" title="推荐系统概念"></a>推荐系统概念</h4><ol>
-<li><h5 id="什么是推荐系统"><a href="#什么是推荐系统" class="headerlink" title="什么是推荐系统"></a>什么是推荐系统</h5><p> 没有明确需求的用户访问了我们的服务, 且服务的物品对用户构成了信息过载，系统通过一定的规则对物品进行排序，并将排在前面的物品展示给用户，这样的系统就是推荐系统 。</p>
-</li>
-<li><h5 id="信息过载-amp-用户需求不明确"><a href="#信息过载-amp-用户需求不明确" class="headerlink" title="信息过载 &amp; 用户需求不明确"></a>信息过载 &amp; 用户需求不明确</h5><ul>
+    <content><![CDATA[<h4 id="推荐系统概念"><a href="#推荐系统概念" class="headerlink" title="推荐系统概念"></a>推荐系统概念</h4><h5 id="什么是推荐系统"><a href="#什么是推荐系统" class="headerlink" title="什么是推荐系统"></a>什么是推荐系统</h5><p>没有明确需求的用户访问了我们的服务, 且服务的物品对用户构成了信息过载，系统通过一定的规则对物品进行排序，并将排在前面的物品展示给用户，这样的系统就是推荐系统 。</p>
+<h5 id="信息过载-amp-用户需求不明确"><a href="#信息过载-amp-用户需求不明确" class="headerlink" title="信息过载 &amp; 用户需求不明确"></a>信息过载 &amp; 用户需求不明确</h5><ul>
 <li>分类⽬录（1990s）：覆盖少量热门⽹站。典型应用：Hao123 Yahoo</li>
 <li>搜索引擎（2000s）：通过搜索词明确需求。典型应用：Google Baidu</li>
 <li>推荐系统（2010s）：不需要⽤户提供明确的需求，通过分析⽤ 户的历史⾏为给⽤户的兴趣进⾏建模，从⽽主动给⽤户推荐能 够满⾜他们兴趣和需求的信息。</li>
 </ul>
-</li>
-<li><h5 id="推荐系统与搜索引擎"><a href="#推荐系统与搜索引擎" class="headerlink" title="推荐系统与搜索引擎"></a>推荐系统与搜索引擎</h5><p>| 搜索     | 推荐     |          |<br>| ———— | ———— | ———— |<br>| 行为方式 | 主动     | 被动     |<br>| 意图     | 明确     | 模糊     |<br>| 个性化   | 弱       | 强       |<br>| 流量分布 | 马太效应 | 长尾效应 |<br>| 目标     | 快速满足 | 持续服务 |<br>| 评估指标 | 简明     | 复杂     |</p>
-</li>
-</ol>
+<a id="more"></a>
+<h5 id="推荐系统与搜索引擎"><a href="#推荐系统与搜索引擎" class="headerlink" title="推荐系统与搜索引擎"></a>推荐系统与搜索引擎</h5><div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>搜索</th>
+<th>推荐</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>行为方式</td>
+<td>主动</td>
+<td>被动</td>
+</tr>
+<tr>
+<td>意图</td>
+<td>明确</td>
+<td>模糊</td>
+</tr>
+<tr>
+<td>个性化</td>
+<td>弱</td>
+<td>强</td>
+</tr>
+<tr>
+<td>流量分布</td>
+<td>马太效应</td>
+<td>长尾效应</td>
+</tr>
+<tr>
+<td>目标</td>
+<td>快速满足</td>
+<td>持续服务</td>
+</tr>
+<tr>
+<td>评估指标</td>
+<td>简明</td>
+<td>复杂</td>
+</tr>
+</tbody>
+</table>
+</div>
 <h4 id="推荐系统的工作原理"><a href="#推荐系统的工作原理" class="headerlink" title="推荐系统的工作原理"></a>推荐系统的工作原理</h4><ul>
 <li><strong>社会化推荐</strong> 例如：向朋友咨询，社会化推荐，让好友给自己推荐物品</li>
 <li><strong>基于内容的推荐</strong> 例如：打开搜索引擎，输入自己喜欢的演员的名字，然后看看返回结果中还有什么电影是自己没看过的</li>
@@ -447,11 +798,77 @@
 <li>业务知识</li>
 <li>算法</li>
 </ul>
-<h4 id="推荐系统架构"><a href="#推荐系统架构" class="headerlink" title="推荐系统架构"></a>推荐系统架构</h4><ol>
-<li><h5 id="推荐系统整体架构"><a href="#推荐系统整体架构" class="headerlink" title="推荐系统整体架构"></a>推荐系统整体架构</h5></li>
-<li><h5 id="大数据Lambda架构"><a href="#大数据Lambda架构" class="headerlink" title="大数据Lambda架构"></a>大数据Lambda架构</h5></li>
-<li><h5 id="推荐算法架构"><a href="#推荐算法架构" class="headerlink" title="推荐算法架构"></a>推荐算法架构</h5></li>
-</ol>
+<h4 id="推荐系统架构"><a href="#推荐系统架构" class="headerlink" title="推荐系统架构"></a>推荐系统架构</h4><h5 id="推荐系统整体架构"><a href="#推荐系统整体架构" class="headerlink" title="推荐系统整体架构"></a>推荐系统整体架构</h5><p> <img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/%E6%8E%A8%E8%8D%90%E6%B5%81%E7%A8%8B.png" alt="img"></p>
+<h5 id="大数据Lambda架构"><a href="#大数据Lambda架构" class="headerlink" title="大数据Lambda架构"></a>大数据Lambda架构</h5><ul>
+<li>Lambda架构是由实时大数据处理框架Storm的作者Nathan Marz提出的一个实时大数据处理框架。</li>
+<li>Lambda架构的将离线计算和实时计算整合，设计出一个能满足实时大数据系统关键特性的架构，包括有：高容错、低延时和可扩展等。</li>
+<li>分层架构<ul>
+<li>批处理层（离线计算）<ul>
+<li>数据不可变, 可进行任何计算, 可水平扩展</li>
+<li>高延迟 几分钟~几小时(计算量和数据量不同)</li>
+<li>日志收集： Flume</li>
+<li>分布式存储： Hadoop</li>
+<li>分布式计算： Hadoop、Spark</li>
+<li>视图存储数据库<ul>
+<li>nosql(HBase/Cassandra)</li>
+<li>Redis/memcache</li>
+<li>MySQL</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>实时处理层<ul>
+<li>流式处理, 持续计算</li>
+<li>存储和分析某个窗口期内的数据（一段时间的热销排行，实时热搜等）</li>
+<li>实时数据收集 flume-日志收集 &amp; kafka-消息队列（数据的实时收集）</li>
+<li>实时数据分析 spark streaming/storm/flink</li>
+</ul>
+</li>
+<li>服务层<ul>
+<li>支持随机读</li>
+<li>需要在非常短的时间内返回结果</li>
+<li>读取批处理层和实时处理层结果并对其归并</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Lambda架构图</p>
+<p><img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/lambda3.png" alt="img"></p>
+</li>
+</ul>
+<h5 id="推荐算法架构"><a href="#推荐算法架构" class="headerlink" title="推荐算法架构"></a>推荐算法架构</h5><ul>
+<li>召回阶段 (海选)<ul>
+<li>召回决定了最终推荐结果的天花板</li>
+<li>常用算法:<ul>
+<li>协同过滤</li>
+<li>基于内容</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>排序阶段 （精选）<ul>
+<li>召回决定了最终推荐结果的天花板, 排序逼近这个极限, 决定了最终的推荐效果</li>
+<li>CTR预估 (点击率预估 使用LR算法) 估计用户是否会点击某个商品 需要用户的点击数据</li>
+</ul>
+</li>
+<li>过滤<ul>
+<li>法律规则</li>
+<li>没有库存问题</li>
+<li>反复曝光都没看</li>
+</ul>
+</li>
+<li><p>规则调整</p>
+<ul>
+<li>商业合作</li>
+<li>政策问题</li>
+</ul>
+<p><img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/recommend7.jpeg" alt="img"></p>
+</li>
+</ul>
+<h5 id="推荐系统的整体架构"><a href="#推荐系统的整体架构" class="headerlink" title="推荐系统的整体架构"></a>推荐系统的整体架构</h5><p> 推荐系统业务架构</p>
+<p><img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/rs%E5%9F%BA%E7%A1%80%E4%B8%9A%E5%8A%A1%E6%9E%B6%E6%9E%84.png" alt="img"></p>
+<p>  推荐系统技术架构</p>
+<p><img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/rs%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84.png" alt="img"> </p>
 ]]></content>
       <categories>
         <category>推荐系统</category>
