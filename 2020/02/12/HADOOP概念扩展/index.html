@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon16x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://xiaoliaozi.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="Hadoop生态系统狭义的Hadoop VS 广义的Hadoop 广义的Hadoop：指的是Hadoop生态系统，Hadoop生态系统是一个很庞大的概念，hadoop是其中最重要最基础的一个部分，生态系统中每一子系统只解决某一个特定的问题域（甚至可能更窄），不搞统一型的全能系统，而是小而精的多个小系统。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HADOOP概念扩展">
+<meta property="og:url" content="https://xiaoliaozi.com/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/index.html">
+<meta property="og:site_name" content="小廖子的博客">
+<meta property="og:description" content="Hadoop生态系统狭义的Hadoop VS 广义的Hadoop 广义的Hadoop：指的是Hadoop生态系统，Hadoop生态系统是一个很庞大的概念，hadoop是其中最重要最基础的一个部分，生态系统中每一子系统只解决某一个特定的问题域（甚至可能更窄），不搞统一型的全能系统，而是小而精的多个小系统。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/hadoop-%E7%94%9F%E6%80%81.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/a.jpg">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/b.jpg">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/c.jpg">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/d.jpg">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/bigdata_arcit.png">
+<meta property="article:published_time" content="2020-02-12T01:45:09.000Z">
+<meta property="article:modified_time" content="2020-02-21T04:22:18.636Z">
+<meta property="article:author" content="小廖子">
+<meta property="article:tag" content="Hadoop生态系统">
+<meta property="article:tag" content="HDFS 读写流程&amp;高可用">
+<meta property="article:tag" content="Hadoop发行版的选择">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xiaoliaozi.com/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/hadoop-%E7%94%9F%E6%80%81.png">
+
+<link rel="canonical" href="https://xiaoliaozi.com/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>HADOOP概念扩展 | 小廖子的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="小廖子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小廖子的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">好记性不如记笔记</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xiaoliaozi.com/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avter.jpg">
+      <meta itemprop="name" content="小廖子">
+      <meta itemprop="description" content="学无止境">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小廖子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HADOOP概念扩展
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-12 09:45:09" itemprop="dateCreated datePublished" datetime="2020-02-12T09:45:09+08:00">2020-02-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-21 12:22:18" itemprop="dateModified" datetime="2020-02-21T12:22:18+08:00">2020-02-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据推荐系统</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="Hadoop生态系统"><a href="#Hadoop生态系统" class="headerlink" title="Hadoop生态系统"></a>Hadoop生态系统</h4><h5 id="狭义的Hadoop-VS-广义的Hadoop"><a href="#狭义的Hadoop-VS-广义的Hadoop" class="headerlink" title="狭义的Hadoop VS 广义的Hadoop"></a>狭义的Hadoop VS 广义的Hadoop</h5><p> 广义的Hadoop：指的是Hadoop生态系统，Hadoop生态系统是一个很庞大的概念，hadoop是其中最重要最基础的一个部分，生态系统中每一子系统只解决某一个特定的问题域（甚至可能更窄），不搞统一型的全能系统，而是小而精的多个小系统。</p>
+<a id="more"></a>
+<p> <img src="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/hadoop-%E7%94%9F%E6%80%81.png" alt="img"> </p>
+<ul>
+<li>Hive：数据仓库</li>
+<li>R：数据分析</li>
+<li>Mahout：机器学习库</li>
+<li>pig：脚本语言，跟Hive类似</li>
+<li>Oozie：工作流引擎，管理作业执行顺序</li>
+<li>Zookeeper：用户无感知，主节点挂掉选择从节点作为主的</li>
+<li>Flume：日志收集框架</li>
+<li>Sqoop：数据交换框架，例如：关系型数据库与HDFS之间的数据交换</li>
+<li>Hbase : 海量数据中的查询，相当于分布式文件系统中的数据库</li>
+<li><p>Spark: 分布式的计算框架基于内存</p>
+<ul>
+<li>spark core</li>
+<li>spark sql</li>
+<li>spark streaming 准实时 不算是一个标准的流式计算</li>
+<li>spark ML spark MLlib</li>
+</ul>
+</li>
+<li><p>Kafka: 消息队列</p>
+</li>
+<li>Storm: 分布式的流式计算框架 python操作storm</li>
+<li>Flink: 分布式的流式计算框架</li>
+</ul>
+<h5 id="Hadoop生态系统的特点"><a href="#Hadoop生态系统的特点" class="headerlink" title="Hadoop生态系统的特点"></a><strong>Hadoop生态系统的特点</strong></h5><ul>
+<li>开源、社区活跃</li>
+<li>囊括了大数据处理的方方面面</li>
+<li>成熟的生态圈</li>
+</ul>
+<h4 id="HDFS-读写流程-amp-高可用"><a href="#HDFS-读写流程-amp-高可用" class="headerlink" title="HDFS 读写流程&amp; 高可用"></a>HDFS 读写流程&amp; 高可用</h4><h5 id="HDFS读写流程"><a href="#HDFS读写流程" class="headerlink" title="HDFS读写流程"></a>HDFS读写流程</h5><p><img src="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/a.jpg" alt="img"> </p>
+<p> <img src="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/b.jpg" alt="img"> </p>
+<p> <img src="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/c.jpg" alt="img"> </p>
+<p> <img src="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/d.jpg" alt="img"> </p>
+<ul>
+<li>客户端向NameNode发出写文件请求。 </li>
+<li>检查是否已存在文件、检查权限。若通过检查，直接先将操作写入EditLog，并返回输出流对象。 （注：WAL，write ahead log，先写Log，再写内存，因为EditLog记录的是最新的HDFS客户端执行所有的写操作。如果后续真实写操作失败了，由于在真实写操作之前，操作就被写入EditLog中了，故EditLog中仍会有记录，我们不用担心后续client读不到相应的数据块，因为在第5步中DataNode收到块后会有一返回确认信息，若没写成功，发送端没收到确认信息，会一直重试，直到成功）</li>
+<li>client端按128MB的块切分文件。</li>
+<li>client将NameNode返回的分配的可写的DataNode列表和Data数据一同发送给最近的第一个DataNode节点，此后client端和NameNode分配的多个DataNode构成pipeline管道，client端向输出流对象中写数据。client每向第一个DataNode写入一个packet，这个packet便会直接在pipeline里传给第二个、第三个…DataNode。 （注：并不是写好一个块或一整个文件后才向后分发）</li>
+<li>每个DataNode写完一个块后，会返回确认信息。 （注：并不是每写完一个packet后就返回确认信息，个人觉得因为packet中的每个chunk都携带校验信息，没必要每写一个就汇报一下，这样效率太慢。正确的做法是写完一个block块后，对校验信息进行汇总分析，就能得出是否有块写错的情况发生）</li>
+<li>写完数据，关闭输输出流。</li>
+<li>发送完成信号给NameNode。（注：发送完成信号的时机取决于集群是强一致性还是最终一致性，强一致性则需要所有DataNode写完后才向NameNode汇报。最终一致性则其中任意一个DataNode写完后就能单独向NameNode汇报，HDFS一般情况下都是强调强一致性）。</li>
+</ul>
+<h5 id="HDFS如何实现高可用-HA"><a href="#HDFS如何实现高可用-HA" class="headerlink" title="HDFS如何实现高可用(HA)"></a>HDFS如何实现高可用(HA)</h5><ul>
+<li><strong>数据存储故障容错</strong> <ul>
+<li>磁盘介质在存储过程中受环境或者老化影响，数据可能错乱</li>
+<li>对于存储在 DataNode 上的数据块，计算并存储校验和（CheckSum)</li>
+<li>读取数据的时候，重新计算读取出来的数据校验和， 校验不正确抛出异常，从其它DataNode上读取备份数据</li>
+</ul>
+</li>
+<li><strong>磁盘故障容错</strong><ul>
+<li>DataNode 监测到本机的某块磁盘损坏</li>
+<li>将该块磁盘上存储的所有 BlockID 报告给 NameNode</li>
+<li>NameNode 检查这些数据块在哪些DataNode上有备份,</li>
+<li>通知相应DataNode, 将数据复制到其他服务器上</li>
+</ul>
+</li>
+<li><strong>DataNode故障容错</strong><ul>
+<li>通过心跳和NameNode保持通讯</li>
+<li>超时未发送心跳， NameNode会认为这个DataNode已经宕机</li>
+<li>NameNode查找这个DataNode上有哪些数据块，以及这些数据在其它DataNode服务器上的存储情况</li>
+<li>从其它DataNode服务器上复制数据</li>
+</ul>
+</li>
+<li><strong>NameNode故障容错</strong><ul>
+<li>主从热备 secondary namenode</li>
+<li>zookeeper配合 master节点选举</li>
+</ul>
+</li>
+</ul>
+<h4 id="Hadoop发行版的选择"><a href="#Hadoop发行版的选择" class="headerlink" title="Hadoop发行版的选择"></a>Hadoop发行版的选择</h4><h5 id="社区版-Apache-Hadoop"><a href="#社区版-Apache-Hadoop" class="headerlink" title="社区版 Apache Hadoop"></a>社区版 Apache Hadoop</h5><ul>
+<li><p>开源，技术最新；</p>
+</li>
+<li><p>最新的Hadoop版本都是从Apache Hadoop发布的，可以在 xxx.apache.org上进行软件的下载；</p>
+</li>
+<li><p>当涉及到的大数据工具比较多的时候，比较容易出现兼容性的问题，所以我们以后在选择发行版本的时候，<strong>一般选择CDH的版本</strong>，如果选择社区版可能因为兼容问题，耽误大量时间，并且可能还解决不了问题。</p>
+</li>
+</ul>
+<h5 id="CDH"><a href="#CDH" class="headerlink" title="CDH"></a>CDH</h5><ul>
+<li>部分内容没有开源，技术会有滞后</li>
+<li>Cloudera 在社区版的基础上做了一些修改</li>
+<li>在<a href="http://archive.cloudera.com/cdh5/cdh/5/进行下载" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/进行下载</a></li>
+<li>hadoop-2.6.0-cdh-5.7.0 和 Flume<strong>*</strong>-cdh5.7.0 cdh版本一致 的各个组件配合是有不会有兼容性问题</li>
+<li>一般情况下建议使用CDH版本</li>
+</ul>
+<h5 id="HDP"><a href="#HDP" class="headerlink" title="HDP"></a>HDP</h5><ul>
+<li>商用的版本，用得比较少</li>
+</ul>
+<h4 id="大数据产品与互联网产品结合"><a href="#大数据产品与互联网产品结合" class="headerlink" title="大数据产品与互联网产品结合"></a>大数据产品与互联网产品结合</h4><p>1、分布式系统执行任务瓶颈: 延迟高 MapReduce 几分钟 Spark几秒钟</p>
+<p>2、互联网产品要求</p>
+<ul>
+<li>毫秒级响应(1秒以内完成)</li>
+<li>需要通过大数据实现 统计分析 数据挖掘 关联推荐 用户画像</li>
+</ul>
+<p>3、大数据平台</p>
+<ul>
+<li>整合网站应用和大数据系统之间的差异, 将应用产生的数据导入到大数据系统, 经过处理计算后再导出给应用程序使用</li>
+</ul>
+<p>4、互联网大数据平台架构</p>
+<p> <img src="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/bigdata_arcit.png" alt="img"> </p>
+<p>5、数据采集</p>
+<ul>
+<li>App/Web 产生的数据&amp;日志同步到大数据系统</li>
+<li>数据库同步:Sqoop，日志同步:Flume， 打点: Kafka</li>
+<li>不同数据源产生的数据质量可能差别很大<ul>
+<li>数据库 也许可以直接用</li>
+<li>日志 爬虫 大量的清洗,转化处理</li>
+</ul>
+</li>
+</ul>
+<p>6、数据处理</p>
+<ul>
+<li>大数据存储与计算的核心</li>
+<li>数据同步后导入HDFS</li>
+<li>MapReduce Hive Spark 读取数据进行计算 结果再保存到HDFS</li>
+<li>MapReduce Hive Spark 离线计算，HDFS 离线存储<ul>
+<li>离线计算通常针对(某一类别)全体数据，比如 历史上所有订单</li>
+<li>离线计算特点: 数据规模大, 运行时间长</li>
+</ul>
+</li>
+<li>流式计算<ul>
+<li>淘宝双11 每秒产生订单数 监控宣传</li>
+<li>Storm(毫秒) SparkStreaming(秒)</li>
+</ul>
+</li>
+</ul>
+<p>7、数据输出与展示</p>
+<ul>
+<li>HDFS需要把数据导出交给应用程序，让用户实时展示 ECharts<ul>
+<li>淘宝卖家量子魔方</li>
+</ul>
+</li>
+<li>给运营和决策层提供各种统计报告，数据需要写入数据库<ul>
+<li>很多运营管理人员，上班后就会登陆后台数据系统</li>
+</ul>
+</li>
+</ul>
+<p>8、任务调度系统</p>
+<ul>
+<li>将上面三个部分整合起来</li>
+</ul>
+<h4 id="拓展：大数据应用-数据分析"><a href="#拓展：大数据应用-数据分析" class="headerlink" title="拓展：大数据应用-数据分析"></a>拓展：大数据应用-数据分析</h4><p>1、通过数据分析指标监控企业运营状态，及时调整运营和产品策略,是大数据技术的关键价值之一</p>
+<p>2、大数据平台(互联网企业)运行的绝大多数大数据计算都是关于数据分析的</p>
+<ul>
+<li>统计指标</li>
+<li>关联分析,</li>
+<li>汇总报告,</li>
+</ul>
+<p>3、运营数据是公司管理的基础</p>
+<ul>
+<li>了解公司目前发展的状况</li>
+<li>数据驱动运营: 调节指标对公司进行管理</li>
+</ul>
+<p>4、运营数据的获取需要大数据平台的支持</p>
+<ul>
+<li>埋点采集数据</li>
+<li>数据库，日志 三方采集数据</li>
+<li>对数据清洗 转换 存储</li>
+<li>利用SQL进行数据统计 汇总 分析</li>
+<li>得到需要的运营数据报告</li>
+</ul>
+<p>5、运营常用数据指标</p>
+<ul>
+<li><p>新增用户数 UG user growth 用户增长</p>
+<ul>
+<li>产品增长性的关键指标</li>
+<li>新增访问网站(新下载APP)的用户数</li>
+</ul>
+</li>
+<li><p>用户留存率</p>
+<ul>
+<li>用户留存率 = 留存用户数 / 当期新增用户数</li>
+<li>3日留存 5日留存 7日留存</li>
+</ul>
+</li>
+<li><p>活跃用户数</p>
+<ul>
+<li>打开使用产品的用户</li>
+<li>日活</li>
+<li>月活</li>
+<li>提升活跃是网站运营的重要目标</li>
+</ul>
+</li>
+<li><p>PV Page View</p>
+<ul>
+<li>打开产品就算活跃</li>
+<li>打开以后是否频繁操作就用PV衡量, 每次点击, 页面跳转都记一次PV</li>
+</ul>
+</li>
+<li><p>GMV</p>
+<ul>
+<li>成交总金额(Gross Merchandise Volume) 电商网站统计营业额, 反应网站应收能力的重要指标</li>
+<li>GMV相关的指标: 订单量 客单价</li>
+</ul>
+</li>
+<li><p>转化率</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">转化率 = 有购买行为的用户数 / 总访问用户数</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+            <!---<a href="/tags/Hadoop%E7%94%9F%E6%80%81%E7%B3%BB%E7%BB%9F/" rel="tag"># Hadoop生态系统</a>--->
+            <a href="/tags/Hadoop%E7%94%9F%E6%80%81%E7%B3%BB%E7%BB%9F/" rel="tag">Hadoop生态系统</a>
+            <!---<a href="/tags/HDFS-%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B-%E9%AB%98%E5%8F%AF%E7%94%A8/" rel="tag"># HDFS 读写流程&高可用</a>--->
+            <a href="/tags/HDFS-%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B-%E9%AB%98%E5%8F%AF%E7%94%A8/" rel="tag">HDFS 读写流程&高可用</a>
+            <!---<a href="/tags/Hadoop%E5%8F%91%E8%A1%8C%E7%89%88%E7%9A%84%E9%80%89%E6%8B%A9/" rel="tag"># Hadoop发行版的选择</a>--->
+            <a href="/tags/Hadoop%E5%8F%91%E8%A1%8C%E7%89%88%E7%9A%84%E9%80%89%E6%8B%A9/" rel="tag">Hadoop发行版的选择</a>
+            <br>
+          <div class="fa fa-tag">本文结束</div>
+          <br/>
+          </div>
+        
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/12/YARN%E5%92%8CMAPREDUCE/" rel="prev" title="YARN和MAPREDUCE">
+      <i class="fa fa-chevron-left"></i> YARN和MAPREDUCE
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/13/%E5%85%B3%E4%BA%8EHive/" rel="next" title="关于Hive">
+      关于Hive <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Hadoop生态系统"><span class="nav-number">1.</span> <span class="nav-text">Hadoop生态系统</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#狭义的Hadoop-VS-广义的Hadoop"><span class="nav-number">1.1.</span> <span class="nav-text">狭义的Hadoop VS 广义的Hadoop</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Hadoop生态系统的特点"><span class="nav-number">1.2.</span> <span class="nav-text">Hadoop生态系统的特点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HDFS-读写流程-amp-高可用"><span class="nav-number">2.</span> <span class="nav-text">HDFS 读写流程&amp; 高可用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#HDFS读写流程"><span class="nav-number">2.1.</span> <span class="nav-text">HDFS读写流程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HDFS如何实现高可用-HA"><span class="nav-number">2.2.</span> <span class="nav-text">HDFS如何实现高可用(HA)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hadoop发行版的选择"><span class="nav-number">3.</span> <span class="nav-text">Hadoop发行版的选择</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#社区版-Apache-Hadoop"><span class="nav-number">3.1.</span> <span class="nav-text">社区版 Apache Hadoop</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#CDH"><span class="nav-number">3.2.</span> <span class="nav-text">CDH</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HDP"><span class="nav-number">3.3.</span> <span class="nav-text">HDP</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大数据产品与互联网产品结合"><span class="nav-number">4.</span> <span class="nav-text">大数据产品与互联网产品结合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拓展：大数据应用-数据分析"><span class="nav-number">5.</span> <span class="nav-text">拓展：大数据应用-数据分析</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/"><img class="site-author-image" itemprop="image" alt="小廖子"
+      src="/images/avter.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">小廖子</p>
+  <div class="site-description" itemprop="description">学无止境</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xlztongxue" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xlztongxue" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xlz_tongxue@163.com" title="E-Mail → mailto:xlz_tongxue@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/weixin_45439324" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_45439324" rel="noopener" target="_blank"><i class="fa fa-fw fa-copyright"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+
+
+    <p class="site-author-name" itemprop="name">关注我哟</p>
+    <img class="site-author-image" itemprop="image" alt="微信公众号"
+      src="/images/xlzblog.jpg">
+    <div class="site-description" itemprop="description">关注公众号，更多精彩等着你</div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-小廖子"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小廖子</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">113k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:08</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'Ed2mvWHWKlphKGAa6hId76UP-gzGzoHsz',
+      appKey: '7MYwWTLCtelB1RHhedbF58S4',
+      placeholder: "Just go go",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

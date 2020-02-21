@@ -1,6 +1,1088 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>关于Hive</title>
+    <url>/2020/02/13/%E5%85%B3%E4%BA%8EHive/</url>
+    <content><![CDATA[<h4 id="Hive简介"><a href="#Hive简介" class="headerlink" title="Hive简介"></a>Hive简介</h4><h5 id="什么是Hive"><a href="#什么是Hive" class="headerlink" title="什么是Hive"></a>什么是Hive</h5><ul>
+<li>Hive 由 Facebook 实现并开源，是基于 Hadoop 的一个数据仓库工具，可以将结构化的数据映射为一张数据库表，并提供 HQL(Hive SQL)查询功能，底层数据是存储在 HDFS 上。</li>
+<li>Hive 本质: 将 SQL 语句转换为 MapReduce 任务运行，使不熟悉 MapReduce 的用户很方便地利用 HQL 处理和计算 HDFS 上的结构化的数据，<strong>是一款基于HDFS 的 MapReduce 计算框架</strong></li>
+<li>主要用途：用来做离线数据分析，比直接用 MapReduce 开发效率更高。</li>
+</ul>
+<h5 id="为什么使用Hive"><a href="#为什么使用Hive" class="headerlink" title="为什么使用Hive"></a>为什么使用Hive</h5><ul>
+<li>直接使用 Hadoop MapReduce 处理数据所面临的问题：<ul>
+<li>人员学习成本太高</li>
+<li>MapReduce 实现复杂查询逻辑开发难度太大</li>
+</ul>
+</li>
+<li>使用 Hive<ul>
+<li>操作接口采用类 SQL 语法，提供快速开发的能力</li>
+<li>避免了去写 MapReduce，减少开发人员的学习成本</li>
+<li>功能扩展很方便</li>
+</ul>
+</li>
+</ul>
+<h4 id="Hive架构"><a href="#Hive架构" class="headerlink" title="Hive架构"></a>Hive架构</h4><h5 id="Hive-架构图"><a href="#Hive-架构图" class="headerlink" title="Hive 架构图"></a>Hive 架构图</h5><p><img src="https://raw.githubusercontent.com/xlztongxue/picgo/master/img/20200221213219.jpg"> </p>
+<h5 id="Hive-组件"><a href="#Hive-组件" class="headerlink" title="Hive 组件"></a>Hive 组件</h5><ul>
+<li>用户接口：包括 CLI、JDBC/ODBC、WebGUI。<ul>
+<li>CLI(command line interface)为 shell 命令行</li>
+<li>JDBC/ODBC 是 Hive 的 JAVA 实现，与传统数据库JDBC 类似</li>
+<li>WebGUI 是通过浏览器访问 Hive。</li>
+<li>HiveServer2基于Thrift，允许远程客户端使用多种编程语言如Java、Python向Hive提交请求</li>
+</ul>
+</li>
+<li>元数据存储：通常是存储在关系数据库如 mysql/derby 中。<ul>
+<li>Hive 将元数据存储在数据库中。</li>
+<li>Hive 中的元数据包括<ul>
+<li>表的名字</li>
+<li>表的列</li>
+<li>分区及其属性</li>
+<li>表的属性（是否为外部表等）</li>
+<li>表的数据所在目录等。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>解释器、编译器、优化器、执行器：完成 HQL 查询语句从词法分析、语法分析、编译、优化以及查询计划的生成。生成的查询计划存储在 HDFS 中，并在随后由 MapReduce 调用执行</li>
+</ul>
+<h5 id="Hive与Hadoop的关系"><a href="#Hive与Hadoop的关系" class="headerlink" title="Hive与Hadoop的关系"></a>Hive与Hadoop的关系</h5><ul>
+<li>Hive 利用 HDFS 存储数据，利用 MapReduce 查询分析数据。</li>
+<li>Hive是数据仓库工具，没有集群的概念，</li>
+<li>如果想提交Hive作业只需要在hadoop集群 Master节点上装Hive就可以了</li>
+</ul>
+<h4 id="Hive与传统数据库对比"><a href="#Hive与传统数据库对比" class="headerlink" title="Hive与传统数据库对比"></a>Hive与传统数据库对比</h4><ul>
+<li>hive 用于海量数据的离线数据分析 </li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">Hive</th>
+<th style="text-align:center">关系型数据库</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ANSI SQL</td>
+<td style="text-align:center">不完全支持</td>
+<td style="text-align:center">支持</td>
+</tr>
+<tr>
+<td style="text-align:center">更新</td>
+<td style="text-align:center">INSERT OVERWRITE\INTO TABLE(默认)</td>
+<td style="text-align:center">UPDATE\INSERT\DELETE</td>
+</tr>
+<tr>
+<td style="text-align:center">事务</td>
+<td style="text-align:center">不支持(默认)</td>
+<td style="text-align:center">支持</td>
+</tr>
+<tr>
+<td style="text-align:center">模式</td>
+<td style="text-align:center">读模式</td>
+<td style="text-align:center">写模式</td>
+</tr>
+<tr>
+<td style="text-align:center">查询语言</td>
+<td style="text-align:center">HQL</td>
+<td style="text-align:center">SQL</td>
+</tr>
+<tr>
+<td style="text-align:center">数据存储</td>
+<td style="text-align:center">HDFS</td>
+<td style="text-align:center">Raw Device or Local FS</td>
+</tr>
+<tr>
+<td style="text-align:center">执行</td>
+<td style="text-align:center">MapReduce</td>
+<td style="text-align:center">Executor</td>
+</tr>
+<tr>
+<td style="text-align:center">执行延迟</td>
+<td style="text-align:center">高</td>
+<td style="text-align:center">低</td>
+</tr>
+<tr>
+<td style="text-align:center">子查询</td>
+<td style="text-align:center">只能用在From子句中</td>
+<td style="text-align:center">完全支持</td>
+</tr>
+<tr>
+<td style="text-align:center">处理数据规模</td>
+<td style="text-align:center">大</td>
+<td style="text-align:center">小</td>
+</tr>
+<tr>
+<td style="text-align:center">可扩展性</td>
+<td style="text-align:center">高</td>
+<td style="text-align:center">低</td>
+</tr>
+<tr>
+<td style="text-align:center">索引</td>
+<td style="text-align:center">0.8版本后加入位图索引</td>
+<td style="text-align:center">有复杂的索引</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>hive支持的数据类型<ul>
+<li>原子数据类型<ul>
+<li>TINYINT SMALLINT INT BIGINT BOOLEAN FLOAT DOUBLE STRING BINARY TIMESTAMP DECIMAL CHAR VARCHAR DATE</li>
+</ul>
+</li>
+<li>复杂数据类型<ul>
+<li>ARRAY  MAP  STRUCT</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>hive中表的类型<ul>
+<li>托管表 (managed table) (内部表)</li>
+<li>外部表</li>
+</ul>
+</li>
+</ul>
+<h4 id="Hive-数据模型"><a href="#Hive-数据模型" class="headerlink" title="Hive 数据模型"></a>Hive 数据模型</h4><ul>
+<li>Hive 中所有的数据都存储在 HDFS 中，没有专门的数据存储格式</li>
+<li>在创建表时指定数据中的分隔符，Hive 就可以映射成功，解析数据。</li>
+<li>Hive 中包含以下数据模型：<ul>
+<li>db：在 hdfs 中表现为 hive.metastore.warehouse.dir 目录下一个文件夹</li>
+<li>table：在 hdfs 中表现所属 db 目录下一个文件夹</li>
+<li>external table：数据存放位置可以在 HDFS 任意指定路径</li>
+<li>partition：在 hdfs 中表现为 table 目录下的子目录</li>
+<li>bucket：在 hdfs 中表现为同一个表目录下根据 hash 散列之后的多个文件</li>
+</ul>
+</li>
+</ul>
+<h4 id="Hive安装部署"><a href="#Hive安装部署" class="headerlink" title="Hive安装部署"></a>Hive安装部署</h4><ul>
+<li><p>Hive 安装前需要安装好 JDK 和 Hadoop。配置好环境变量。 </p>
+</li>
+<li><p>下载Hive的安装包 <a href="http://archive.cloudera.com/cdh5/cdh/5/" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/</a> 并解压 </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tar -zxvf hive-1.1.0-cdh5.7.0.tar.gz  -C ~/app/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入到 解压后的hive目录 找到 conf目录, 修改配置文件 </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cp hive-env.sh.template hive-env.sh</span><br><span class="line">vi hive-env.sh</span><br><span class="line"><span class="meta">#</span><span class="bash"> 在hive-env.sh中指定hadoop的路径</span></span><br><span class="line">HADOOP_HOME=/root/bigdata/hadoop</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置环境变量 </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vi ~/.bash_profile</span><br><span class="line"></span><br><span class="line">export HIVE_HOME=/root/bigdata/hive</span><br><span class="line">export PATH=$HIVE_HOME/bin:$PATH</span><br><span class="line"></span><br><span class="line">source ~/.bash_profile</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>根据元数据存储的介质不同，分为下面两个版本，其中 derby 属于内嵌模式。实际生产环境中则使用 mysql 来进行元数据的存储。</p>
+<ul>
+<li><p>内置 derby 版： bin/hive 启动即可使用 缺点：不同路径启动 hive，每一个 hive 拥有一套自己的元数据，无法共享 </p>
+</li>
+<li><p>mysql 版 </p>
+<ul>
+<li>上传 mysql驱动到 hive安装目录的lib目录下   mysql-connector-java-5.*.jar </li>
+<li>vi conf/hive-site.xml 配置 Mysql 元数据库信息(MySql安装见文档) </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;</span><br><span class="line">&lt;?xml-stylesheet type="text/xsl" href="configuration.xsl"?&gt;</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">&lt;!-- 插入以下代码 --&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;root&lt;/value&gt;&lt;!-- 指定mysql用户名 --&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;password&lt;/value&gt;&lt;!-- 指定mysql密码 --&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">   &lt;property&gt;</span><br><span class="line">        &lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;mysql</span><br><span class="line">        &lt;value&gt;jdbc:mysql://127.0.0.1:3306/hive&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;&lt;!-- 指定mysql数据库地址 --&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;&lt;!-- 指定mysql驱动 --&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">        &lt;!-- 到此结束代码 --&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;hive.exec.script.wrapper&lt;/name&gt;</span><br><span class="line">    &lt;value/&gt;</span><br><span class="line">    &lt;description/&gt;</span><br><span class="line">  &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>hive启动 </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 启动docker</span></span><br><span class="line">service docker start</span><br><span class="line"><span class="meta">#</span><span class="bash"> 通过docker 启动mysql</span></span><br><span class="line">docker start mysql</span><br><span class="line"><span class="meta">#</span><span class="bash"> 启动 hive的metastore元数据服务</span></span><br><span class="line">hive --service metastore</span><br><span class="line"><span class="meta">#</span><span class="bash"> 启动hive</span></span><br><span class="line">hive</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="Hive基本操作"><a href="#Hive基本操作" class="headerlink" title="Hive基本操作"></a>Hive基本操作</h4><ul>
+<li><p>创建数据库 </p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> <span class="keyword">test</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示所有数据库 </p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> <span class="keyword">DATABASES</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建表 </p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> student(classNo <span class="keyword">string</span>, stuNo <span class="keyword">string</span>, score <span class="built_in">int</span>) <span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span> <span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">','</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>row format delimited fields terminated by ‘,’ 指定了字段的分隔符为逗号</li>
+<li>所以load数据的时候，load的文本也要为逗号，否则加载后为NULL。</li>
+<li>hive只支持单个字符的分隔符，hive默认的分隔符是\001 </li>
+</ul>
+</li>
+<li><p>将数据load到表中 </p>
+<ul>
+<li>在本地文件系统创建一个如下的文本文件：/home/hadoop/tmp/student.txt </li>
+</ul>
+<figure class="highlight gcode"><table><tr><td class="code"><pre><span class="line"><span class="attr"># 数据</span></span><br><span class="line"><span class="attr">C01</span>,<span class="symbol">N0101</span>,<span class="number">82</span></span><br><span class="line">C<span class="number">01</span>,<span class="symbol">N0102</span>,<span class="number">59</span></span><br><span class="line">C<span class="number">01</span>,<span class="symbol">N0103</span>,<span class="number">65</span></span><br><span class="line">C<span class="number">02</span>,<span class="symbol">N0201</span>,<span class="number">81</span></span><br><span class="line">C<span class="number">02</span>,<span class="symbol">N0202</span>,<span class="number">82</span></span><br><span class="line">C<span class="number">02</span>,<span class="symbol">N0203</span>,<span class="number">79</span></span><br><span class="line">C<span class="number">03</span>,<span class="symbol">N0301</span>,<span class="number">56</span></span><br><span class="line">C<span class="number">03</span>,<span class="symbol">N0302</span>,<span class="number">92</span></span><br><span class="line">C<span class="number">03</span>,<span class="symbol">N0306</span>,<span class="number">72</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 加载</span></span><br><span class="line"><span class="keyword">load</span> <span class="keyword">data</span> <span class="keyword">local</span> inpath <span class="string">'/home/hadoop/tmp/student.txt'</span>overwrite <span class="keyword">into</span> <span class="keyword">table</span> student;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>这个命令将student.txt文件复制到hive的warehouse目录中</li>
+<li>这个目录由hive.metastore.warehouse.dir配置项设置，默认值为/user/hive/warehouse。</li>
+<li>Overwrite选项将导致Hive事先删除student目录下所有的文件，并将文件内容映射到表中。</li>
+<li>Hive不会对student.txt做任何格式处理，因为Hive本身并不强调数据的存储格式。 </li>
+</ul>
+</li>
+<li><p>查询表中的数据 跟SQL类似 </p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">hive&gt;select * from student;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>分组查询group by和统计 count </p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">hive&gt;select classNo,count(score) from student where score&gt;=60 group by classNo;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="Hive的内部表和外部表"><a href="#Hive的内部表和外部表" class="headerlink" title="Hive的内部表和外部表"></a>Hive的内部表和外部表</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>内部表(managed table)</th>
+<th>外部表(external table)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>概念</td>
+<td>创建表时无external修饰</td>
+<td>创建表时被external修饰</td>
+</tr>
+<tr>
+<td>数据管理</td>
+<td>由Hive自身管理</td>
+<td>由HDFS管理</td>
+</tr>
+<tr>
+<td>数据保存位置</td>
+<td>hive.metastore.warehouse.dir （默认：/user/hive/warehouse）</td>
+<td>hdfs中任意位置</td>
+</tr>
+<tr>
+<td>删除时影响</td>
+<td>直接删除元数据（metadata）及存储数据</td>
+<td>仅会删除元数据，HDFS上的文件并不会被删除</td>
+</tr>
+<tr>
+<td>表结构修改时影响</td>
+<td>修改会将修改直接同步给元数据</td>
+<td>表结构和分区进行修改，则需要修复（MSCK REPAIR TABLE table_name;）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>小案例</strong></p>
+<ul>
+<li><p>创建一个外部表student2 </p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建外部表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> student2 (classNo <span class="keyword">string</span>, stuNo <span class="keyword">string</span>, score <span class="built_in">int</span>) <span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span> <span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">','</span> location <span class="string">'/tmp/student'</span>;</span><br><span class="line"><span class="comment"># 装载数据</span></span><br><span class="line"><span class="keyword">load</span> <span class="keyword">data</span> <span class="keyword">local</span> inpath <span class="string">'/root/tmp/student.txt'</span> overwrite <span class="keyword">into</span> <span class="keyword">table</span> student2;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示表信息 </p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">desc formatted table_name;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除表查看结果 </p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> student;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>再次创建外部表 student2 </p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 不插入数据直接查询查看结果</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> student2;</span><br><span class="line"><span class="comment"># 能查到数据吗？能</span></span><br><span class="line"><span class="comment"># 外部表只删除元数据，不会删除储存数据</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="Hive分区表"><a href="#Hive分区表" class="headerlink" title="Hive分区表"></a>Hive分区表</h4><ul>
+<li>什么是分区表 </li>
+<li>创建分区表</li>
+<li>查看表的分区</li>
+<li>添加分区</li>
+<li>加载数据到分区</li>
+<li>如果重复加载同名文件，不会报错，会自动创建一个*_copy_1.txt </li>
+<li>外部分区表即使有分区的目录结构, 也必须要通过hql添加分区, 才能看到相应的数据 </li>
+</ul>
+<p><strong>总结</strong></p>
+<blockquote>
+<p>利用分区表方式减少查询时需要扫描的数据量</p>
+<ul>
+<li>分区字段不是表中的列, 数据文件中没有对应的列</li>
+<li>分区仅仅是一个目录名</li>
+<li>查看数据时, hive会自动添加分区列</li>
+<li>支持多级分区, 多级子目录</li>
+</ul>
+</blockquote>
+<h4 id="Hive动态分区"><a href="#Hive动态分区" class="headerlink" title="Hive动态分区"></a>Hive动态分区</h4><ul>
+<li>在写入数据时自动创建分区(包括目录结构)</li>
+<li>创建表 </li>
+<li>导入数据</li>
+<li>使用动态分区需要设置参数</li>
+</ul>
+<h4 id="Hive函数"><a href="#Hive函数" class="headerlink" title="Hive函数"></a>Hive函数</h4><h5 id="内置运算符"><a href="#内置运算符" class="headerlink" title="内置运算符"></a>内置运算符</h5><h5 id="内置函数"><a href="#内置函数" class="headerlink" title="内置函数"></a>内置函数</h5><h5 id="Hive-自定义函数和-Transform"><a href="#Hive-自定义函数和-Transform" class="headerlink" title="Hive 自定义函数和 Transform"></a>Hive 自定义函数和 Transform</h5><h4 id="Hive综合案例"><a href="#Hive综合案例" class="headerlink" title="Hive综合案例"></a>Hive综合案例</h4><h4 id="拓展-ANSI-SQL"><a href="#拓展-ANSI-SQL" class="headerlink" title="拓展-ANSI SQL"></a>拓展-ANSI SQL</h4><p>了解一下即可，一般做ORM的需要深入学习，对象关系映射（Object Relational Mapping，简称ORM）模式是一种为了解决面向对象与关系数据库存在的互不匹配的现象的技术。简单的说，ORM是通过使用描述对象和数据库之间映射的元数据，将程序中的对象自动持久化到关系数据库中。 </p>
+<ul>
+<li><p>ANSI：美国国家标准化组织，是一个核准多种行业标准的组织。</p>
+</li>
+<li><p>SQL</p>
+<ul>
+<li>结构化查询语言</li>
+<li>是与关系型数据库进行通信的标准语言</li>
+<li>最初由IBM公司的E.F.Codd博士论文为原型开发出来的。</li>
+</ul>
+</li>
+<li><p>ANSI SQL：国际标准SQL语法</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>大数据推荐系统</category>
+      </categories>
+      <tags>
+        <tag>Hive</tag>
+        <tag>Hive架构</tag>
+        <tag>Hive与Hadoop的关系</tag>
+        <tag>Hive与传统数据库对比</tag>
+        <tag>Hive基本操作</tag>
+        <tag>Hive函数</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HADOOP概念扩展</title>
+    <url>/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/</url>
+    <content><![CDATA[<h4 id="Hadoop生态系统"><a href="#Hadoop生态系统" class="headerlink" title="Hadoop生态系统"></a>Hadoop生态系统</h4><h5 id="狭义的Hadoop-VS-广义的Hadoop"><a href="#狭义的Hadoop-VS-广义的Hadoop" class="headerlink" title="狭义的Hadoop VS 广义的Hadoop"></a>狭义的Hadoop VS 广义的Hadoop</h5><p> 广义的Hadoop：指的是Hadoop生态系统，Hadoop生态系统是一个很庞大的概念，hadoop是其中最重要最基础的一个部分，生态系统中每一子系统只解决某一个特定的问题域（甚至可能更窄），不搞统一型的全能系统，而是小而精的多个小系统。</p>
+<a id="more"></a>
+<p> <img src="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/hadoop-%E7%94%9F%E6%80%81.png" alt="img"> </p>
+<ul>
+<li>Hive：数据仓库</li>
+<li>R：数据分析</li>
+<li>Mahout：机器学习库</li>
+<li>pig：脚本语言，跟Hive类似</li>
+<li>Oozie：工作流引擎，管理作业执行顺序</li>
+<li>Zookeeper：用户无感知，主节点挂掉选择从节点作为主的</li>
+<li>Flume：日志收集框架</li>
+<li>Sqoop：数据交换框架，例如：关系型数据库与HDFS之间的数据交换</li>
+<li>Hbase : 海量数据中的查询，相当于分布式文件系统中的数据库</li>
+<li><p>Spark: 分布式的计算框架基于内存</p>
+<ul>
+<li>spark core</li>
+<li>spark sql</li>
+<li>spark streaming 准实时 不算是一个标准的流式计算</li>
+<li>spark ML spark MLlib</li>
+</ul>
+</li>
+<li><p>Kafka: 消息队列</p>
+</li>
+<li>Storm: 分布式的流式计算框架 python操作storm</li>
+<li>Flink: 分布式的流式计算框架</li>
+</ul>
+<h5 id="Hadoop生态系统的特点"><a href="#Hadoop生态系统的特点" class="headerlink" title="Hadoop生态系统的特点"></a><strong>Hadoop生态系统的特点</strong></h5><ul>
+<li>开源、社区活跃</li>
+<li>囊括了大数据处理的方方面面</li>
+<li>成熟的生态圈</li>
+</ul>
+<h4 id="HDFS-读写流程-amp-高可用"><a href="#HDFS-读写流程-amp-高可用" class="headerlink" title="HDFS 读写流程&amp; 高可用"></a>HDFS 读写流程&amp; 高可用</h4><h5 id="HDFS读写流程"><a href="#HDFS读写流程" class="headerlink" title="HDFS读写流程"></a>HDFS读写流程</h5><p><img src="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/a.jpg" alt="img"> </p>
+<p> <img src="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/b.jpg" alt="img"> </p>
+<p> <img src="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/c.jpg" alt="img"> </p>
+<p> <img src="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/d.jpg" alt="img"> </p>
+<ul>
+<li>客户端向NameNode发出写文件请求。 </li>
+<li>检查是否已存在文件、检查权限。若通过检查，直接先将操作写入EditLog，并返回输出流对象。 （注：WAL，write ahead log，先写Log，再写内存，因为EditLog记录的是最新的HDFS客户端执行所有的写操作。如果后续真实写操作失败了，由于在真实写操作之前，操作就被写入EditLog中了，故EditLog中仍会有记录，我们不用担心后续client读不到相应的数据块，因为在第5步中DataNode收到块后会有一返回确认信息，若没写成功，发送端没收到确认信息，会一直重试，直到成功）</li>
+<li>client端按128MB的块切分文件。</li>
+<li>client将NameNode返回的分配的可写的DataNode列表和Data数据一同发送给最近的第一个DataNode节点，此后client端和NameNode分配的多个DataNode构成pipeline管道，client端向输出流对象中写数据。client每向第一个DataNode写入一个packet，这个packet便会直接在pipeline里传给第二个、第三个…DataNode。 （注：并不是写好一个块或一整个文件后才向后分发）</li>
+<li>每个DataNode写完一个块后，会返回确认信息。 （注：并不是每写完一个packet后就返回确认信息，个人觉得因为packet中的每个chunk都携带校验信息，没必要每写一个就汇报一下，这样效率太慢。正确的做法是写完一个block块后，对校验信息进行汇总分析，就能得出是否有块写错的情况发生）</li>
+<li>写完数据，关闭输输出流。</li>
+<li>发送完成信号给NameNode。（注：发送完成信号的时机取决于集群是强一致性还是最终一致性，强一致性则需要所有DataNode写完后才向NameNode汇报。最终一致性则其中任意一个DataNode写完后就能单独向NameNode汇报，HDFS一般情况下都是强调强一致性）。</li>
+</ul>
+<h5 id="HDFS如何实现高可用-HA"><a href="#HDFS如何实现高可用-HA" class="headerlink" title="HDFS如何实现高可用(HA)"></a>HDFS如何实现高可用(HA)</h5><ul>
+<li><strong>数据存储故障容错</strong> <ul>
+<li>磁盘介质在存储过程中受环境或者老化影响，数据可能错乱</li>
+<li>对于存储在 DataNode 上的数据块，计算并存储校验和（CheckSum)</li>
+<li>读取数据的时候，重新计算读取出来的数据校验和， 校验不正确抛出异常，从其它DataNode上读取备份数据</li>
+</ul>
+</li>
+<li><strong>磁盘故障容错</strong><ul>
+<li>DataNode 监测到本机的某块磁盘损坏</li>
+<li>将该块磁盘上存储的所有 BlockID 报告给 NameNode</li>
+<li>NameNode 检查这些数据块在哪些DataNode上有备份,</li>
+<li>通知相应DataNode, 将数据复制到其他服务器上</li>
+</ul>
+</li>
+<li><strong>DataNode故障容错</strong><ul>
+<li>通过心跳和NameNode保持通讯</li>
+<li>超时未发送心跳， NameNode会认为这个DataNode已经宕机</li>
+<li>NameNode查找这个DataNode上有哪些数据块，以及这些数据在其它DataNode服务器上的存储情况</li>
+<li>从其它DataNode服务器上复制数据</li>
+</ul>
+</li>
+<li><strong>NameNode故障容错</strong><ul>
+<li>主从热备 secondary namenode</li>
+<li>zookeeper配合 master节点选举</li>
+</ul>
+</li>
+</ul>
+<h4 id="Hadoop发行版的选择"><a href="#Hadoop发行版的选择" class="headerlink" title="Hadoop发行版的选择"></a>Hadoop发行版的选择</h4><h5 id="社区版-Apache-Hadoop"><a href="#社区版-Apache-Hadoop" class="headerlink" title="社区版 Apache Hadoop"></a>社区版 Apache Hadoop</h5><ul>
+<li><p>开源，技术最新；</p>
+</li>
+<li><p>最新的Hadoop版本都是从Apache Hadoop发布的，可以在 xxx.apache.org上进行软件的下载；</p>
+</li>
+<li><p>当涉及到的大数据工具比较多的时候，比较容易出现兼容性的问题，所以我们以后在选择发行版本的时候，<strong>一般选择CDH的版本</strong>，如果选择社区版可能因为兼容问题，耽误大量时间，并且可能还解决不了问题。</p>
+</li>
+</ul>
+<h5 id="CDH"><a href="#CDH" class="headerlink" title="CDH"></a>CDH</h5><ul>
+<li>部分内容没有开源，技术会有滞后</li>
+<li>Cloudera 在社区版的基础上做了一些修改</li>
+<li>在<a href="http://archive.cloudera.com/cdh5/cdh/5/进行下载" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/进行下载</a></li>
+<li>hadoop-2.6.0-cdh-5.7.0 和 Flume<strong>*</strong>-cdh5.7.0 cdh版本一致 的各个组件配合是有不会有兼容性问题</li>
+<li>一般情况下建议使用CDH版本</li>
+</ul>
+<h5 id="HDP"><a href="#HDP" class="headerlink" title="HDP"></a>HDP</h5><ul>
+<li>商用的版本，用得比较少</li>
+</ul>
+<h4 id="大数据产品与互联网产品结合"><a href="#大数据产品与互联网产品结合" class="headerlink" title="大数据产品与互联网产品结合"></a>大数据产品与互联网产品结合</h4><p>1、分布式系统执行任务瓶颈: 延迟高 MapReduce 几分钟 Spark几秒钟</p>
+<p>2、互联网产品要求</p>
+<ul>
+<li>毫秒级响应(1秒以内完成)</li>
+<li>需要通过大数据实现 统计分析 数据挖掘 关联推荐 用户画像</li>
+</ul>
+<p>3、大数据平台</p>
+<ul>
+<li>整合网站应用和大数据系统之间的差异, 将应用产生的数据导入到大数据系统, 经过处理计算后再导出给应用程序使用</li>
+</ul>
+<p>4、互联网大数据平台架构</p>
+<p> <img src="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/bigdata_arcit.png" alt="img"> </p>
+<p>5、数据采集</p>
+<ul>
+<li>App/Web 产生的数据&amp;日志同步到大数据系统</li>
+<li>数据库同步:Sqoop，日志同步:Flume， 打点: Kafka</li>
+<li>不同数据源产生的数据质量可能差别很大<ul>
+<li>数据库 也许可以直接用</li>
+<li>日志 爬虫 大量的清洗,转化处理</li>
+</ul>
+</li>
+</ul>
+<p>6、数据处理</p>
+<ul>
+<li>大数据存储与计算的核心</li>
+<li>数据同步后导入HDFS</li>
+<li>MapReduce Hive Spark 读取数据进行计算 结果再保存到HDFS</li>
+<li>MapReduce Hive Spark 离线计算，HDFS 离线存储<ul>
+<li>离线计算通常针对(某一类别)全体数据，比如 历史上所有订单</li>
+<li>离线计算特点: 数据规模大, 运行时间长</li>
+</ul>
+</li>
+<li>流式计算<ul>
+<li>淘宝双11 每秒产生订单数 监控宣传</li>
+<li>Storm(毫秒) SparkStreaming(秒)</li>
+</ul>
+</li>
+</ul>
+<p>7、数据输出与展示</p>
+<ul>
+<li>HDFS需要把数据导出交给应用程序，让用户实时展示 ECharts<ul>
+<li>淘宝卖家量子魔方</li>
+</ul>
+</li>
+<li>给运营和决策层提供各种统计报告，数据需要写入数据库<ul>
+<li>很多运营管理人员，上班后就会登陆后台数据系统</li>
+</ul>
+</li>
+</ul>
+<p>8、任务调度系统</p>
+<ul>
+<li>将上面三个部分整合起来</li>
+</ul>
+<h4 id="拓展：大数据应用-数据分析"><a href="#拓展：大数据应用-数据分析" class="headerlink" title="拓展：大数据应用-数据分析"></a>拓展：大数据应用-数据分析</h4><p>1、通过数据分析指标监控企业运营状态，及时调整运营和产品策略,是大数据技术的关键价值之一</p>
+<p>2、大数据平台(互联网企业)运行的绝大多数大数据计算都是关于数据分析的</p>
+<ul>
+<li>统计指标</li>
+<li>关联分析,</li>
+<li>汇总报告,</li>
+</ul>
+<p>3、运营数据是公司管理的基础</p>
+<ul>
+<li>了解公司目前发展的状况</li>
+<li>数据驱动运营: 调节指标对公司进行管理</li>
+</ul>
+<p>4、运营数据的获取需要大数据平台的支持</p>
+<ul>
+<li>埋点采集数据</li>
+<li>数据库，日志 三方采集数据</li>
+<li>对数据清洗 转换 存储</li>
+<li>利用SQL进行数据统计 汇总 分析</li>
+<li>得到需要的运营数据报告</li>
+</ul>
+<p>5、运营常用数据指标</p>
+<ul>
+<li><p>新增用户数 UG user growth 用户增长</p>
+<ul>
+<li>产品增长性的关键指标</li>
+<li>新增访问网站(新下载APP)的用户数</li>
+</ul>
+</li>
+<li><p>用户留存率</p>
+<ul>
+<li>用户留存率 = 留存用户数 / 当期新增用户数</li>
+<li>3日留存 5日留存 7日留存</li>
+</ul>
+</li>
+<li><p>活跃用户数</p>
+<ul>
+<li>打开使用产品的用户</li>
+<li>日活</li>
+<li>月活</li>
+<li>提升活跃是网站运营的重要目标</li>
+</ul>
+</li>
+<li><p>PV Page View</p>
+<ul>
+<li>打开产品就算活跃</li>
+<li>打开以后是否频繁操作就用PV衡量, 每次点击, 页面跳转都记一次PV</li>
+</ul>
+</li>
+<li><p>GMV</p>
+<ul>
+<li>成交总金额(Gross Merchandise Volume) 电商网站统计营业额, 反应网站应收能力的重要指标</li>
+<li>GMV相关的指标: 订单量 客单价</li>
+</ul>
+</li>
+<li><p>转化率</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">转化率 = 有购买行为的用户数 / 总访问用户数</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <categories>
+        <category>大数据推荐系统</category>
+      </categories>
+      <tags>
+        <tag>Hadoop生态系统</tag>
+        <tag>HDFS 读写流程&amp;高可用</tag>
+        <tag>Hadoop发行版的选择</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>YARN和MAPREDUCE</title>
+    <url>/2020/02/12/YARN%E5%92%8CMAPREDUCE/</url>
+    <content><![CDATA[<h4 id="资源调度框架-YARN"><a href="#资源调度框架-YARN" class="headerlink" title="资源调度框架 YARN"></a>资源调度框架 YARN</h4><h5 id="什么是YARN"><a href="#什么是YARN" class="headerlink" title="什么是YARN"></a>什么是YARN</h5><ul>
+<li>Yet Another Resource Negotiator, 另一种资源协调者</li>
+<li>通用资源管理系统</li>
+<li>为上层应用提供统一的资源管理和调度，为集群在利用率、资源统一管理和数据共享等方面带来了巨大好处</li>
+</ul>
+<a id="more"></a>
+<h5 id="YARN产生背景"><a href="#YARN产生背景" class="headerlink" title="YARN产生背景"></a>YARN产生背景</h5><ul>
+<li><p>通用资源管理系统</p>
+<ul>
+<li>Hadoop数据分布式存储（数据分块，冗余存储）</li>
+<li>当多个MapReduce任务要用到相同的hdfs数据， 需要进行资源调度管理</li>
+<li>Hadoop1.x时并没有YARN，MapReduce 既负责进行计算作业又处理服务器集群资源调度管理</li>
+</ul>
+</li>
+<li><p>服务器集群资源调度管理和MapReduce执行过程耦合在一起带来的问题</p>
+<ul>
+<li>Hadoop早期, 技术只有Hadoop, 这个问题不明显</li>
+<li>随着大数据技术的发展，Spark Storm … 计算框架都要用到服务器集群资源</li>
+<li><p>如果没有通用资源管理系统，只能为多个集群分别提供数据</p>
+<ul>
+<li>资源利用率低 运维成本高</li>
+</ul>
+</li>
+<li><p>Yarn (Yet Another Resource Negotiator) 另一种资源调度器</p>
+<ul>
+<li>Mesos 大数据资源管理产品</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/image-yarn2.png" alt="img"></p>
+</li>
+<li><p>不同计算框架可以共享同一个HDFS集群上的数据，享受整体的资源调度 </p>
+<p><img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/hadoop-yarn3.png" alt="img"></p>
+</li>
+</ul>
+<h5 id="YARN的架构和执行流程"><a href="#YARN的架构和执行流程" class="headerlink" title="YARN的架构和执行流程"></a>YARN的架构和执行流程</h5><ul>
+<li>ResourceManager: RM 资源管理器 整个集群同一时间提供服务的RM只有一个，负责集群资源的统一管理和调度 处理客户端的请求： submit, kill 监控我们的NM，一旦某个NM挂了，那么该NM上运行的任务需要告诉我们的AM来如何进行处理</li>
+<li>NodeManager: NM 节点管理器 整个集群中有多个，负责自己本身节点资源管理和使用 定时向RM汇报本节点的资源使用情况 接收并处理来自RM的各种命令：启动Container 处理来自AM的命令</li>
+<li>ApplicationMaster: AM 每个应用程序对应一个：MR、Spark，负责应用程序的管理 为应用程序向RM申请资源（core、memory），分配给内部task 需要与NM通信：启动/停止task，task是运行在container里面，AM也是运行在container里面</li>
+<li>Container 容器: 封装了CPU、Memory等资源的一个容器,是一个任务运行环境的抽象</li>
+<li><p>Client: 提交作业，查询作业的运行进度，杀死作业</p>
+<p><img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/yarn4.png" alt="img"></p>
+</li>
+</ul>
+<blockquote>
+<p> 1.Client提交作业请求</p>
+<p>2.ResourceManager 进程和 NodeManager 进程通信，根据集群资源，为用户程序分配第一个Container(容器)，并将 ApplicationMaster 分发到这个容器上面</p>
+<p>3.在启动的Container中创建ApplicationMaster</p>
+<p>4.ApplicationMaster启动后向ResourceManager注册进程,申请资源</p>
+<p>5.ApplicationMaster申请到资源后，向对应的NodeManager申请启动Container，将要执行的程序分发到NodeManager上</p>
+<p>6.Container启动后，执行对应的任务</p>
+<p>7.Tast执行完毕之后，向ApplicationMaster返回结果</p>
+<p>8.ApplicationMaster向ResourceManager 请求kill</p>
+</blockquote>
+<h5 id="YARN环境搭建"><a href="#YARN环境搭建" class="headerlink" title="YARN环境搭建"></a>YARN环境搭建</h5><p>1）mapred-site.xml</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.framework.name<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>yarn<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>2）yarn-site.xml</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.aux-services<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>mapreduce_shuffle<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>3) 启动YARN相关的进程 sbin/start-yarn.sh</p>
+<p>4）验证 jps ResourceManager NodeManager <a href="http://192,168.19.137:8088" target="_blank" rel="noopener">http://192,168.19.137:8088</a></p>
+<p>5）停止YARN相关的进程 sbin/stop-yarn.sh</p>
+<h4 id="分布式处理框架-MapReduce"><a href="#分布式处理框架-MapReduce" class="headerlink" title="分布式处理框架 MapReduce"></a>分布式处理框架 MapReduce</h4><h5 id="什么是MapReduce"><a href="#什么是MapReduce" class="headerlink" title="什么是MapReduce"></a>什么是MapReduce</h5><ul>
+<li>定义： 分布式计算框架</li>
+<li>作用： 海量数据的离线处理</li>
+<li>MapReduce优点: 海量数据离线处理&amp;易开发</li>
+<li>MapReduce缺点: 实时流式计算</li>
+</ul>
+<h5 id="MapReduce编程模型"><a href="#MapReduce编程模型" class="headerlink" title="MapReduce编程模型"></a>MapReduce编程模型</h5><ul>
+<li>MapReduce分而治之的思想 </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">数钱实例：一堆钞票，各种面值分别是多少</span><br><span class="line">单点策略：一个人数所有的钞票，数出各种面值有多少张</span><br><span class="line">分治策略：</span><br><span class="line">	每个人分得一堆钞票，数出各种面值有多少张</span><br><span class="line">	汇总，每个人负责统计一种面值</span><br><span class="line">解决数据可以切割进行计算的应用</span><br></pre></td></tr></table></figure>
+<ul>
+<li>MapReduce编程分Map和Reduce阶段 <ul>
+<li>将作业拆分成Map阶段和Reduce阶段</li>
+<li>Map阶段 Map Tasks 分：把复杂的问题分解为若干”简单的任务”</li>
+<li>Reduce阶段: Reduce Tasks 合：reduce</li>
+</ul>
+</li>
+<li><p>MapReduce编程执行步骤 </p>
+<ul>
+<li>准备MapReduce的输入数据</li>
+<li>准备Mapper数据</li>
+<li>Shuffle</li>
+<li>Reduce处理</li>
+<li>结果输出</li>
+</ul>
+</li>
+<li><p>编程模型 </p>
+</li>
+</ul>
+<figure class="highlight reasonml"><table><tr><td class="code"><pre><span class="line">借鉴函数式编程方式</span><br><span class="line">用户只需要实现两个函数接口：</span><br><span class="line"><span class="constructor">Map(<span class="params">in_key</span>,<span class="params">in_value</span>)</span></span><br><span class="line">---&gt;(out_key,intermediate_value) <span class="built_in">list</span></span><br><span class="line"><span class="constructor">Reduce(<span class="params">out_key</span>,<span class="params">intermediate_value</span>)</span> <span class="built_in">list</span></span><br><span class="line">---&gt;out_value <span class="built_in">list</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Word Count 词频统计案例 </li>
+</ul>
+<p><img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/image-mapreduce.png" alt="img"> </p>
+<h4 id="MapReduce实战"><a href="#MapReduce实战" class="headerlink" title="MapReduce实战"></a>MapReduce实战</h4><h5 id="MRJob编写和运行MapReduce代码"><a href="#MRJob编写和运行MapReduce代码" class="headerlink" title="MRJob编写和运行MapReduce代码"></a>MRJob编写和运行MapReduce代码</h5><p>1.<strong>mrjob 简介</strong></p>
+<ul>
+<li>使用python开发在Hadoop上运行的程序, mrjob是最简单的方式</li>
+<li>mrjob程序可以在本地测试运行也可以部署到Hadoop集群上运行</li>
+<li>如果不想成为hadoop专家, 但是需要利用Hadoop写MapReduce代码，mrJob是很好的选择</li>
+</ul>
+<p>2.<strong>mrjob 安装</strong></p>
+<ul>
+<li>使用pip安装：pip install mrjob</li>
+</ul>
+<p>3.<strong>mrjob实现WordCount</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> mrjob.job <span class="keyword">import</span> MRJob</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MRWordCount</span><span class="params">(MRJob)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#每一行从line中输入</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mapper</span><span class="params">(self, _, line)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> line.split():</span><br><span class="line">            <span class="keyword">yield</span> word,<span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># word相同的 会走到同一个reduce</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reducer</span><span class="params">(self, word, counts)</span>:</span>python</span><br><span class="line">        <span class="keyword">yield</span> word, sum(counts)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    MRWordCount.run()</span><br></pre></td></tr></table></figure>
+<p>4.<strong>运行WordCount代码</strong> </p>
+<p>打开命令行, 找到一篇文本文档, 敲如下命令:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python mr_word_count.py my_file.txt</span><br></pre></td></tr></table></figure>
+<h5 id="运行MRJOB的不同方式"><a href="#运行MRJOB的不同方式" class="headerlink" title="运行MRJOB的不同方式"></a>运行MRJOB的不同方式</h5><p>1.<strong>内嵌(-r inline)方式</strong></p>
+<ul>
+<li>特点是调试方便</li>
+<li>启动单一进程模拟任务执行状态和结果，默认(-r inline)可以省略</li>
+<li>输出文件使用 &gt; output-file 或-o output-file</li>
+<li><p>比如下面两种运行方式是等价的</p>
+<ul>
+<li>python word_count.py -r inline input.txt &gt; output.txt </li>
+<li>python word_count.py input.txt &gt; output.txt</li>
+</ul>
+<p>2.<strong>本地(-r local)方式</strong> </p>
+</li>
+<li><p>用于本地模拟Hadoop调试</p>
+</li>
+<li>与内嵌(inline)方式的区别是启动了多进程执行每一个任务</li>
+<li><p>如：python word_count.py -r local input.txt &gt; output1.txt</p>
+<p>3.<strong>Hadoop(-r hadoop)方式</strong> </p>
+</li>
+<li><p>用于hadoop环境，支持Hadoop运行调度控制参数</p>
+</li>
+<li><p>如：指定Hadoop任务调度优先级(VERY_HIGH|HIGH)</p>
+<ul>
+<li>—jobconf mapreduce.job.priority=VERY_HIGH。</li>
+</ul>
+</li>
+<li><p>如：Map及Reduce任务个数限制</p>
+<ul>
+<li>—jobconf mapreduce.map.tasks=2 —jobconf mapreduce.reduce.tasks=5</li>
+</ul>
+</li>
+<li><p>python word_count.py -r hadoop hdfs:///test.txt -o hdfs:///output</p>
+</li>
+</ul>
+<h5 id="mrjob-实现-topN统计"><a href="#mrjob-实现-topN统计" class="headerlink" title="mrjob 实现 topN统计"></a>mrjob 实现 topN统计</h5><p> 统计数据中出现次数最多的前n个数据 </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> mrjob.job <span class="keyword">import</span> MRJob,MRStep</span><br><span class="line"><span class="keyword">import</span> heapq</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TopNWords</span><span class="params">(MRJob)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mapper</span><span class="params">(self, _, line)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> line.strip() != <span class="string">""</span>:</span><br><span class="line">            <span class="keyword">for</span> word <span class="keyword">in</span> line.strip().split():</span><br><span class="line">                <span class="keyword">yield</span> word,<span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#介于mapper和reducer之间，用于临时的将mapper输出的数据进行统计</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">combiner</span><span class="params">(self, word, counts)</span>:</span></span><br><span class="line">        <span class="keyword">yield</span> word,sum(counts)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reducer_sum</span><span class="params">(self, word, counts)</span>:</span></span><br><span class="line">        <span class="keyword">yield</span> <span class="literal">None</span>,(sum(counts),word)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#利用heapq将数据进行排序，将最大的2个取出</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">top_n_reducer</span><span class="params">(self,_,word_cnts)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> cnt,word <span class="keyword">in</span> heapq.nlargest(<span class="number">2</span>,word_cnts):</span><br><span class="line">            <span class="keyword">yield</span> word,cnt</span><br><span class="line"></span><br><span class="line">    <span class="comment">#实现steps方法用于指定自定义的mapper，comnbiner和reducer方法</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">steps</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment">#传入两个step 定义了执行的顺序</span></span><br><span class="line">        <span class="keyword">return</span> [</span><br><span class="line">            MRStep(mapper=self.mapper,</span><br><span class="line">                   combiner=self.combiner,</span><br><span class="line">                   reducer=self.reducer_sum),</span><br><span class="line">            MRStep(reducer=self.top_n_reducer)</span><br><span class="line">        ]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    TopNWords.run()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<h4 id="MapReduce原理"><a href="#MapReduce原理" class="headerlink" title="MapReduce原理"></a>MapReduce原理</h4><h5 id="单机程序计算流程"><a href="#单机程序计算流程" class="headerlink" title="单机程序计算流程"></a>单机程序计算流程</h5><p>输入数据—-&gt;读取数据—-&gt;处理数据—-&gt;写入数据—-&gt;输出数据</p>
+<h5 id="Hadoop计算流程"><a href="#Hadoop计算流程" class="headerlink" title="Hadoop计算流程"></a>Hadoop计算流程</h5><p>input data：输入数据</p>
+<p>InputFormat：对数据进行切分，格式化处理</p>
+<p>map：将前面切分的数据做map处理(将数据进行分类，输出(k,v)键值对数据)</p>
+<p>shuffle&amp;sort:将相同的数据放在一起，并对数据进行排序处理</p>
+<p>reduce：将map输出的数据进行hash计算，对每个map数据进行统计计算</p>
+<p>OutputFormat：格式化输出数据</p>
+<p> <img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/mp3.png" alt="img"></p>
+<p>  <img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/mp4.png" alt="img"></p>
+<p> <img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/mp5.png" alt="img"></p>
+<p>  <img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/mp6.png" alt="img"></p>
+<p>  <img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/mp1.png" alt="img"></p>
+<p> map：将数据进行处理</p>
+<p>buffer in memory：达到80%数据时，将数据锁在内存上，将这部分输出到磁盘上</p>
+<p>partitions：在磁盘上有很多”小的数据”，将这些数据进行归并排序。</p>
+<p>merge on disk：将所有的”小的数据”进行合并。</p>
+<p>reduce：不同的reduce任务，会从map中对应的任务中copy数据</p>
+<p> 在reduce中同样要进行merge操作</p>
+<h4 id="MapReduce架构"><a href="#MapReduce架构" class="headerlink" title="MapReduce架构"></a>MapReduce架构</h4><h5 id="MapReduce架构-1-X"><a href="#MapReduce架构-1-X" class="headerlink" title="MapReduce架构 1.X"></a>MapReduce架构 1.X</h5><ul>
+<li>JobTracker:负责接收客户作业提交，负责任务到作业节点上运行，检查作业的状态</li>
+<li><p>TaskTracker：由JobTracker指派任务，定期向JobTracker汇报状态，在每一个工作节点上永远只会有一个TaskTracker</p>
+<p><img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/image-MapReduce4.png" alt="img"></p>
+</li>
+</ul>
+<h5 id="MapReduce2-X架构"><a href="#MapReduce2-X架构" class="headerlink" title="MapReduce2.X架构"></a>MapReduce2.X架构</h5><ul>
+<li>ResourceManager：负责资源的管理，负责提交任务到NodeManager所在的节点运行，检查节点的状态</li>
+<li>NodeManager：由ResourceManager指派任务，定期向ResourceManager汇报状态</li>
+</ul>
+<p><img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/image-MapReduce5.png" alt="img"></p>
+]]></content>
+      <categories>
+        <category>大数据推荐系统</category>
+      </categories>
+      <tags>
+        <tag>资源调度框架YARN</tag>
+        <tag>分布式处理框架MapReduce</tag>
+        <tag>MapReduce实战</tag>
+        <tag>MapReduce原理</tag>
+        <tag>MapReduce架构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>分布式文件系统HDFS</title>
+    <url>/2020/02/11/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9FHDFS/</url>
+    <content><![CDATA[<h4 id="HDFS概念"><a href="#HDFS概念" class="headerlink" title="HDFS概念"></a>HDFS概念</h4><p>Hadoop 附带了一个名为 HDFS(Hadoop分布式文件系统)的分布式文件系统，基于 Hadoop 的应用程序使用 HDFS 。HDFS 是专为存储超大数据文件，运行在集群的商品硬件上。它是容错的，可伸缩的，并且非常易于扩展。</p>
+<a id="more"></a>
+<h4 id="HDFS的使用"><a href="#HDFS的使用" class="headerlink" title="HDFS的使用"></a>HDFS的使用</h4><p><strong>启动HDFS</strong> </p>
+<ul>
+<li><p>来到$HADOOP_HOME/sbin目录下</p>
+</li>
+<li><p>执行start-dfs.sh</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[hadoop@hadoop00 sbin]$ ./start-dfs.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可以看到 namenode和 datanode启动的日志信息 </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Starting namenodes on [hadoop00]</span><br><span class="line">hadoop00: starting namenode, logging to /home/hadoop/app/hadoop-2.6.0-cdh5.7.0/logs/hadoop-hadoop-namenode-hadoop00.out</span><br><span class="line">localhost: starting datanode, logging to /home/hadoop/app/hadoop-2.6.0-cdh5.7.0/logs/hadoop-hadoop-datanode-hadoop00.out</span><br><span class="line">Starting secondary namenodes [0.0.0.0]</span><br><span class="line">0.0.0.0: starting secondarynamenode, logging to /home/hadoop/app/hadoop-2.6.0-cdh5.7.0/logs/hadoop-hadoop-secondarynamenode-hadoop00.out</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过jps命令查看当前运行的进程 </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[hadoop@hadoop00 sbin]$ jps</span><br><span class="line">4416 DataNode</span><br><span class="line">4770 Jps</span><br><span class="line">4631 SecondaryNameNode</span><br><span class="line">4251 NameNode</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可以看到 NameNode DataNode 以及 SecondaryNameNode 说明启动成功 </p>
+</li>
+</ul>
+<p><strong>通过可视化界面查看HDFS的运行情况</strong> </p>
+<p>  <img src="/2020/02/11/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9FHDFS/hadoop-state.png" alt="1551174774098"> </p>
+<h4 id="HDFS-shell操作"><a href="#HDFS-shell操作" class="headerlink" title="HDFS shell操作"></a>HDFS shell操作</h4><h5 id="HDFS-shell常见操作"><a href="#HDFS-shell常见操作" class="headerlink" title="HDFS shell常见操作"></a>HDFS shell常见操作</h5><p><strong>ls</strong></p>
+<ul>
+<li><p>hadoop fs -ls </p>
+</li>
+<li><p>如果是文件，则按照如下格式返回文件信息： 文件名 &lt;副本数&gt; 文件大小 修改日期 修改时间 权限 用户ID 组ID </p>
+</li>
+<li>如果是目录，则返回它直接子文件的一个列表，就像在Unix中一样。目录返回列表的信息如下： 目录名  修改日期  修改时间  权限  用户ID 组ID </li>
+<li>示例<ul>
+<li>hadoop fs -ls /user/hadoop/file1 /user/hadoop/file2</li>
+<li>hadoop fs -ls hdfs://host:port/user/hadoop/dir1 /nonexistentfile </li>
+<li>返回值： 成功返回0，失败返回-1</li>
+</ul>
+</li>
+</ul>
+<h5 id="text"><a href="#text" class="headerlink" title="text"></a><strong>text</strong></h5><ul>
+<li>使用方法：hadoop fs -text</li>
+<li>将源文件输出为文本格式。允许的格式是zip和TextRecordInputStream</li>
+</ul>
+<p><strong>mv</strong></p>
+<ul>
+<li>使用方法：hadoop fs -mv URI [URI …]</li>
+<li>将文件从源路径移动到目标路径。这个命令允许有多个源路径，此时目标路径必须是一个目录。不允许在不同的文件系统间移动文件。 示例：<ul>
+<li>hadoop fs -mv /user/hadoop/file1 /user/hadoop/file2</li>
+<li>hadoop fs -mv hdfs://host:port/file1 hdfs://host:port/file2 hdfs://host:port/file3 hdfs://host:port/dir1</li>
+<li>返回值：成功返回0，失败返回-1</li>
+</ul>
+</li>
+</ul>
+<p><strong>put</strong></p>
+<ul>
+<li>使用方法：hadoop fs -put …</li>
+<li>从本地文件系统中复制单个或多个源路径到目标文件系统。也支持从标准输入中读取输入写入目标文件系统。<ul>
+<li>hadoop fs -put localfile /user/hadoop/hadoopfile</li>
+<li>hadoop fs -put localfile1 localfile2 /user/hadoop/hadoopdir</li>
+<li>hadoop fs -put localfile hdfs://host:port/hadoop/hadoopfile</li>
+<li>hadoop fs -put - hdfs://host:port/hadoop/hadoopfile 从标准输入中读取输入。</li>
+<li>返回值：成功返回0，失败返回-1</li>
+</ul>
+</li>
+</ul>
+<p>参考网址： <a href="http://hadoop.apache.org/docs/r1.0.4/cn/hdfs_shell.html" target="_blank" rel="noopener">http://hadoop.apache.org/docs/r1.0.4/cn/hdfs_shell.html</a> </p>
+<h5 id="HDFS-shell操作练习"><a href="#HDFS-shell操作练习" class="headerlink" title="HDFS shell操作练习"></a>HDFS shell操作练习</h5><ul>
+<li>在centos 中创建 test.txt</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">touch test.txt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在centos中为test.txt 添加文本内容 </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vi test.txt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在HDFS中创建 hadoop001/test 文件夹 </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hadoop fs -mkdir -p /hadoop001/test</span><br></pre></td></tr></table></figure>
+<ul>
+<li>把text.txt文件上传到HDFS中 </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hadoop fs -put test.txt /hadoop001/test/</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看hdfs中 hadoop001/test/test.txt 文件内容 </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hadoop fs -cat /hadoop001/test/test.txt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将hdfs中 hadoop001/test/test.txt文件下载到centos </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hadoop fs -get /hadoop001/test/test.txt test.txt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除HDFS中 hadoop001/test/ </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hadoop fs -rm -r /hadoop001</span><br></pre></td></tr></table></figure>
+<h4 id="HDFS设计思路"><a href="#HDFS设计思路" class="headerlink" title="HDFS设计思路"></a>HDFS设计思路</h4><ul>
+<li><p>分布式文件系统的设计思路：</p>
+<p> <img src="/2020/02/11/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9FHDFS/hdfs_arc.png" alt="img"></p>
+</li>
+<li><p>HDFS的设计目标 </p>
+<ul>
+<li>适合运行在通用硬件(commodity hardware)上的分布式文件系统</li>
+<li>高度容错性的系统，适合部署在廉价的机器上</li>
+<li>HDFS能提供高吞吐量的数据访问，非常适合大规模数据集上的应用</li>
+<li>容易扩展，为用户提供性能不错的文件存储服务</li>
+</ul>
+</li>
+</ul>
+<h4 id="HDFS架构"><a href="#HDFS架构" class="headerlink" title="HDFS架构"></a>HDFS架构</h4><ul>
+<li>1个NameNode/NN(Master) 带 DataNode/DN(Slaves) (Master-Slave结构)</li>
+<li>1个文件会被拆分成多个Block</li>
+<li>NameNode(NN)<ul>
+<li>负责客户端请求的响应</li>
+<li>负责元数据（文件的名称、副本系数、Block存放的DN）的管理<ul>
+<li>元数据 MetaData 描述数据的数据</li>
+</ul>
+</li>
+<li>监控DataNode健康状况 10分钟没有收到DataNode报告认为Datanode死掉了</li>
+</ul>
+</li>
+<li>DataNode(DN)<ul>
+<li>存储用户的文件对应的数据块(Block)</li>
+<li>要定期向NN发送心跳信息，汇报本身及其所有的block信息，健康状况</li>
+</ul>
+</li>
+<li><p>分布式集群NameNode和DataNode部署在不同机器上</p>
+<p><img src="/2020/02/11/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9FHDFS/hadoop-hdfsarchitecture1.jpg" alt="img"> </p>
+</li>
+</ul>
+<h4 id="HDFS优缺点"><a href="#HDFS优缺点" class="headerlink" title="HDFS优缺点"></a>HDFS优缺点</h4><ul>
+<li>优点<ul>
+<li>数据冗余 硬件容错</li>
+<li>适合存储大文件</li>
+<li>处理流式数据</li>
+<li>可构建在廉价机器上</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>低延迟的数据访问</li>
+<li>小文件存储</li>
+</ul>
+</li>
+</ul>
+<h4 id="HDFS环境搭建"><a href="#HDFS环境搭建" class="headerlink" title="HDFS环境搭建"></a>HDFS环境搭建</h4><ul>
+<li><p>下载jdk 和 hadoop 放到 ~/software目录下 然后解压到 ~/app目录下</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tar -zxvf 压缩包名字 -C ~/app/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置环境变量</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vi ~/.bash_profile</span><br><span class="line">export JAVA_HOME=/root/bigdata/jdk</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br><span class="line">export HADOOP_HOME=/root/bigdata/hadoop</span><br><span class="line">export PATH=$HADOOP_HOME/bin:$PATH</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">保存退出后</span></span><br><span class="line">source ~/.bash_profile</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入到解压后的hadoop目录 修改配置文件</p>
+<ul>
+<li>配置文件作用<ul>
+<li>core-site.xml 指定hdfs的访问方式</li>
+<li>hdfs-site.xml 指定namenode 和 datanode 的数据存储位置</li>
+<li>mapred-site.xml 配置mapreduce</li>
+<li>yarn-site.xml 配置yarn</li>
+</ul>
+</li>
+<li>修改hadoop-env.sh</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd etc/hadoop</span><br><span class="line">vi hadoop-env.sh</span><br><span class="line"><span class="meta">#</span><span class="bash">找到下面内容添加java home</span></span><br><span class="line">export_JAVA_HOME=/root/bigdata/jdk</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改 core-site.xml 在 节点中添加</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.tmp.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>file:/root/bigdata/hadoop/tmp<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">name</span>&gt;</span>fs.defaultFS<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://hadoop-master:9000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改hdfs-site.xml 在 configuration节点中添加</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.name.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>/root/bigdata/hadoop/hdfs/name<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.datanode.data.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>/root/bigdata/hadoop/hdfs/data<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.replication<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>1<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改 mapred-site.xml</li>
+<li>默认没有这个 从模板文件复制</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cp mapred-site.xml.template mapred-site.xml</span><br></pre></td></tr></table></figure>
+<p> 在mapred-site.xml 的configuration 节点中添加</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.framework.name<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>yarn<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改yarn-site.xml configuration 节点中添加</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.aux-services<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>mapreduce_shuffle<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>来到hadoop的bin目录格式化namenode</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./hadoop namenode -format (这个命令只运行一次)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动hdfs 进入到 sbin</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./start-dfs.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动启动yarn 在sbin中</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>大数据推荐系统</category>
+      </categories>
+      <tags>
+        <tag>HDFS</tag>
+        <tag>HDFS概念</tag>
+        <tag>HDFS shell操作</tag>
+        <tag>HDFS架构</tag>
+        <tag>HDFS环境搭建</tag>
+        <tag>HDFS优缺点</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HADOOP概述</title>
+    <url>/2020/02/11/HADOOP%E6%A6%82%E8%BF%B0/</url>
+    <content><![CDATA[<h4 id="Hadoop的概念"><a href="#Hadoop的概念" class="headerlink" title="Hadoop的概念"></a>Hadoop的概念</h4><ul>
+<li>Apache™ Hadoop® 是一个开源的，<strong>可靠的</strong>(reliable)，<strong>可扩展</strong>的(scalable)<strong>分布式计算框架</strong> <ul>
+<li>允许使用简单的编程模型跨计算机集群分布式处理大型数据集 </li>
+<li><strong>可扩展</strong>: 从单个服务器扩展到数千台计算机，每台计算机都提供本地计算和存储</li>
+<li><strong>可靠的</strong>: 不依靠硬件来提供高可用性(high-availability)，而是在应用层检测和处理故障，从而在计算机集群之上提供高可用服务</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h4 id="Hadoop能做什么"><a href="#Hadoop能做什么" class="headerlink" title="Hadoop能做什么?"></a>Hadoop能做什么?</h4><ul>
+<li><p>搭建大型数据仓库</p>
+</li>
+<li><p>PB级数据的存储 处理 分析 统计等业务</p>
+<ul>
+<li><p>搜索引擎</p>
+</li>
+<li><p>日志分析</p>
+</li>
+<li><p>数据挖掘</p>
+</li>
+<li><p>商业智能(Business Intelligence，简称：BI)</p>
+<blockquote>
+<p>商业智能通常被理解为将企业中现有的数据(订单、库存、交易账目、客户和供应商等数据)转化为知识，帮助企业做出明智的业务经营决策的工具。从技术层面上讲，是数据仓库、数据挖掘等技术的综合运用。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="Hadoop核心组件"><a href="#Hadoop核心组件" class="headerlink" title="Hadoop核心组件"></a>Hadoop核心组件</h4><ul>
+<li><p>Hadoop是所有搜索引擎的共性问题的廉价解决方案 </p>
+<ul>
+<li>如何存储持续增长的海量网页: 单节点 V.S. 分布式存储</li>
+<li>如何对持续增长的海量网页进行排序: 超算 V.S. 分布式计算</li>
+<li>HDFS 解决分布式存储问题</li>
+<li>MapReduce 解决分布式计算问题</li>
+</ul>
+</li>
+<li><p>Hadoop Common：协调其他组件的通用工具</p>
+</li>
+<li><p>HDFS：一个基于网络的分布式文件存储系统</p>
+<ul>
+<li>Hadoop Distributed File System (HDFS™) </li>
+<li>HDFS的特点:扩展性&amp;容错性&amp;海量数量存储</li>
+<li>将文件切分成指定大小的数据块, 并在多台机器上保存多个副本</li>
+<li>数据切分、多副本、容错等操作对用户是透明的</li>
+</ul>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">下面这张图是数据块多份复制存储的示意</span><br><span class="line">图中对于文件 /users/sameerp/data/part<span class="number">-0</span>，其复制备份数设置为<span class="number">2</span>, 存储的BlockID分别为<span class="number">1</span>、<span class="number">3</span>。</span><br><span class="line">Block1的两个备份存储在DataNode0和DataNode2两个服务器上</span><br><span class="line">Block3的两个备份存储在DataNode4和DataNode6两个服务器上</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/02/11/HADOOP%E6%A6%82%E8%BF%B0/hadoop-hdfs1.png" alt="img"> </p>
+</li>
+<li><p>Hadoop MapReduce ： 基于yarn的大数据集并行处理系统 </p>
+<ul>
+<li>分布式计算框架</li>
+<li>MapReduce是GoogleMapReduce的开源实现</li>
+<li>MapReduce特点:扩展性&amp;容错性&amp;海量数据离线处理</li>
+</ul>
+<p><img src="/2020/02/11/HADOOP%E6%A6%82%E8%BF%B0/image-mapreduce.png" alt="img"> </p>
+</li>
+<li><p>YARN： 作业调度和集群资源管理的框架 </p>
+<ul>
+<li>YARN: Yet Another Resource Negotiator</li>
+<li>负责整个集群资源的管理和调度</li>
+<li>YARN特点:扩展性&amp;容错性&amp;多框架资源统一调度</li>
+</ul>
+</li>
+</ul>
+<h4 id="Hadoop优势"><a href="#Hadoop优势" class="headerlink" title="Hadoop优势"></a>Hadoop优势</h4><ul>
+<li>高可靠<ul>
+<li>数据存储: 数据块多副本</li>
+<li>数据计算: 某个节点崩溃, 会自动重新调度作业计算</li>
+</ul>
+</li>
+<li>高扩展性<ul>
+<li>存储/计算资源不够时，可以横向的线性扩展机器</li>
+<li>一个集群中可以包含数以千计的节点</li>
+<li>集群可以使用廉价机器，成本低</li>
+</ul>
+</li>
+<li>Hadoop生态系统成熟</li>
+</ul>
+<h4 id="拓展-数据仓库"><a href="#拓展-数据仓库" class="headerlink" title="拓展-数据仓库"></a>拓展-数据仓库</h4><h5 id="数据库两大基本类型"><a href="#数据库两大基本类型" class="headerlink" title="数据库两大基本类型"></a>数据库两大基本类型</h5><blockquote>
+<p> <strong>操作型数据库</strong> ： 主要用于业务支撑。一个公司往往会使用并维护若干个数据库，这些数据库保存着公司的日常操作数据，比如商品购买、酒店预订、学生成绩录入等； </p>
+<p> <strong>分析型数据库</strong> ： 主要用于历史数据分析。这类数据库作为公司的单独数据存储，负责利用历史数据对公司各主题域进行统计分析； </p>
+</blockquote>
+<h5 id="数据仓库定义"><a href="#数据仓库定义" class="headerlink" title="数据仓库定义"></a>数据仓库定义</h5><p>数据仓库是决策支持系统和联机分析应用数据源的结构化数据环境。数据仓库研究和解决从数据库中获取信息的问题。数据仓库的特征在于面向主题、集成性、稳定性和时变性 </p>
+<h5 id="数据仓库特点"><a href="#数据仓库特点" class="headerlink" title="数据仓库特点"></a>数据仓库特点</h5><ol>
+<li><strong>面向主题</strong></li>
+</ol>
+<p>​    面向主题特性是数据仓库和操作型数据库的根本区别。操作型数据库是为了支撑各种业务而建立，而分析型数据库则是为了对从各种繁杂业务中抽象出来的分析主题(如用户、成本、商品等)进行分析而建立；</p>
+<ol>
+<li><strong>集成性</strong></li>
+</ol>
+<p>​    集成性是指数据仓库会将不同源数据库中的数据汇总到一起；</p>
+<ol>
+<li><strong>企业范围</strong></li>
+</ol>
+<p>​    数据仓库内的数据是面向公司全局的。比如某个主题域为成本，则全公司和成本有关的信息都会被汇集进来；</p>
+<ol>
+<li><strong>历史性</strong></li>
+</ol>
+<p>​    较之操作型数据库，数据仓库的时间跨度通常比较长。前者通常保存几个月，后者可能几年甚至几十年；</p>
+<ol>
+<li><strong>时变性</strong></li>
+</ol>
+<p>​    时变性是指数据仓库包含来自其时间范围不同时间段的数据快照。有了这些数据快照以后，用户便可将其汇总，生成各历史阶段的数据分析报告；</p>
+<h5 id="数据仓库组件"><a href="#数据仓库组件" class="headerlink" title="数据仓库组件"></a>数据仓库组件</h5><p> 数据仓库的核心组件有四个：各源数据库，ETL，数据仓库，前端应用。如下图所示： </p>
+<p> <img src="/2020/02/11/HADOOP%E6%A6%82%E8%BF%B0/903014-20160322154102745-1726255952.jpg" alt="img"> </p>
+<ol>
+<li><p><strong>业务系统</strong></p>
+<p> 业务系统包含各种源数据库，这些源数据库既为业务系统提供数据支撑，同时也作为数据仓库的数据源(注：除了业务系统，数据仓库也可从其他外部数据源获取数据)； </p>
+</li>
+<li><p><strong>ETL</strong></p>
+<p> ETL分别代表：提取extraction、转换transformation、加载load。其中提取过程表示操作型数据库搜集指定数据，转换过程表示将数据转化为指定格式并进行数据清洗保证数据质量，加载过程表示将转换过后满足指定格式的数据加载进数据仓库。数据仓库会周期不断地从源数据库提取清洗好了的数据，因此也被称为”目标系统”； </p>
+</li>
+<li><p><strong>前端应用</strong></p>
+<p>  和操作型数据库一样，数据仓库通常提供具有直接访问数据仓库功能的前端应用，这些应用也被称为BI(商务智能)应用； </p>
+</li>
+</ol>
+<h5 id="数据仓库开发流程"><a href="#数据仓库开发流程" class="headerlink" title="数据仓库开发流程"></a>数据仓库开发流程</h5><p> <img src="/2020/02/11/HADOOP%E6%A6%82%E8%BF%B0/903014-20160322160747995-1497680833.jpg" alt="img"> </p>
+<p> 最后：在大数据时代，数据仓库的重要性更胜以往。Hadoop平台下的Hive，Spark平台下的Spark SQL都是各自生态圈内应用最热门的配套工具，而它们的本质就是开源分布式数据仓库。</p>
+]]></content>
+      <categories>
+        <category>大数据推荐系统</category>
+      </categories>
+      <tags>
+        <tag>Hadoop的概念</tag>
+        <tag>Hadoop核心组件</tag>
+        <tag>Hadoop优势</tag>
+        <tag>数据仓库</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>基于模型的协同过滤推荐</title>
+    <url>/2020/02/11/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E6%8E%A8%E8%8D%90/</url>
+    <content><![CDATA[<h4 id="Model-Based-协同过滤算法"><a href="#Model-Based-协同过滤算法" class="headerlink" title="Model-Based 协同过滤算法"></a>Model-Based 协同过滤算法</h4><p>随着机器学习技术的逐渐发展与完善，推荐系统也逐渐运用机器学习的思想来进行推荐。将机器学习应用到推荐系统中的方案真是不胜枚举。以下对Model-Based CF算法做一个大致的分类：</p>
+<ul>
+<li>基于分类算法、回归算法、聚类算法</li>
+<li>基于矩阵分解的推荐</li>
+<li>基于神经网络算法</li>
+<li>基于图模型算法</li>
+</ul>
+<p>几种应用较多的方案：</p>
+<ul>
+<li><strong>基于回归模型的协同过滤推荐</strong></li>
+<li><strong>基于矩阵分解的协同过滤推荐</strong></li>
+</ul>
+]]></content>
+      <categories>
+        <category>大数据推荐系统</category>
+      </categories>
+      <tags>
+        <tag>基于模型的推荐算法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>推荐系统的冷启动问题</title>
     <url>/2020/02/10/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%86%B7%E5%90%AF%E5%8A%A8%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h4 id="推荐系统冷启动概念"><a href="#推荐系统冷启动概念" class="headerlink" title="推荐系统冷启动概念"></a>推荐系统冷启动概念</h4><ul>
@@ -42,7 +1124,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>推荐系统</category>
+        <category>大数据推荐系统</category>
       </categories>
       <tags>
         <tag>推荐系统冷启动</tag>
@@ -118,7 +1200,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>推荐系统</category>
+        <category>大数据推荐系统</category>
       </categories>
       <tags>
         <tag>推荐系统的评估指标</tag>
@@ -176,7 +1258,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>推荐系统</category>
+        <category>大数据推荐系统</category>
       </categories>
       <tags>
         <tag>基于用户的协同过滤</tag>
@@ -702,7 +1784,7 @@
 </ul>
 ]]></content>
       <categories>
-        <category>推荐系统</category>
+        <category>大数据推荐系统</category>
       </categories>
       <tags>
         <tag>推荐模型构建流程</tag>
@@ -871,7 +1953,7 @@
 <p><img src="/2020/01/15/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/rs%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84.png" alt="img"> </p>
 ]]></content>
       <categories>
-        <category>推荐系统</category>
+        <category>大数据推荐系统</category>
       </categories>
       <tags>
         <tag>推荐系统简介</tag>

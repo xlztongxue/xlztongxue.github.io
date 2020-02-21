@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon16x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://xiaoliaozi.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="资源调度框架 YARN什么是YARN Yet Another Resource Negotiator, 另一种资源协调者 通用资源管理系统 为上层应用提供统一的资源管理和调度，为集群在利用率、资源统一管理和数据共享等方面带来了巨大好处">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YARN和MAPREDUCE">
+<meta property="og:url" content="https://xiaoliaozi.com/2020/02/12/YARN%E5%92%8CMAPREDUCE/index.html">
+<meta property="og:site_name" content="小廖子的博客">
+<meta property="og:description" content="资源调度框架 YARN什么是YARN Yet Another Resource Negotiator, 另一种资源协调者 通用资源管理系统 为上层应用提供统一的资源管理和调度，为集群在利用率、资源统一管理和数据共享等方面带来了巨大好处">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/12/YARN%E5%92%8CMAPREDUCE/image-yarn2.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/12/YARN%E5%92%8CMAPREDUCE/hadoop-yarn3.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/12/YARN%E5%92%8CMAPREDUCE/yarn4.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/12/YARN%E5%92%8CMAPREDUCE/image-mapreduce.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/12/YARN%E5%92%8CMAPREDUCE/mp3.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/12/YARN%E5%92%8CMAPREDUCE/mp4.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/12/YARN%E5%92%8CMAPREDUCE/mp5.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/12/YARN%E5%92%8CMAPREDUCE/mp6.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/12/YARN%E5%92%8CMAPREDUCE/mp1.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/12/YARN%E5%92%8CMAPREDUCE/image-MapReduce4.png">
+<meta property="og:image" content="https://xiaoliaozi.com/2020/02/12/YARN%E5%92%8CMAPREDUCE/image-MapReduce5.png">
+<meta property="article:published_time" content="2020-02-12T01:42:27.000Z">
+<meta property="article:modified_time" content="2020-02-21T04:22:38.677Z">
+<meta property="article:author" content="小廖子">
+<meta property="article:tag" content="资源调度框架YARN">
+<meta property="article:tag" content="分布式处理框架MapReduce">
+<meta property="article:tag" content="MapReduce实战">
+<meta property="article:tag" content="MapReduce原理">
+<meta property="article:tag" content="MapReduce架构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xiaoliaozi.com/2020/02/12/YARN%E5%92%8CMAPREDUCE/image-yarn2.png">
+
+<link rel="canonical" href="https://xiaoliaozi.com/2020/02/12/YARN%E5%92%8CMAPREDUCE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>YARN和MAPREDUCE | 小廖子的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="小廖子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小廖子的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">好记性不如记笔记</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xiaoliaozi.com/2020/02/12/YARN%E5%92%8CMAPREDUCE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avter.jpg">
+      <meta itemprop="name" content="小廖子">
+      <meta itemprop="description" content="学无止境">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小廖子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          YARN和MAPREDUCE
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-12 09:42:27" itemprop="dateCreated datePublished" datetime="2020-02-12T09:42:27+08:00">2020-02-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-21 12:22:38" itemprop="dateModified" datetime="2020-02-21T12:22:38+08:00">2020-02-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据推荐系统</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/02/12/YARN%E5%92%8CMAPREDUCE/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/12/YARN%E5%92%8CMAPREDUCE/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="资源调度框架-YARN"><a href="#资源调度框架-YARN" class="headerlink" title="资源调度框架 YARN"></a>资源调度框架 YARN</h4><h5 id="什么是YARN"><a href="#什么是YARN" class="headerlink" title="什么是YARN"></a>什么是YARN</h5><ul>
+<li>Yet Another Resource Negotiator, 另一种资源协调者</li>
+<li>通用资源管理系统</li>
+<li>为上层应用提供统一的资源管理和调度，为集群在利用率、资源统一管理和数据共享等方面带来了巨大好处</li>
+</ul>
+<a id="more"></a>
+<h5 id="YARN产生背景"><a href="#YARN产生背景" class="headerlink" title="YARN产生背景"></a>YARN产生背景</h5><ul>
+<li><p>通用资源管理系统</p>
+<ul>
+<li>Hadoop数据分布式存储（数据分块，冗余存储）</li>
+<li>当多个MapReduce任务要用到相同的hdfs数据， 需要进行资源调度管理</li>
+<li>Hadoop1.x时并没有YARN，MapReduce 既负责进行计算作业又处理服务器集群资源调度管理</li>
+</ul>
+</li>
+<li><p>服务器集群资源调度管理和MapReduce执行过程耦合在一起带来的问题</p>
+<ul>
+<li>Hadoop早期, 技术只有Hadoop, 这个问题不明显</li>
+<li>随着大数据技术的发展，Spark Storm … 计算框架都要用到服务器集群资源</li>
+<li><p>如果没有通用资源管理系统，只能为多个集群分别提供数据</p>
+<ul>
+<li>资源利用率低 运维成本高</li>
+</ul>
+</li>
+<li><p>Yarn (Yet Another Resource Negotiator) 另一种资源调度器</p>
+<ul>
+<li>Mesos 大数据资源管理产品</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/image-yarn2.png" alt="img"></p>
+</li>
+<li><p>不同计算框架可以共享同一个HDFS集群上的数据，享受整体的资源调度 </p>
+<p><img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/hadoop-yarn3.png" alt="img"></p>
+</li>
+</ul>
+<h5 id="YARN的架构和执行流程"><a href="#YARN的架构和执行流程" class="headerlink" title="YARN的架构和执行流程"></a>YARN的架构和执行流程</h5><ul>
+<li>ResourceManager: RM 资源管理器 整个集群同一时间提供服务的RM只有一个，负责集群资源的统一管理和调度 处理客户端的请求： submit, kill 监控我们的NM，一旦某个NM挂了，那么该NM上运行的任务需要告诉我们的AM来如何进行处理</li>
+<li>NodeManager: NM 节点管理器 整个集群中有多个，负责自己本身节点资源管理和使用 定时向RM汇报本节点的资源使用情况 接收并处理来自RM的各种命令：启动Container 处理来自AM的命令</li>
+<li>ApplicationMaster: AM 每个应用程序对应一个：MR、Spark，负责应用程序的管理 为应用程序向RM申请资源（core、memory），分配给内部task 需要与NM通信：启动/停止task，task是运行在container里面，AM也是运行在container里面</li>
+<li>Container 容器: 封装了CPU、Memory等资源的一个容器,是一个任务运行环境的抽象</li>
+<li><p>Client: 提交作业，查询作业的运行进度，杀死作业</p>
+<p><img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/yarn4.png" alt="img"></p>
+</li>
+</ul>
+<blockquote>
+<p> 1.Client提交作业请求</p>
+<p>2.ResourceManager 进程和 NodeManager 进程通信，根据集群资源，为用户程序分配第一个Container(容器)，并将 ApplicationMaster 分发到这个容器上面</p>
+<p>3.在启动的Container中创建ApplicationMaster</p>
+<p>4.ApplicationMaster启动后向ResourceManager注册进程,申请资源</p>
+<p>5.ApplicationMaster申请到资源后，向对应的NodeManager申请启动Container，将要执行的程序分发到NodeManager上</p>
+<p>6.Container启动后，执行对应的任务</p>
+<p>7.Tast执行完毕之后，向ApplicationMaster返回结果</p>
+<p>8.ApplicationMaster向ResourceManager 请求kill</p>
+</blockquote>
+<h5 id="YARN环境搭建"><a href="#YARN环境搭建" class="headerlink" title="YARN环境搭建"></a>YARN环境搭建</h5><p>1）mapred-site.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.framework.name<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>yarn<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>2）yarn-site.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.aux-services<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>mapreduce_shuffle<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>3) 启动YARN相关的进程 sbin/start-yarn.sh</p>
+<p>4）验证 jps ResourceManager NodeManager <a href="http://192,168.19.137:8088" target="_blank" rel="noopener">http://192,168.19.137:8088</a></p>
+<p>5）停止YARN相关的进程 sbin/stop-yarn.sh</p>
+<h4 id="分布式处理框架-MapReduce"><a href="#分布式处理框架-MapReduce" class="headerlink" title="分布式处理框架 MapReduce"></a>分布式处理框架 MapReduce</h4><h5 id="什么是MapReduce"><a href="#什么是MapReduce" class="headerlink" title="什么是MapReduce"></a>什么是MapReduce</h5><ul>
+<li>定义： 分布式计算框架</li>
+<li>作用： 海量数据的离线处理</li>
+<li>MapReduce优点: 海量数据离线处理&amp;易开发</li>
+<li>MapReduce缺点: 实时流式计算</li>
+</ul>
+<h5 id="MapReduce编程模型"><a href="#MapReduce编程模型" class="headerlink" title="MapReduce编程模型"></a>MapReduce编程模型</h5><ul>
+<li>MapReduce分而治之的思想 </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">数钱实例：一堆钞票，各种面值分别是多少</span><br><span class="line">单点策略：一个人数所有的钞票，数出各种面值有多少张</span><br><span class="line">分治策略：</span><br><span class="line">	每个人分得一堆钞票，数出各种面值有多少张</span><br><span class="line">	汇总，每个人负责统计一种面值</span><br><span class="line">解决数据可以切割进行计算的应用</span><br></pre></td></tr></table></figure>
+<ul>
+<li>MapReduce编程分Map和Reduce阶段 <ul>
+<li>将作业拆分成Map阶段和Reduce阶段</li>
+<li>Map阶段 Map Tasks 分：把复杂的问题分解为若干”简单的任务”</li>
+<li>Reduce阶段: Reduce Tasks 合：reduce</li>
+</ul>
+</li>
+<li><p>MapReduce编程执行步骤 </p>
+<ul>
+<li>准备MapReduce的输入数据</li>
+<li>准备Mapper数据</li>
+<li>Shuffle</li>
+<li>Reduce处理</li>
+<li>结果输出</li>
+</ul>
+</li>
+<li><p>编程模型 </p>
+</li>
+</ul>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">借鉴函数式编程方式</span><br><span class="line">用户只需要实现两个函数接口：</span><br><span class="line"><span class="constructor">Map(<span class="params">in_key</span>,<span class="params">in_value</span>)</span></span><br><span class="line">---&gt;(out_key,intermediate_value) <span class="built_in">list</span></span><br><span class="line"><span class="constructor">Reduce(<span class="params">out_key</span>,<span class="params">intermediate_value</span>)</span> <span class="built_in">list</span></span><br><span class="line">---&gt;out_value <span class="built_in">list</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Word Count 词频统计案例 </li>
+</ul>
+<p><img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/image-mapreduce.png" alt="img"> </p>
+<h4 id="MapReduce实战"><a href="#MapReduce实战" class="headerlink" title="MapReduce实战"></a>MapReduce实战</h4><h5 id="MRJob编写和运行MapReduce代码"><a href="#MRJob编写和运行MapReduce代码" class="headerlink" title="MRJob编写和运行MapReduce代码"></a>MRJob编写和运行MapReduce代码</h5><p>1.<strong>mrjob 简介</strong></p>
+<ul>
+<li>使用python开发在Hadoop上运行的程序, mrjob是最简单的方式</li>
+<li>mrjob程序可以在本地测试运行也可以部署到Hadoop集群上运行</li>
+<li>如果不想成为hadoop专家, 但是需要利用Hadoop写MapReduce代码，mrJob是很好的选择</li>
+</ul>
+<p>2.<strong>mrjob 安装</strong></p>
+<ul>
+<li>使用pip安装：pip install mrjob</li>
+</ul>
+<p>3.<strong>mrjob实现WordCount</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> mrjob.job <span class="keyword">import</span> MRJob</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MRWordCount</span><span class="params">(MRJob)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#每一行从line中输入</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mapper</span><span class="params">(self, _, line)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> word <span class="keyword">in</span> line.split():</span><br><span class="line">            <span class="keyword">yield</span> word,<span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># word相同的 会走到同一个reduce</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reducer</span><span class="params">(self, word, counts)</span>:</span>python</span><br><span class="line">        <span class="keyword">yield</span> word, sum(counts)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    MRWordCount.run()</span><br></pre></td></tr></table></figure>
+<p>4.<strong>运行WordCount代码</strong> </p>
+<p>打开命令行, 找到一篇文本文档, 敲如下命令:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python mr_word_count.py my_file.txt</span><br></pre></td></tr></table></figure>
+<h5 id="运行MRJOB的不同方式"><a href="#运行MRJOB的不同方式" class="headerlink" title="运行MRJOB的不同方式"></a>运行MRJOB的不同方式</h5><p>1.<strong>内嵌(-r inline)方式</strong></p>
+<ul>
+<li>特点是调试方便</li>
+<li>启动单一进程模拟任务执行状态和结果，默认(-r inline)可以省略</li>
+<li>输出文件使用 &gt; output-file 或-o output-file</li>
+<li><p>比如下面两种运行方式是等价的</p>
+<ul>
+<li>python word_count.py -r inline input.txt &gt; output.txt </li>
+<li>python word_count.py input.txt &gt; output.txt</li>
+</ul>
+<p>2.<strong>本地(-r local)方式</strong> </p>
+</li>
+<li><p>用于本地模拟Hadoop调试</p>
+</li>
+<li>与内嵌(inline)方式的区别是启动了多进程执行每一个任务</li>
+<li><p>如：python word_count.py -r local input.txt &gt; output1.txt</p>
+<p>3.<strong>Hadoop(-r hadoop)方式</strong> </p>
+</li>
+<li><p>用于hadoop环境，支持Hadoop运行调度控制参数</p>
+</li>
+<li><p>如：指定Hadoop任务调度优先级(VERY_HIGH|HIGH)</p>
+<ul>
+<li>—jobconf mapreduce.job.priority=VERY_HIGH。</li>
+</ul>
+</li>
+<li><p>如：Map及Reduce任务个数限制</p>
+<ul>
+<li>—jobconf mapreduce.map.tasks=2 —jobconf mapreduce.reduce.tasks=5</li>
+</ul>
+</li>
+<li><p>python word_count.py -r hadoop hdfs:///test.txt -o hdfs:///output</p>
+</li>
+</ul>
+<h5 id="mrjob-实现-topN统计"><a href="#mrjob-实现-topN统计" class="headerlink" title="mrjob 实现 topN统计"></a>mrjob 实现 topN统计</h5><p> 统计数据中出现次数最多的前n个数据 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> mrjob.job <span class="keyword">import</span> MRJob,MRStep</span><br><span class="line"><span class="keyword">import</span> heapq</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TopNWords</span><span class="params">(MRJob)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mapper</span><span class="params">(self, _, line)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> line.strip() != <span class="string">""</span>:</span><br><span class="line">            <span class="keyword">for</span> word <span class="keyword">in</span> line.strip().split():</span><br><span class="line">                <span class="keyword">yield</span> word,<span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#介于mapper和reducer之间，用于临时的将mapper输出的数据进行统计</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">combiner</span><span class="params">(self, word, counts)</span>:</span></span><br><span class="line">        <span class="keyword">yield</span> word,sum(counts)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reducer_sum</span><span class="params">(self, word, counts)</span>:</span></span><br><span class="line">        <span class="keyword">yield</span> <span class="literal">None</span>,(sum(counts),word)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#利用heapq将数据进行排序，将最大的2个取出</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">top_n_reducer</span><span class="params">(self,_,word_cnts)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> cnt,word <span class="keyword">in</span> heapq.nlargest(<span class="number">2</span>,word_cnts):</span><br><span class="line">            <span class="keyword">yield</span> word,cnt</span><br><span class="line"></span><br><span class="line">    <span class="comment">#实现steps方法用于指定自定义的mapper，comnbiner和reducer方法</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">steps</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment">#传入两个step 定义了执行的顺序</span></span><br><span class="line">        <span class="keyword">return</span> [</span><br><span class="line">            MRStep(mapper=self.mapper,</span><br><span class="line">                   combiner=self.combiner,</span><br><span class="line">                   reducer=self.reducer_sum),</span><br><span class="line">            MRStep(reducer=self.top_n_reducer)</span><br><span class="line">        ]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    TopNWords.run()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<h4 id="MapReduce原理"><a href="#MapReduce原理" class="headerlink" title="MapReduce原理"></a>MapReduce原理</h4><h5 id="单机程序计算流程"><a href="#单机程序计算流程" class="headerlink" title="单机程序计算流程"></a>单机程序计算流程</h5><p>输入数据—-&gt;读取数据—-&gt;处理数据—-&gt;写入数据—-&gt;输出数据</p>
+<h5 id="Hadoop计算流程"><a href="#Hadoop计算流程" class="headerlink" title="Hadoop计算流程"></a>Hadoop计算流程</h5><p>input data：输入数据</p>
+<p>InputFormat：对数据进行切分，格式化处理</p>
+<p>map：将前面切分的数据做map处理(将数据进行分类，输出(k,v)键值对数据)</p>
+<p>shuffle&amp;sort:将相同的数据放在一起，并对数据进行排序处理</p>
+<p>reduce：将map输出的数据进行hash计算，对每个map数据进行统计计算</p>
+<p>OutputFormat：格式化输出数据</p>
+<p> <img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/mp3.png" alt="img"></p>
+<p>  <img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/mp4.png" alt="img"></p>
+<p> <img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/mp5.png" alt="img"></p>
+<p>  <img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/mp6.png" alt="img"></p>
+<p>  <img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/mp1.png" alt="img"></p>
+<p> map：将数据进行处理</p>
+<p>buffer in memory：达到80%数据时，将数据锁在内存上，将这部分输出到磁盘上</p>
+<p>partitions：在磁盘上有很多”小的数据”，将这些数据进行归并排序。</p>
+<p>merge on disk：将所有的”小的数据”进行合并。</p>
+<p>reduce：不同的reduce任务，会从map中对应的任务中copy数据</p>
+<p> 在reduce中同样要进行merge操作</p>
+<h4 id="MapReduce架构"><a href="#MapReduce架构" class="headerlink" title="MapReduce架构"></a>MapReduce架构</h4><h5 id="MapReduce架构-1-X"><a href="#MapReduce架构-1-X" class="headerlink" title="MapReduce架构 1.X"></a>MapReduce架构 1.X</h5><ul>
+<li>JobTracker:负责接收客户作业提交，负责任务到作业节点上运行，检查作业的状态</li>
+<li><p>TaskTracker：由JobTracker指派任务，定期向JobTracker汇报状态，在每一个工作节点上永远只会有一个TaskTracker</p>
+<p><img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/image-MapReduce4.png" alt="img"></p>
+</li>
+</ul>
+<h5 id="MapReduce2-X架构"><a href="#MapReduce2-X架构" class="headerlink" title="MapReduce2.X架构"></a>MapReduce2.X架构</h5><ul>
+<li>ResourceManager：负责资源的管理，负责提交任务到NodeManager所在的节点运行，检查节点的状态</li>
+<li>NodeManager：由ResourceManager指派任务，定期向ResourceManager汇报状态</li>
+</ul>
+<p><img src="/2020/02/12/YARN%E5%92%8CMAPREDUCE/image-MapReduce5.png" alt="img"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+            <!---<a href="/tags/%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6%E6%A1%86%E6%9E%B6YARN/" rel="tag"># 资源调度框架YARN</a>--->
+            <a href="/tags/%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6%E6%A1%86%E6%9E%B6YARN/" rel="tag">资源调度框架YARN</a>
+            <!---<a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6MapReduce/" rel="tag"># 分布式处理框架MapReduce</a>--->
+            <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6MapReduce/" rel="tag">分布式处理框架MapReduce</a>
+            <!---<a href="/tags/MapReduce%E5%AE%9E%E6%88%98/" rel="tag"># MapReduce实战</a>--->
+            <a href="/tags/MapReduce%E5%AE%9E%E6%88%98/" rel="tag">MapReduce实战</a>
+            <!---<a href="/tags/MapReduce%E5%8E%9F%E7%90%86/" rel="tag"># MapReduce原理</a>--->
+            <a href="/tags/MapReduce%E5%8E%9F%E7%90%86/" rel="tag">MapReduce原理</a>
+            <!---<a href="/tags/MapReduce%E6%9E%B6%E6%9E%84/" rel="tag"># MapReduce架构</a>--->
+            <a href="/tags/MapReduce%E6%9E%B6%E6%9E%84/" rel="tag">MapReduce架构</a>
+            <br>
+          <div class="fa fa-tag">本文结束</div>
+          <br/>
+          </div>
+        
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/11/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9FHDFS/" rel="prev" title="分布式文件系统HDFS">
+      <i class="fa fa-chevron-left"></i> 分布式文件系统HDFS
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/" rel="next" title="HADOOP概念扩展">
+      HADOOP概念扩展 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#资源调度框架-YARN"><span class="nav-number">1.</span> <span class="nav-text">资源调度框架 YARN</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是YARN"><span class="nav-number">1.1.</span> <span class="nav-text">什么是YARN</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#YARN产生背景"><span class="nav-number">1.2.</span> <span class="nav-text">YARN产生背景</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#YARN的架构和执行流程"><span class="nav-number">1.3.</span> <span class="nav-text">YARN的架构和执行流程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#YARN环境搭建"><span class="nav-number">1.4.</span> <span class="nav-text">YARN环境搭建</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分布式处理框架-MapReduce"><span class="nav-number">2.</span> <span class="nav-text">分布式处理框架 MapReduce</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是MapReduce"><span class="nav-number">2.1.</span> <span class="nav-text">什么是MapReduce</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#MapReduce编程模型"><span class="nav-number">2.2.</span> <span class="nav-text">MapReduce编程模型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MapReduce实战"><span class="nav-number">3.</span> <span class="nav-text">MapReduce实战</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#MRJob编写和运行MapReduce代码"><span class="nav-number">3.1.</span> <span class="nav-text">MRJob编写和运行MapReduce代码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#运行MRJOB的不同方式"><span class="nav-number">3.2.</span> <span class="nav-text">运行MRJOB的不同方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mrjob-实现-topN统计"><span class="nav-number">3.3.</span> <span class="nav-text">mrjob 实现 topN统计</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MapReduce原理"><span class="nav-number">4.</span> <span class="nav-text">MapReduce原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#单机程序计算流程"><span class="nav-number">4.1.</span> <span class="nav-text">单机程序计算流程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Hadoop计算流程"><span class="nav-number">4.2.</span> <span class="nav-text">Hadoop计算流程</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MapReduce架构"><span class="nav-number">5.</span> <span class="nav-text">MapReduce架构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#MapReduce架构-1-X"><span class="nav-number">5.1.</span> <span class="nav-text">MapReduce架构 1.X</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#MapReduce2-X架构"><span class="nav-number">5.2.</span> <span class="nav-text">MapReduce2.X架构</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/"><img class="site-author-image" itemprop="image" alt="小廖子"
+      src="/images/avter.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">小廖子</p>
+  <div class="site-description" itemprop="description">学无止境</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xlztongxue" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xlztongxue" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xlz_tongxue@163.com" title="E-Mail → mailto:xlz_tongxue@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/weixin_45439324" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_45439324" rel="noopener" target="_blank"><i class="fa fa-fw fa-copyright"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+
+
+    <p class="site-author-name" itemprop="name">关注我哟</p>
+    <img class="site-author-image" itemprop="image" alt="微信公众号"
+      src="/images/xlzblog.jpg">
+    <div class="site-description" itemprop="description">关注公众号，更多精彩等着你</div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-小廖子"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小廖子</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">113k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:08</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'Ed2mvWHWKlphKGAa6hId76UP-gzGzoHsz',
+      appKey: '7MYwWTLCtelB1RHhedbF58S4',
+      placeholder: "Just go go",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
