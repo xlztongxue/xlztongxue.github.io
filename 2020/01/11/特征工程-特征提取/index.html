@@ -53,9 +53,9 @@
 <meta property="og:site_name" content="小廖子的博客">
 <meta property="og:description" content="特征提取 定义 将任意数据（如文本或图像）转换为可用于机器学习的数字特征  注：特征值化是为了计算机更好的去理解数据   特征提取分类: 字典特征提取(特征离散化) 文本特征提取 图像特征提取（深度学习将介绍）">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://xiaoliaozi.com/2020/01/11/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B-%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/tfidf%E5%85%AC%E5%BC%8F.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xlztongxue/picgo/master/img/20200222180055.png">
 <meta property="article:published_time" content="2020-01-11T02:40:27.000Z">
-<meta property="article:modified_time" content="2020-01-11T03:29:29.220Z">
+<meta property="article:modified_time" content="2020-02-22T10:01:30.394Z">
 <meta property="article:author" content="小廖子">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="特征工程">
@@ -63,7 +63,7 @@
 <meta property="article:tag" content="jieba分词处理">
 <meta property="article:tag" content="词袋模型">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://xiaoliaozi.com/2020/01/11/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B-%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/tfidf%E5%85%AC%E5%BC%8F.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/xlztongxue/picgo/master/img/20200222180055.png">
 
 <link rel="canonical" href="https://xiaoliaozi.com/2020/01/11/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B-%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/">
 
@@ -240,10 +240,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-01-11 10:40:27 / 修改时间：11:29:29" itemprop="dateCreated datePublished" datetime="2020-01-11T10:40:27+08:00">2020-01-11</time>
+              <time title="创建时间：2020-01-11 10:40:27" itemprop="dateCreated datePublished" datetime="2020-01-11T10:40:27+08:00">2020-01-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-22 18:01:30" itemprop="dateModified" datetime="2020-02-22T18:01:30+08:00">2020-02-22</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -390,11 +396,10 @@
 </ul>
 <h5 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h5><ul>
 <li>词频（term frequency，tf）指的是某一个给定的词语在该文件中出现的频率</li>
-<li><p>逆向文档频率（inverse document frequency，idf）是一个词语普遍重要性的度量。某一特定词语的idf，可以<strong>由总文件数目除以包含该词语之文件的数目，再将得到的商取以10为底的对数得到</strong></p>
-<p><img src="/2020/01/11/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B-%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/tfidf%E5%85%AC%E5%BC%8F.png" alt="tfidfå…¬å¼"></p>
-<p>最终得出结果可以理解为重要程度。 </p>
-</li>
+<li>逆向文档频率（inverse document frequency，idf）是一个词语普遍重要性的度量。某一特定词语的idf，可以<strong>由总文件数目除以包含该词语之文件的数目，再将得到的商取以10为底的对数得到</strong></li>
 </ul>
+<p><img src="https://raw.githubusercontent.com/xlztongxue/picgo/master/img/20200222180055.png"/></p>
+<p> 最终得出结果可以理解为重要程度。 </p>
 <p><strong>tfidf越大越能代表文章的主题</strong></p>
 <figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">举例：</span><br><span class="line">假如一篇文章的总词语数是<span class="number">100</span>个，而词语<span class="string">"非常"</span>出现了<span class="number">5</span>次，那么<span class="string">"非常"</span>一词在该文件中的词频就是<span class="number">5</span>/<span class="number">100</span>=<span class="number">0.05</span>。</span><br><span class="line">而计算文件频率（IDF）的方法是以文件集的文件总数，除以出现<span class="string">"非常"</span>一词的文件数。</span><br><span class="line">所以，如果<span class="string">"非常"</span>一词在<span class="number">1</span>,<span class="number">0000</span>份文件出现过，而文件总数是<span class="number">10</span>,<span class="number">000</span>,<span class="number">000</span>份的话，</span><br><span class="line">其逆向文件频率就是lg（<span class="number">10</span>,<span class="number">000</span>,<span class="number">000</span> / <span class="number">1</span>,<span class="number">0000</span>）=<span class="number">3</span>。</span><br><span class="line">最后<span class="string">"非常"</span>对于这篇文档的tf-idf的分数为<span class="number">0.05</span> * <span class="number">3</span>=<span class="number">0.15</span></span><br></pre></td></tr></table></figure>
 <h5 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> TfidfVectorizer</span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cut_word</span><span class="params">(text)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    对中文进行分词</span></span><br><span class="line"><span class="string">    "我爱北京天安门"————&gt;"我 爱 北京 天安门"</span></span><br><span class="line"><span class="string">    :param text:</span></span><br><span class="line"><span class="string">    :return: text</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 用结巴对中文字符串进行分词</span></span><br><span class="line">    text = <span class="string">" "</span>.join(list(jieba.cut(text)))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> text</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">text_chinese_tfidf_demo</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    对中文进行特征抽取</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    data = [<span class="string">"一种还是一种今天很残酷，明天更残酷，后天很美好，但绝对大部分是死在明天晚上，所以每个人不要放弃今天。"</span>,</span><br><span class="line">            <span class="string">"我们看到的从很远星系来的光是在几百万年之前发出的，这样当我们看到宇宙时，我们是在看它的过去。"</span>,</span><br><span class="line">            <span class="string">"如果只用一种方式了解某样事物，你就不会真正了解它。了解事物真正含义的秘密取决于如何将其与我们所了解的事物相联系。"</span>]</span><br><span class="line">    <span class="comment"># 将原始数据转换成分好词的形式</span></span><br><span class="line">    text_list = []</span><br><span class="line">    <span class="keyword">for</span> sent <span class="keyword">in</span> data:</span><br><span class="line">        text_list.append(cut_word(sent))</span><br><span class="line">    print(text_list)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 1、实例化一个转换器类</span></span><br><span class="line">    <span class="comment"># transfer = CountVectorizer(sparse=False)</span></span><br><span class="line">    <span class="comment"># 剔除'一种', '不会', '不要'这些词没有说明代表意义，减少计算</span></span><br><span class="line">    transfer = TfidfVectorizer(stop_words=[<span class="string">'一种'</span>, <span class="string">'不会'</span>, <span class="string">'不要'</span>])</span><br><span class="line">    <span class="comment"># 2、调用fit_transform</span></span><br><span class="line">    data = transfer.fit_transform(text_list)</span><br><span class="line">    print(<span class="string">"文本特征抽取的结果：\n"</span>, data.toarray())</span><br><span class="line">    print(<span class="string">"返回特征名字：\n"</span>, transfer.get_feature_names())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>

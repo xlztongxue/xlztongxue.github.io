@@ -53,19 +53,19 @@
 <meta property="og:site_name" content="小廖子的博客">
 <meta property="og:description" content="Hadoop的概念 Apache™ Hadoop® 是一个开源的，可靠的(reliable)，可扩展的(scalable)分布式计算框架  允许使用简单的编程模型跨计算机集群分布式处理大型数据集  可扩展: 从单个服务器扩展到数千台计算机，每台计算机都提供本地计算和存储 可靠的: 不依靠硬件来提供高可用性(high-availability)，而是在应用层检测和处理故障，从而在计算机集群之上提供高">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://xiaoliaozi.com/2020/02/11/HADOOP%E6%A6%82%E8%BF%B0/hadoop-hdfs1.png">
-<meta property="og:image" content="https://xiaoliaozi.com/2020/02/11/HADOOP%E6%A6%82%E8%BF%B0/image-mapreduce.png">
-<meta property="og:image" content="https://xiaoliaozi.com/2020/02/11/HADOOP%E6%A6%82%E8%BF%B0/903014-20160322154102745-1726255952.jpg">
-<meta property="og:image" content="https://xiaoliaozi.com/2020/02/11/HADOOP%E6%A6%82%E8%BF%B0/903014-20160322160747995-1497680833.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/xlztongxue/picgo/master/img2/20200227155845.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xlztongxue/picgo/master/img2/20200227155815.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/xlztongxue/picgo/master/img2/20200227155904.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/xlztongxue/picgo/master/img2/20200227155858.jpg">
 <meta property="article:published_time" content="2020-02-11T07:29:44.000Z">
-<meta property="article:modified_time" content="2020-02-21T04:22:04.955Z">
+<meta property="article:modified_time" content="2020-02-27T07:59:38.132Z">
 <meta property="article:author" content="小廖子">
 <meta property="article:tag" content="Hadoop的概念">
 <meta property="article:tag" content="Hadoop核心组件">
 <meta property="article:tag" content="Hadoop优势">
 <meta property="article:tag" content="数据仓库">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://xiaoliaozi.com/2020/02/11/HADOOP%E6%A6%82%E8%BF%B0/hadoop-hdfs1.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/xlztongxue/picgo/master/img2/20200227155845.png">
 
 <link rel="canonical" href="https://xiaoliaozi.com/2020/02/11/HADOOP%E6%A6%82%E8%BF%B0/">
 
@@ -250,7 +250,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-21 12:22:04" itemprop="dateModified" datetime="2020-02-21T12:22:04+08:00">2020-02-21</time>
+                <time title="修改时间：2020-02-27 15:59:38" itemprop="dateModified" datetime="2020-02-27T15:59:38+08:00">2020-02-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -357,7 +357,7 @@
 <li>数据切分、多副本、容错等操作对用户是透明的</li>
 </ul>
 <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">下面这张图是数据块多份复制存储的示意</span><br><span class="line">图中对于文件 /users/sameerp/data/part<span class="number">-0</span>，其复制备份数设置为<span class="number">2</span>, 存储的BlockID分别为<span class="number">1</span>、<span class="number">3</span>。</span><br><span class="line">Block1的两个备份存储在DataNode0和DataNode2两个服务器上</span><br><span class="line">Block3的两个备份存储在DataNode4和DataNode6两个服务器上</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/02/11/HADOOP%E6%A6%82%E8%BF%B0/hadoop-hdfs1.png" alt="img"> </p>
+<p><img src="https://raw.githubusercontent.com/xlztongxue/picgo/master/img2/20200227155845.png"/> </p>
 </li>
 <li><p>Hadoop MapReduce ： 基于yarn的大数据集并行处理系统 </p>
 <ul>
@@ -365,7 +365,7 @@
 <li>MapReduce是GoogleMapReduce的开源实现</li>
 <li>MapReduce特点:扩展性&amp;容错性&amp;海量数据离线处理</li>
 </ul>
-<p><img src="/2020/02/11/HADOOP%E6%A6%82%E8%BF%B0/image-mapreduce.png" alt="img"> </p>
+<p><img src="https://raw.githubusercontent.com/xlztongxue/picgo/master/img2/20200227155815.png"/> </p>
 </li>
 <li><p>YARN： 作业调度和集群资源管理的框架 </p>
 <ul>
@@ -415,7 +415,7 @@
 </ol>
 <p>​    时变性是指数据仓库包含来自其时间范围不同时间段的数据快照。有了这些数据快照以后，用户便可将其汇总，生成各历史阶段的数据分析报告；</p>
 <h5 id="数据仓库组件"><a href="#数据仓库组件" class="headerlink" title="数据仓库组件"></a>数据仓库组件</h5><p> 数据仓库的核心组件有四个：各源数据库，ETL，数据仓库，前端应用。如下图所示： </p>
-<p> <img src="/2020/02/11/HADOOP%E6%A6%82%E8%BF%B0/903014-20160322154102745-1726255952.jpg" alt="img"> </p>
+<p> <img src="https://raw.githubusercontent.com/xlztongxue/picgo/master/img2/20200227155904.jpg"/> </p>
 <ol>
 <li><p><strong>业务系统</strong></p>
 <p> 业务系统包含各种源数据库，这些源数据库既为业务系统提供数据支撑，同时也作为数据仓库的数据源(注：除了业务系统，数据仓库也可从其他外部数据源获取数据)； </p>
@@ -427,7 +427,7 @@
 <p>  和操作型数据库一样，数据仓库通常提供具有直接访问数据仓库功能的前端应用，这些应用也被称为BI(商务智能)应用； </p>
 </li>
 </ol>
-<h5 id="数据仓库开发流程"><a href="#数据仓库开发流程" class="headerlink" title="数据仓库开发流程"></a>数据仓库开发流程</h5><p> <img src="/2020/02/11/HADOOP%E6%A6%82%E8%BF%B0/903014-20160322160747995-1497680833.jpg" alt="img"> </p>
+<h5 id="数据仓库开发流程"><a href="#数据仓库开发流程" class="headerlink" title="数据仓库开发流程"></a>数据仓库开发流程</h5><p> <img src="https://raw.githubusercontent.com/xlztongxue/picgo/master/img2/20200227155858.jpg"/> </p>
 <p> 最后：在大数据时代，数据仓库的重要性更胜以往。Hadoop平台下的Hive，Spark平台下的Spark SQL都是各自生态圈内应用最热门的配套工具，而它们的本质就是开源分布式数据仓库。</p>
 
     </div>
