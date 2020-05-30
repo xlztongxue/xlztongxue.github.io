@@ -55,7 +55,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/xlztongxue/picgo/master/img/20200221213219.jpg">
 <meta property="article:published_time" content="2020-02-13T07:03:26.000Z">
-<meta property="article:modified_time" content="2020-02-27T12:38:27.347Z">
+<meta property="article:modified_time" content="2020-02-28T12:05:46.006Z">
 <meta property="article:author" content="小廖子">
 <meta property="article:tag" content="Hive">
 <meta property="article:tag" content="Hive架构">
@@ -249,7 +249,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-27 20:38:27" itemprop="dateModified" datetime="2020-02-27T20:38:27+08:00">2020-02-27</time>
+                <time title="修改时间：2020-02-28 20:05:46" itemprop="dateModified" datetime="2020-02-28T20:05:46+08:00">2020-02-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -290,7 +290,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5.3k</span>
+              <span>5.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -580,13 +580,23 @@
 </li>
 </ul>
 <h4 id="Hive分区表"><a href="#Hive分区表" class="headerlink" title="Hive分区表"></a>Hive分区表</h4><ul>
-<li>什么是分区表 </li>
-<li>创建分区表</li>
-<li>查看表的分区</li>
-<li>添加分区</li>
-<li>加载数据到分区</li>
-<li>如果重复加载同名文件，不会报错，会自动创建一个*_copy_1.txt </li>
-<li>外部分区表即使有分区的目录结构, 也必须要通过hql添加分区, 才能看到相应的数据 </li>
+<li><p>什么是分区表 </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>随着表的不断增大，对于新纪录的增加，查找，删除等(DML)的维护也更加困难。对于数据库中的超大型表，可以通过把它的数据分成若干个小表，从而简化数据库的管理活动，对于每一个简化后的小表，我们称为一个单个的分区。</span><br><span class="line"><span class="number">2.</span>hive中分区表实际就是对应hdfs文件系统上独立的文件夹，该文件夹内的文件是该分区所有数据文件。</span><br><span class="line"><span class="number">3.</span>分区可以理解为分类，通过分类把不同类型的数据放到不同的目录下。</span><br><span class="line"><span class="number">4.</span>分类的标准就是分区字段，可以一个，也可以多个。</span><br><span class="line"><span class="number">5.</span>分区表的意义在于优化查询。查询时尽量利用分区字段。如果不使用分区字段，就会全部扫描。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建分区表</p>
+</li>
+</ul>
+<ul>
+<li><p>查看表的分区</p>
+</li>
+<li><p>添加分区</p>
+</li>
+<li><p>加载数据到分区</p>
+</li>
+<li><p>如果重复加载同名文件，不会报错，会自动创建一个*_copy_1.txt </p>
+</li>
+<li><p>外部分区表即使有分区的目录结构, 也必须要通过hql添加分区, 才能看到相应的数据 </p>
+</li>
 </ul>
 <p><strong>总结</strong></p>
 <blockquote>
@@ -651,7 +661,10 @@
     <a href="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/" rel="prev" title="HADOOP概念扩展">
       <i class="fa fa-chevron-left"></i> HADOOP概念扩展
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/30/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E4%B8%80%EF%BC%89/" rel="next" title="C++30天学习打卡（一）">
+      C++30天学习打卡（一） <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -729,20 +742,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-count">73</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -795,13 +808,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">113k</span>
+    <span title="站点总字数">114k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:08</span>
+    <span title="站点阅读时长">3:10</span>
 </div>
 
         

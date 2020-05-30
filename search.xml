@@ -1,6 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>C++30天学习打卡（一）</title>
+    <url>/2020/05/30/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+    <content><![CDATA[<h3 id="C-30天学习打卡（一）"><a href="#C-30天学习打卡（一）" class="headerlink" title="C++30天学习打卡（一）"></a>C++30天学习打卡（一）</h3><h4 id="1-注释"><a href="#1-注释" class="headerlink" title="1.注释"></a>1.注释</h4><blockquote>
+<ol>
+<li>单行注释：//  描述信息</li>
+<li>多行注释：/<em> 注释信息 </em>/</li>
+</ol>
+</blockquote>
+<h4 id="2-变量"><a href="#2-变量" class="headerlink" title="2.变量"></a>2.变量</h4><ol>
+<li><p>作用：给一段指定的内存空间起名，方便操作这段内存。</p>
+</li>
+<li><p>语法：数据类型   变量名 = 初始值；</p>
+</li>
+<li><p>示例：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"a = "</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 注意：C++在创建变量时，必须给变量一个初始值，否则会报错</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="3-常量"><a href="#3-常量" class="headerlink" title="3.常量"></a>3.常量</h4><ol>
+<li><p>作用：用于记录不可更改的数据；</p>
+</li>
+<li><p>定义常量的两种方式：</p>
+<blockquote>
+<ol>
+<li>#define 宏常量：#define  常量名  常量值<ul>
+<li>== 通常在文件上方定义==，表示一个常量</li>
+</ul>
+</li>
+<li>const 修饰的变量：const 数据类型  变量名 = 常量值<ul>
+<li>==通常在变量定义前加关键字const==，修饰该变量为常量，不可修改</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+</li>
+<li><p>示例：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> day 7</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 常量定义</span></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"一周共有 "</span> &lt;&lt; day &lt;&lt; <span class="string">" 天"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">int</span> month = <span class="number">12</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"一年有几个 "</span> &lt;&lt; month &lt;&lt; <span class="string">" 月"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="4-关键字"><a href="#4-关键字" class="headerlink" title="4.关键字"></a>4.关键字</h4><ol>
+<li><p>作用：关键字是C++中预先保留的单词（标识符）</p>
+</li>
+<li><p>注意：在定义变量或者常量时候，不要用关键字，否则会产生歧义</p>
+<p><img src="https://raw.githubusercontent.com/xlztongxue/picgo/master/img2/20200530204651.png"/></p>
+</li>
+</ol>
+<h4 id="5-标识符命名规则"><a href="#5-标识符命名规则" class="headerlink" title="5.标识符命名规则"></a>5.标识符命名规则</h4><ol>
+<li><p>作用：C++规定给标识符（变量、常量）命名时，有一套自己的规则；</p>
+</li>
+<li><p>注意事项：</p>
+<blockquote>
+<ul>
+<li>标识符不能是关键字</li>
+<li>标识符只能由字母、数字、下划线组成</li>
+<li>第一个字符必须为字母或下划线</li>
+<li>标识符中字母区分大小写</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>C++30天学习打卡</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于Hive</title>
     <url>/2020/02/13/%E5%85%B3%E4%BA%8EHive/</url>
     <content><![CDATA[<h4 id="Hive简介"><a href="#Hive简介" class="headerlink" title="Hive简介"></a>Hive简介</h4><h5 id="什么是Hive"><a href="#什么是Hive" class="headerlink" title="什么是Hive"></a>什么是Hive</h5><ul>
@@ -274,13 +342,23 @@
 </li>
 </ul>
 <h4 id="Hive分区表"><a href="#Hive分区表" class="headerlink" title="Hive分区表"></a>Hive分区表</h4><ul>
-<li>什么是分区表 </li>
-<li>创建分区表</li>
-<li>查看表的分区</li>
-<li>添加分区</li>
-<li>加载数据到分区</li>
-<li>如果重复加载同名文件，不会报错，会自动创建一个*_copy_1.txt </li>
-<li>外部分区表即使有分区的目录结构, 也必须要通过hql添加分区, 才能看到相应的数据 </li>
+<li><p>什么是分区表 </p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span>随着表的不断增大，对于新纪录的增加，查找，删除等(DML)的维护也更加困难。对于数据库中的超大型表，可以通过把它的数据分成若干个小表，从而简化数据库的管理活动，对于每一个简化后的小表，我们称为一个单个的分区。</span><br><span class="line"><span class="number">2.</span>hive中分区表实际就是对应hdfs文件系统上独立的文件夹，该文件夹内的文件是该分区所有数据文件。</span><br><span class="line"><span class="number">3.</span>分区可以理解为分类，通过分类把不同类型的数据放到不同的目录下。</span><br><span class="line"><span class="number">4.</span>分类的标准就是分区字段，可以一个，也可以多个。</span><br><span class="line"><span class="number">5.</span>分区表的意义在于优化查询。查询时尽量利用分区字段。如果不使用分区字段，就会全部扫描。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建分区表</p>
+</li>
+</ul>
+<ul>
+<li><p>查看表的分区</p>
+</li>
+<li><p>添加分区</p>
+</li>
+<li><p>加载数据到分区</p>
+</li>
+<li><p>如果重复加载同名文件，不会报错，会自动创建一个*_copy_1.txt </p>
+</li>
+<li><p>外部分区表即使有分区的目录结构, 也必须要通过hql添加分区, 才能看到相应的数据 </p>
+</li>
 </ul>
 <p><strong>总结</strong></p>
 <blockquote>
@@ -3530,9 +3608,7 @@
 <figure class="highlight autohotkey"><table><tr><td class="code"><pre><span class="line">sklearn.datasets</span><br><span class="line">	加载获取流行数据集</span><br><span class="line">	datasets.load_*()</span><br><span class="line">		获取小规模数据集，数据包含在datasets里</span><br><span class="line">	datasets.fetch_*(dat<span class="built_in">a_home</span>=None)</span><br><span class="line">		获取大规模数据集，需要从网络上下载，</span><br><span class="line">		函数的第一个参数是dat<span class="built_in">a_home</span>，表示数据集下载的目录,</span><br><span class="line">		默认是 ~/scikit_learn_data/</span><br></pre></td></tr></table></figure>
 <p><strong>sklearn小数据集</strong></p>
 <ul>
-<li><p>sklearn.datasets.load_iris()：加载并返回鸢尾花数据集</p>
-<p> <img src="knn%E7%AE%97%E6%B3%95/%E9%B8%A2%E5%B0%BE%E8%8A%B1%E6%95%B0%E6%8D%AE%E9%9B%86.png" alt="img"> </p>
-</li>
+<li>sklearn.datasets.load_iris()：加载并返回鸢尾花数据集</li>
 </ul>
 <p><strong>sklearn大数据集</strong></p>
 <ul>
