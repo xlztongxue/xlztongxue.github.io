@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://xiaoliaozi.com/2020/02/13/%E5%85%B3%E4%BA%8EHive/">
+    <link itemprop="mainEntityOfPage" href="https://xiaoliaozi.com/2020/06/02/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E5%9B%9B%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avter.jpg">
@@ -223,7 +223,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/02/13/%E5%85%B3%E4%BA%8EHive/" class="post-title-link" itemprop="url">关于Hive</a>
+            <a href="/2020/06/02/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E5%9B%9B%EF%BC%89/" class="post-title-link" itemprop="url">C++30天学习打卡（四）</a>
         </h1>
 
         <div class="post-meta">
@@ -233,14 +233,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-02-13 15:03:26" itemprop="dateCreated datePublished" datetime="2020-02-13T15:03:26+08:00">2020-02-13</time>
+              <time title="创建时间：2020-06-02 18:59:13" itemprop="dateCreated datePublished" datetime="2020-06-02T18:59:13+08:00">2020-06-02</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-28 20:05:46" itemprop="dateModified" datetime="2020-02-28T20:05:46+08:00">2020-02-28</time>
+                <time title="修改时间：2020-06-03 19:11:46" itemprop="dateModified" datetime="2020-06-03T19:11:46+08:00">2020-06-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -248,8 +248,8 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据推荐系统</span>
+                  <a href="/categories/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1/" itemprop="url" rel="index">
+                    <span itemprop="name">C++30天学习打卡</span>
                   </a>
                 </span>
             </span>
@@ -263,8 +263,244 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/02/13/%E5%85%B3%E4%BA%8EHive/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/13/%E5%85%B3%E4%BA%8EHive/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/06/02/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E5%9B%9B%EF%BC%89/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/06/02/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E5%9B%9B%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="C-30天学习打卡（四）"><a href="#C-30天学习打卡（四）" class="headerlink" title="C++30天学习打卡（四）"></a>C++30天学习打卡（四）</h3><h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><ul>
+<li>所谓数组，就是一个集合，里面存放了相同类型的数据元素</li>
+</ul>
+<blockquote>
+<p><strong>特点：</strong></p>
+<ol>
+<li>数组中的每个==数据元素都是相同的数据类型==；</li>
+<li>数组是由==连续的内存==位置组成的。</li>
+</ol>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/06/02/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E5%9B%9B%EF%BC%89/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xiaoliaozi.com/2020/06/01/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E4%B8%89%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avter.jpg">
+      <meta itemprop="name" content="小廖子">
+      <meta itemprop="description" content="学无止境">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小廖子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/01/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E4%B8%89%EF%BC%89/" class="post-title-link" itemprop="url">C++30天学习打卡（三）</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-01 16:02:57" itemprop="dateCreated datePublished" datetime="2020-06-01T16:02:57+08:00">2020-06-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-03 18:59:00" itemprop="dateModified" datetime="2020-06-03T18:59:00+08:00">2020-06-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1/" itemprop="url" rel="index">
+                    <span itemprop="name">C++30天学习打卡</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/06/01/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E4%B8%89%EF%BC%89/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/06/01/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E4%B8%89%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="C-30天学习打卡（三）"><a href="#C-30天学习打卡（三）" class="headerlink" title="C++30天学习打卡（三）"></a>C++30天学习打卡（三）</h3><h3 id="程序流程结构"><a href="#程序流程结构" class="headerlink" title="程序流程结构"></a>程序流程结构</h3><p>C/C++支持最基本的三种程序运行结构：==顺序结构、选择结构、循环结构==</p>
+<ul>
+<li>顺序结构：程序按顺序执行，不发生跳转</li>
+<li>选择结构：依据条件是否满足，有选择的执行相应功能</li>
+<li>循环结构：依据条件是否满足，循环多次执行某段代码</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/06/01/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E4%B8%89%EF%BC%89/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xiaoliaozi.com/2020/05/31/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E4%BA%8C%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avter.jpg">
+      <meta itemprop="name" content="小廖子">
+      <meta itemprop="description" content="学无止境">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小廖子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/05/31/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E4%BA%8C%EF%BC%89/" class="post-title-link" itemprop="url">C++30天学习打卡（二）</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-31 21:10:52" itemprop="dateCreated datePublished" datetime="2020-05-31T21:10:52+08:00">2020-05-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-03 16:53:50" itemprop="dateModified" datetime="2020-06-03T16:53:50+08:00">2020-06-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1/" itemprop="url" rel="index">
+                    <span itemprop="name">C++30天学习打卡</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/05/31/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E4%BA%8C%EF%BC%89/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/05/31/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E4%BA%8C%EF%BC%89/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -293,240 +529,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="Hive简介"><a href="#Hive简介" class="headerlink" title="Hive简介"></a>Hive简介</h4><h5 id="什么是Hive"><a href="#什么是Hive" class="headerlink" title="什么是Hive"></a>什么是Hive</h5><ul>
-<li>Hive 由 Facebook 实现并开源，是基于 Hadoop 的一个数据仓库工具，可以将结构化的数据映射为一张数据库表，并提供 HQL(Hive SQL)查询功能，底层数据是存储在 HDFS 上。</li>
-<li>Hive 本质: 将 SQL 语句转换为 MapReduce 任务运行，使不熟悉 MapReduce 的用户很方便地利用 HQL 处理和计算 HDFS 上的结构化的数据，<strong>是一款基于HDFS 的 MapReduce 计算框架</strong></li>
-<li>主要用途：用来做离线数据分析，比直接用 MapReduce 开发效率更高。</li>
-</ul>
+          <h3 id="C-30天学习打卡（二）"><a href="#C-30天学习打卡（二）" class="headerlink" title="C++30天学习打卡（二）"></a>C++30天学习打卡（二）</h3><h4 id="1-数据类型"><a href="#1-数据类型" class="headerlink" title="1.数据类型"></a>1.数据类型</h4><blockquote>
+<p>C++规定在创建一个变量或者常量时，必须要指定出相应的数据类型，否则无法给变量分配内存。</p>
+<p>数据类型存在的意义：给变量分配合适的内存空间。</p>
+</blockquote>
+<ol>
+<li><h5 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h5><ul>
+<li><p>作用：整型变量表示的是<strong>整数类型</strong>的数据</p>
+</li>
+<li><p>分类：C++中能够表示整型的类型有以下几种方式，<strong>区别在于所占内存空间不同</strong></p>
+<p><img src="https://raw.githubusercontent.com/xlztongxue/picgo/master/img2/20200531124009.png"/></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/02/13/%E5%85%B3%E4%BA%8EHive/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://xiaoliaozi.com/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avter.jpg">
-      <meta itemprop="name" content="小廖子">
-      <meta itemprop="description" content="学无止境">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小廖子的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/" class="post-title-link" itemprop="url">HADOOP概念扩展</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-12 09:45:09" itemprop="dateCreated datePublished" datetime="2020-02-12T09:45:09+08:00">2020-02-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-27 20:37:53" itemprop="dateModified" datetime="2020-02-27T20:37:53+08:00">2020-02-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据推荐系统</span>
-                  </a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="Hadoop生态系统"><a href="#Hadoop生态系统" class="headerlink" title="Hadoop生态系统"></a>Hadoop生态系统</h4><h5 id="狭义的Hadoop-VS-广义的Hadoop"><a href="#狭义的Hadoop-VS-广义的Hadoop" class="headerlink" title="狭义的Hadoop VS 广义的Hadoop"></a>狭义的Hadoop VS 广义的Hadoop</h5><p> 广义的Hadoop：指的是Hadoop生态系统，Hadoop生态系统是一个很庞大的概念，hadoop是其中最重要最基础的一个部分，生态系统中每一子系统只解决某一个特定的问题域（甚至可能更窄），不搞统一型的全能系统，而是小而精的多个小系统。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/02/12/HADOOP%E6%A6%82%E5%BF%B5%E6%89%A9%E5%B1%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://xiaoliaozi.com/2020/02/12/YARN%E5%92%8CMAPREDUCE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avter.jpg">
-      <meta itemprop="name" content="小廖子">
-      <meta itemprop="description" content="学无止境">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小廖子的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/12/YARN%E5%92%8CMAPREDUCE/" class="post-title-link" itemprop="url">YARN和MAPREDUCE</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-12 09:42:27" itemprop="dateCreated datePublished" datetime="2020-02-12T09:42:27+08:00">2020-02-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-27 20:24:04" itemprop="dateModified" datetime="2020-02-27T20:24:04+08:00">2020-02-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据推荐系统</span>
-                  </a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/02/12/YARN%E5%92%8CMAPREDUCE/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/12/YARN%E5%92%8CMAPREDUCE/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>4.8k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>8 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="资源调度框架-YARN"><a href="#资源调度框架-YARN" class="headerlink" title="资源调度框架 YARN"></a>资源调度框架 YARN</h4><h5 id="什么是YARN"><a href="#什么是YARN" class="headerlink" title="什么是YARN"></a>什么是YARN</h5><ul>
-<li>Yet Another Resource Negotiator, 另一种资源协调者</li>
-<li>通用资源管理系统</li>
-<li>为上层应用提供统一的资源管理和调度，为集群在利用率、资源统一管理和数据共享等方面带来了巨大好处</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/02/12/YARN%E5%92%8CMAPREDUCE/#more" rel="contents">
+              <a class="btn" href="/2020/05/31/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E4%BA%8C%EF%BC%89/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -550,7 +565,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -619,7 +634,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -685,13 +700,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">124k</span>
+    <span title="站点总字数">142k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:27</span>
+    <span title="站点阅读时长">3:57</span>
 </div>
 
         

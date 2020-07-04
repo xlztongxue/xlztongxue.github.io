@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/bitbug_favicon32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/bitbug_favicon16x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://xiaoliaozi.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="C++30天学习打卡（七）结构体结构体的基本概念 结构体属于用户&#x3D;&#x3D;自定义的数据类型&#x3D;&#x3D;，允许用户存储不同的数据类型  结构体定义和使用 语法：struct  结构体名 { 结构体成员列表 }  创建方式：常用前两种  struct 结构体名 变量名 struct 结构体名 变量名 &#x3D; { 成员1值 ， 成员2值…} 定义结构体时顺便创建变量   示例： 123456789101112131415">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++30天学习打卡（七）">
+<meta property="og:url" content="https://xiaoliaozi.com/2020/06/05/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E4%B8%83%EF%BC%89/index.html">
+<meta property="og:site_name" content="小廖子的博客">
+<meta property="og:description" content="C++30天学习打卡（七）结构体结构体的基本概念 结构体属于用户&#x3D;&#x3D;自定义的数据类型&#x3D;&#x3D;，允许用户存储不同的数据类型  结构体定义和使用 语法：struct  结构体名 { 结构体成员列表 }  创建方式：常用前两种  struct 结构体名 变量名 struct 结构体名 变量名 &#x3D; { 成员1值 ， 成员2值…} 定义结构体时顺便创建变量   示例： 123456789101112131415">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-05T07:02:45.000Z">
+<meta property="article:modified_time" content="2020-07-04T08:34:00.197Z">
+<meta property="article:author" content="小廖子">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://xiaoliaozi.com/2020/06/05/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E4%B8%83%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>C++30天学习打卡（七） | 小廖子的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="小廖子的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小廖子的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">好记性不如记笔记</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xiaoliaozi.com/2020/06/05/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E4%B8%83%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avter.jpg">
+      <meta itemprop="name" content="小廖子">
+      <meta itemprop="description" content="学无止境">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小廖子的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++30天学习打卡（七）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-05 15:02:45" itemprop="dateCreated datePublished" datetime="2020-06-05T15:02:45+08:00">2020-06-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-04 16:34:00" itemprop="dateModified" datetime="2020-07-04T16:34:00+08:00">2020-07-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1/" itemprop="url" rel="index">
+                    <span itemprop="name">C++30天学习打卡</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/06/05/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E4%B8%83%EF%BC%89/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/06/05/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E4%B8%83%EF%BC%89/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>9 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="C-30天学习打卡（七）"><a href="#C-30天学习打卡（七）" class="headerlink" title="C++30天学习打卡（七）"></a>C++30天学习打卡（七）</h3><h3 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h3><h4 id="结构体的基本概念"><a href="#结构体的基本概念" class="headerlink" title="结构体的基本概念"></a>结构体的基本概念</h4><ul>
+<li>结构体属于用户==自定义的数据类型==，允许用户存储不同的数据类型</li>
+</ul>
+<h4 id="结构体定义和使用"><a href="#结构体定义和使用" class="headerlink" title="结构体定义和使用"></a>结构体定义和使用</h4><ul>
+<li><p>语法：<code>struct  结构体名 { 结构体成员列表 }</code></p>
+</li>
+<li><p>创建方式：常用前两种</p>
+<ul>
+<li>struct 结构体名 变量名</li>
+<li>struct 结构体名 变量名 = { 成员1值 ， 成员2值…}</li>
+<li>定义结构体时顺便创建变量</li>
+</ul>
+</li>
+<li><p>示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1.创建学生数据类型</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">student</span> &#123;</span></span><br><span class="line">	<span class="built_in">string</span> name;</span><br><span class="line">	<span class="keyword">int</span> age;</span><br><span class="line">	<span class="keyword">int</span> score;</span><br><span class="line">&#125;s3; <span class="comment">// 方式3</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 2.通过学生类型创建学生</span></span><br><span class="line"><span class="comment">// 方式1.struct Student s1 struct可省略</span></span><br><span class="line">	<span class="comment">// struct student s1;</span></span><br><span class="line">	student s1;</span><br><span class="line">	s1.name = <span class="string">"张三"</span>;</span><br><span class="line">	s1.age = <span class="number">18</span>;</span><br><span class="line">	s1.score = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"姓名："</span> &lt;&lt; s1.name &lt;&lt; <span class="string">"\t年龄："</span> &lt;&lt; s1.age &lt;&lt; <span class="string">"\t分数："</span> &lt;&lt; s1.score &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 方式2</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">student</span> <span class="title">s2</span> = &#123;</span> <span class="string">"李四"</span>,<span class="number">19</span>,<span class="number">80</span> &#125;;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"姓名："</span> &lt;&lt; s2.name &lt;&lt; <span class="string">"\t年龄："</span> &lt;&lt; s2.age &lt;&lt; <span class="string">"\t分数："</span> &lt;&lt; s2.score &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 方式3</span></span><br><span class="line">	s3.name = <span class="string">"王五"</span>;</span><br><span class="line">	s3.age = <span class="number">22</span>;</span><br><span class="line">	s3.score = <span class="number">90</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"姓名："</span> &lt;&lt; s3.name &lt;&lt; <span class="string">"\t年龄："</span> &lt;&lt; s3.age &lt;&lt; <span class="string">"\t分数："</span> &lt;&lt; s3.score &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>总结：</p>
+<ul>
+<li>==定义结构体时的关键字是struct，不可省略；==</li>
+<li>==创建结构体变量时，关键字struct可以省略；==</li>
+<li>==结构体变量利用操作符 ‘’.’’  访问成员。==</li>
+</ul>
+</li>
+</ul>
+<h4 id="结构体数组"><a href="#结构体数组" class="headerlink" title="结构体数组"></a>结构体数组</h4><ul>
+<li><p>作用：将自定义的结构体放入到数组中方便维护</p>
+</li>
+<li><p>语法：<code>struct 结构体名 数组名[元素个数] = {  {} , {} , ... {} }</code></p>
+</li>
+<li><p>示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 结构体数组</span></span><br><span class="line"><span class="comment">// 1.定义结构体</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="built_in">string</span> name;</span><br><span class="line">	<span class="keyword">int</span> age;</span><br><span class="line">	<span class="keyword">int</span> score;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 2.创建结构体数组</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Student</span> <span class="title">stuArray</span>[3] =</span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">		&#123;<span class="string">"张三"</span>,<span class="number">18</span>,<span class="number">100</span>&#125;,</span><br><span class="line">		&#123;<span class="string">"李四"</span>,<span class="number">20</span>,<span class="number">90</span>&#125;,</span><br><span class="line">		&#123;<span class="string">"王五"</span>,<span class="number">21</span>,<span class="number">95</span>&#125;,</span><br><span class="line">	</span><br><span class="line">	&#125;;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 3.给结构体数组中的元素赋值</span></span><br><span class="line">	stuArray[<span class="number">2</span>].name = <span class="string">"赵六"</span>;</span><br><span class="line">	stuArray[<span class="number">2</span>].age = <span class="number">19</span>;</span><br><span class="line">	stuArray[<span class="number">2</span>].score = <span class="number">80</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 4.遍历结构体数组</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"姓名："</span> &lt;&lt; stuArray[i].name &lt;&lt; <span class="string">"\t"</span></span><br><span class="line">			&lt;&lt; <span class="string">"年龄："</span> &lt;&lt; stuArray[i].age &lt;&lt; <span class="string">"\t"</span></span><br><span class="line">			&lt;&lt; <span class="string">"分数："</span> &lt;&lt; stuArray[i].score &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="结构体指针"><a href="#结构体指针" class="headerlink" title="结构体指针"></a>结构体指针</h4><ul>
+<li><p>作用：通过指针访问结构体中的成员，利用操作符 <code>-&gt;</code>可以通过结构体指针访问结构体属性；</p>
+</li>
+<li><p>示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 结构体指针</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="built_in">string</span> name;</span><br><span class="line">	<span class="keyword">int</span> age;</span><br><span class="line">	<span class="keyword">int</span> score;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 1.创建学生结构体变量</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">student</span> <span class="title">s</span> = &#123;</span></span><br><span class="line">		<span class="string">"张三"</span>,<span class="number">18</span>,<span class="number">100</span></span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 2.通过指针指向结构体变量</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">student</span>* <span class="title">p</span> = &amp;<span class="title">s</span>;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 3.通过指针访问结构体变量中的数据</span></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"姓名："</span> &lt;&lt; p-&gt;name &lt;&lt; <span class="string">"\t"</span></span><br><span class="line">		&lt;&lt; <span class="string">"年龄："</span> &lt;&lt; p-&gt;age &lt;&lt; <span class="string">"\t"</span></span><br><span class="line">		&lt;&lt; <span class="string">"分数："</span> &lt;&lt; p-&gt;score &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>总结：<code>结构体指针可以通过 -&gt; 操作符 来访问结构体中的成员</code>。</li>
+</ul>
+<h4 id="结构体嵌套结构体"><a href="#结构体嵌套结构体" class="headerlink" title="结构体嵌套结构体"></a>结构体嵌套结构体</h4><ul>
+<li><p>作用：结构体中的成员可以是另一个结构体</p>
+</li>
+<li><p>示例：每个老师辅导一个学员，一个老师的结构体中，记录一个学生的结构体；</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 学生结构体定义</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="built_in">string</span> name;</span><br><span class="line">	<span class="keyword">int</span> age;</span><br><span class="line">	<span class="keyword">int</span> score;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 教师结构体定义</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">teacher</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> id;</span><br><span class="line">	<span class="built_in">string</span> name;</span><br><span class="line">	<span class="keyword">int</span> age;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">student</span> <span class="title">stu</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 结构体嵌套结构体</span></span><br><span class="line">	<span class="comment">// 创建老师结构体</span></span><br><span class="line">	teacher t;</span><br><span class="line">	t.id = <span class="number">100000</span>;</span><br><span class="line">	t.name = <span class="string">"老王"</span>;</span><br><span class="line">	t.age = <span class="number">40</span>;</span><br><span class="line">	t.stu.name = <span class="string">"小王"</span>;</span><br><span class="line">	t.stu.age = <span class="number">20</span>;</span><br><span class="line">	t.stu.score = <span class="number">95</span>;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"老师姓名："</span> &lt;&lt; t.name &lt;&lt; <span class="string">"\t"</span></span><br><span class="line">		&lt;&lt; <span class="string">"老师编号："</span> &lt;&lt; t.id &lt;&lt; <span class="string">"\t"</span></span><br><span class="line">		&lt;&lt; <span class="string">"老师年龄："</span> &lt;&lt; t.age &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"该老师的学生姓名："</span> &lt;&lt; t.stu.name &lt;&lt; <span class="string">"\t"</span></span><br><span class="line">		&lt;&lt; <span class="string">"该老师的学生年龄："</span> &lt;&lt; t.stu.age &lt;&lt; <span class="string">"\t"</span></span><br><span class="line">		&lt;&lt; <span class="string">"该老师的学生分数："</span> &lt;&lt; t.stu.score &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>总结：在结构体中可以定义另一个结构体作为成员，用来解决实际问题。</li>
+</ul>
+<h4 id="结构体做函数参数"><a href="#结构体做函数参数" class="headerlink" title="结构体做函数参数"></a>结构体做函数参数</h4><ul>
+<li><p>作用：<code>将结构体作为参数向函数中传递</code></p>
+</li>
+<li><p>传递方式：</p>
+<ol>
+<li>值传递</li>
+<li>地址传递</li>
+</ol>
+</li>
+<li><p>示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="comment">// 定义学生结构体</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="built_in">string</span> name;</span><br><span class="line">	<span class="keyword">int</span> age;</span><br><span class="line">	<span class="keyword">int</span> score;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printStudent1</span><span class="params">(struct student s)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"值传递"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	s.name = <span class="string">"李四"</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"子函数中 学生姓名："</span> &lt;&lt; s.name &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"子函数中 学生年龄："</span> &lt;&lt; s.age &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"子函数中 学生分数："</span> &lt;&lt; s.score &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printStudent2</span><span class="params">(struct student* s)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"地址传递"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	s-&gt;name = <span class="string">"李四"</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"子函数中 学生姓名："</span> &lt;&lt; s-&gt;name &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"子函数中 学生年龄："</span> &lt;&lt; s-&gt;age &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"子函数中 学生分数："</span> &lt;&lt; s-&gt;score &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 结构体做参数传递</span></span><br><span class="line">	<span class="comment">// 将学生传入到一个参数中，打印学生身上的所有信息</span></span><br><span class="line">	<span class="comment">// 创建结构体变量</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">student</span> <span class="title">s</span>;</span></span><br><span class="line">	s.name = <span class="string">"张三"</span>;</span><br><span class="line">	s.age = <span class="number">30</span>;</span><br><span class="line">	s.score = <span class="number">90</span>;</span><br><span class="line">	<span class="comment">// 值传递</span></span><br><span class="line">	printStudent1(s);</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"主函数中 学生姓名："</span> &lt;&lt; s.name &lt;&lt; <span class="string">"\t"</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"主函数中 学生年龄："</span> &lt;&lt; s.age &lt;&lt; <span class="string">"\t"</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"主函数中 学生分数："</span> &lt;&lt; s.score &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 地址传递</span></span><br><span class="line">	printStudent2(&amp;s);</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"主函数中 学生姓名："</span> &lt;&lt; s.name &lt;&lt; <span class="string">"\t"</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"主函数中 学生年龄："</span> &lt;&lt; s.age &lt;&lt; <span class="string">"\t"</span>;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"主函数中 学生分数："</span> &lt;&lt; s.score &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>总结：<code>如果不想修改主函数中的数据，用值传递，反之用地址传递</code>。</li>
+</ul>
+<h4 id="结构体中const使用场景"><a href="#结构体中const使用场景" class="headerlink" title="结构体中const使用场景"></a>结构体中const使用场景</h4><ul>
+<li><p>作用：<code>用const来防止误操作</code></p>
+</li>
+<li><p>示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// const的使用场景</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">student</span> &#123;</span></span><br><span class="line">	<span class="built_in">string</span> name;</span><br><span class="line">	<span class="keyword">int</span> age;</span><br><span class="line">	<span class="keyword">int</span> score;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将函数中的形参改为指针，可以减少内存空间，而且不会复制</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printStudent</span><span class="params">(<span class="keyword">const</span> student *s)</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// s-&gt;name = "李四"; //操作失败 只读不写</span></span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"姓名："</span> &lt;&lt; s-&gt;name &lt;&lt; <span class="string">"\t"</span></span><br><span class="line">		&lt;&lt; <span class="string">"年龄："</span> &lt;&lt; s-&gt;age &lt;&lt; <span class="string">"\t"</span></span><br><span class="line">		&lt;&lt; <span class="string">"分数："</span> &lt;&lt; s-&gt;score &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 创建结构体变量</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">student</span> <span class="title">s</span> = &#123;</span> <span class="string">"张三"</span>,<span class="number">15</span>,<span class="number">70</span> &#125;;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 通过结构体打印结构体变量信息</span></span><br><span class="line">	printStudent(&amp;s);</span><br><span class="line"></span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>总结：改成指针减少内存空间，加const可以防止子函数修改主函数中的值。</li>
+</ul>
+<h4 id="结构体案例"><a href="#结构体案例" class="headerlink" title="结构体案例"></a>结构体案例</h4><ul>
+<li><p>案例1描述：学校正在做毕设项目，每名老师带领5个学生，总共有3名老师，需求如下：</p>
+<p>设计学生和老师的结构体，其中在老师的结构体中，有老师姓名和一个存放5名学生的数组作为成员</p>
+<p>学生的成员有姓名、考试分数，创建数组存放3名老师，通过函数给每个老师及所带的学生赋值</p>
+<p>最终打印出老师数据以及老师所带的学生数据。</p>
+</li>
+<li><p>代码1示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"> </span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>案例2描述：设计一个英雄的结构体，包括成员姓名，年龄，性别;创建结构体数组，数组中存放5名英雄。通过冒泡排序的算法，将数组中的英雄按照年龄进行升序排序，最终打印排序后的结果。五名英雄信息如下：</p>
+<blockquote>
+<pre><code>{&quot;刘备&quot;,23,&quot;男&quot;},{&quot;关羽&quot;,22,&quot;男&quot;},{&quot;张飞&quot;,20,&quot;男&quot;},{&quot;赵云&quot;,21,&quot;男&quot;},{&quot;貂蝉&quot;,19,&quot;女&quot;}
+</code></pre></blockquote>
+</li>
+<li><p>代码2示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"> </span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+            <!---<a href="/tags/C/" rel="tag"># C++</a>--->
+            <a href="/tags/C/" rel="tag">C++</a>
+            <br>
+          <div class="fa fa-tag">本文结束</div>
+          <br/>
+          </div>
+        
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/04/C-30%E5%A4%A9%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%EF%BC%88%E5%85%AD%EF%BC%89/" rel="prev" title="C++30天学习打卡（六）">
+      <i class="fa fa-chevron-left"></i> C++30天学习打卡（六）
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#C-30天学习打卡（七）"><span class="nav-number">1.</span> <span class="nav-text">C++30天学习打卡（七）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构体"><span class="nav-number">2.</span> <span class="nav-text">结构体</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#结构体的基本概念"><span class="nav-number">2.1.</span> <span class="nav-text">结构体的基本概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结构体定义和使用"><span class="nav-number">2.2.</span> <span class="nav-text">结构体定义和使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结构体数组"><span class="nav-number">2.3.</span> <span class="nav-text">结构体数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结构体指针"><span class="nav-number">2.4.</span> <span class="nav-text">结构体指针</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结构体嵌套结构体"><span class="nav-number">2.5.</span> <span class="nav-text">结构体嵌套结构体</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结构体做函数参数"><span class="nav-number">2.6.</span> <span class="nav-text">结构体做函数参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结构体中const使用场景"><span class="nav-number">2.7.</span> <span class="nav-text">结构体中const使用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结构体案例"><span class="nav-number">2.8.</span> <span class="nav-text">结构体案例</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <a href="/"><img class="site-author-image" itemprop="image" alt="小廖子"
+      src="/images/avter.jpg">
+    </a>
+  <p class="site-author-name" itemprop="name">小廖子</p>
+  <div class="site-description" itemprop="description">学无止境</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xlztongxue" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xlztongxue" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xlz_tongxue@163.com" title="E-Mail → mailto:xlz_tongxue@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/weixin_45439324" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_45439324" rel="noopener" target="_blank"><i class="fa fa-fw fa-copyright"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+
+
+    <p class="site-author-name" itemprop="name">关注我哟</p>
+    <img class="site-author-image" itemprop="image" alt="微信公众号"
+      src="/images/xlzblog.jpg">
+    <div class="site-description" itemprop="description">关注公众号，更多精彩等着你</div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-小廖子"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小廖子</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">142k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:57</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'Ed2mvWHWKlphKGAa6hId76UP-gzGzoHsz',
+      appKey: '7MYwWTLCtelB1RHhedbF58S4',
+      placeholder: "Just go go",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
